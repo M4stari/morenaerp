@@ -1,7 +1,6 @@
 from fastapi import Depends, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from config import settings
-from database import init_db
 from routes_auth import router as auth_router, verify_token
 from routes_customers import router as customers_router
 from routes_products import router as products_router
@@ -23,9 +22,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-# Inicializar banco de dados
-init_db()
 
 # Incluir rotas
 app.include_router(auth_router)
