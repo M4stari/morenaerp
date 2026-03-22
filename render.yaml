@@ -1,3 +1,9 @@
+databases:
+  - name: erp-morena-db
+    databaseName: erp_morena
+    user: erp_morena
+    plan: free
+
 services:
   - type: web
     name: erp-morena-api
@@ -9,7 +15,9 @@ services:
     healthCheckPath: /health
     envVars:
       - key: DATABASE_URL
-        sync: false
+        fromDatabase:
+          name: erp-morena-db
+          property: connectionString
       - key: SECRET_KEY
         sync: false
       - key: ADMIN_EMAIL
@@ -26,9 +34,12 @@ services:
         value: "False"
       - key: APP_NAME
         value: ERP Morena Concept
+      - key: PORT
+        value: "10000"
 
-  - type: static
+  - type: web
     name: erp-morena-frontend
+    runtime: static
     rootDir: frontend
     buildCommand: npm install && npm run build
     staticPublishPath: dist
