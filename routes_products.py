@@ -92,6 +92,15 @@ def update_product(
         raise HTTPException(status_code=404, detail="Produto nao encontrado")
 
     update_data = product.dict(exclude_unset=True)
+
+    if "sku" in update_data:
+        existing_product = db.query(Product).filter(
+            Product.sku == update_data["sku"],
+            Product.id != product_id
+        ).first()
+        if existing_product:
+            raise HTTPException(status_code=400, detail="SKU ja cadastrado")
+
     for key, value in update_data.items():
         setattr(db_product, key, value)
 

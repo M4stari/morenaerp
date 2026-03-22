@@ -56,6 +56,13 @@ CORS_ORIGINS=https://seu-frontend.vercel.app,https://seu-frontend.onrender.com
 VITE_API_URL=https://sua-api.onrender.com
 ```
 
+Opcional para upload de imagem em nuvem:
+
+```env
+VITE_CLOUDINARY_CLOUD_NAME=seu_cloud_name
+VITE_CLOUDINARY_UPLOAD_PRESET=seu_unsigned_preset
+```
+
 - O arquivo `frontend/vercel.json` ja faz o rewrite da SPA para `index.html`.
 
 ## 4. Frontend no Render
@@ -70,6 +77,13 @@ Se preferir deixar tudo no Render:
 
 ```env
 VITE_API_URL=https://sua-api.onrender.com
+```
+
+Opcional para upload de imagem em nuvem:
+
+```env
+VITE_CLOUDINARY_CLOUD_NAME=seu_cloud_name
+VITE_CLOUDINARY_UPLOAD_PRESET=seu_unsigned_preset
 ```
 
 ## 5. Pos deploy

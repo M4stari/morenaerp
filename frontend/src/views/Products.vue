@@ -169,6 +169,20 @@
             required
             class="px-4 py-3 border-2 border-brand-turquoise/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-turquoise focus:border-transparent transition bg-white hover:border-brand-turquoise/60"
           />
+          <div class="rounded-lg border border-brand-turquoise/20 bg-brand-turquoise/5 p-4">
+            <p class="text-xs font-bold uppercase tracking-[0.22em] text-brand-turquoise">Sugestao automatica</p>
+            <p class="mt-2 text-sm text-gray-600">
+              Com base no atacado, sugestao de venda: <strong>{{ formattedSuggestedSalePrice }}</strong>
+            </p>
+            <p class="mt-1 text-xs text-gray-500">Referencia usando markup de 2,2x sobre o custo.</p>
+            <button
+              type="button"
+              @click="applySuggestedSalePrice"
+              class="mt-3 rounded-lg bg-brand-turquoise px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-white transition hover:bg-brand-green"
+            >
+              Usar sugestao
+            </button>
+          </div>
           <input
             v-model.number="newProduct.sale_price"
             type="number"
@@ -184,6 +198,19 @@
             placeholder="URL da imagem"
             class="col-span-2 px-4 py-3 border-2 border-brand-turquoise/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-turquoise focus:border-transparent transition bg-white hover:border-brand-turquoise/60"
           />
+          <div class="col-span-2">
+            <label class="mb-2 block text-xs font-bold uppercase tracking-[0.22em] text-gray-500">Upload de imagem</label>
+            <input
+              type="file"
+              accept="image/*"
+              @change="handleImageUpload"
+              :disabled="imageUploading"
+              class="block w-full rounded-lg border-2 border-dashed border-brand-turquoise/30 px-4 py-4 text-sm text-gray-600 file:mr-4 file:rounded-lg file:border-0 file:bg-brand-turquoise file:px-4 file:py-2 file:text-sm file:font-semibold file:text-white hover:border-brand-turquoise/60"
+            />
+            <p class="mt-2 text-xs text-gray-500">
+              {{ imageUploading ? 'Enviando imagem...' : 'Voce pode enviar uma imagem do computador ou manter uma URL externa.' }}
+            </p>
+          </div>
           <div v-if="newProduct.image_url" class="col-span-2 overflow-hidden rounded-lg border border-brand-turquoise/20 bg-brand-turquoise/5">
             <img
               :src="newProduct.image_url"
@@ -224,10 +251,13 @@ import { computed, ref } from 'vue'
 import { useProductStore } from '../stores/productStore'
 
 const store = useProductStore()
+const cloudinaryCloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME
+const cloudinaryUploadPreset = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET
 const searchQuery = ref('')
 const filterCategory = ref('')
 const showForm = ref(false)
 const editingProductId = ref(null)
+const imageUploading = ref(false)
 const initialProduct = () => ({
   name: '',
   sku: '',
@@ -241,6 +271,10 @@ const initialProduct = () => ({
 })
 const newProduct = ref(initialProduct())
 const isEditing = computed(() => editingProductId.value !== null)
+const suggestedSalePrice = computed(() => Number((Number(newProduct.value.purchase_price || 0) * 2.2).toFixed(2)))
+const formattedSuggestedSalePrice = computed(() =>
+  new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(suggestedSalePrice.value || 0)
+)
 
 const filteredProducts = computed(() =>
   store.products
@@ -262,6 +296,52 @@ const calculateProfit = (product) => {
   if (!product.purchase_price) return 0
   const profit = ((product.sale_price - product.purchase_price) / product.purchase_price) * 100
   return profit.toFixed(0)
+}
+
+const applySuggestedSalePrice = () => {
+  newProduct.value.sale_price = suggestedSalePrice.value
+}
+
+const handleImageUpload = async (event) => {
+  const file = event.target.files?.[0]
+  if (!file) return
+
+  imageUploading.value = true
+
+  if (cloudinaryCloudName && cloudinaryUploadPreset) {
+    try {
+      const formData = new FormData()
+      formData.append('file', file)
+      formData.append('upload_preset', cloudinaryUploadPreset)
+
+      const response = await fetch(`https://api.cloudinary.com/v1_1/${cloudinaryCloudName}/image/upload`, {
+        method: 'POST',
+        body: formData
+      })
+
+      if (!response.ok) {
+        throw new Error('Falha no upload para nuvem')
+      }
+
+      const data = await response.json()
+      newProduct.value.image_url = data.secure_url
+      imageUploading.value = false
+      return
+    } catch (error) {
+      console.warn('Upload em nuvem indisponivel, usando fallback local.', error)
+    }
+  }
+
+  const reader = new FileReader()
+  reader.onload = () => {
+    newProduct.value.image_url = reader.result
+    imageUploading.value = false
+  }
+  reader.onerror = () => {
+    imageUploading.value = false
+    alert('Nao foi possivel ler a imagem selecionada.')
+  }
+  reader.readAsDataURL(file)
 }
 
 const closeForm = () => {

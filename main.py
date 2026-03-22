@@ -1,6 +1,7 @@
 from fastapi import Depends, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from config import settings
+from database import init_db
 from routes_auth import router as auth_router, verify_token
 from routes_customers import router as customers_router
 from routes_products import router as products_router
@@ -29,6 +30,12 @@ app.include_router(customers_router, dependencies=[Depends(verify_token)])
 app.include_router(products_router, dependencies=[Depends(verify_token)])
 app.include_router(stocks_router, dependencies=[Depends(verify_token)])
 app.include_router(sales_router, dependencies=[Depends(verify_token)])
+
+
+@app.on_event("startup")
+def startup_event():
+    """Garante estrutura minima do banco ao iniciar a API."""
+    init_db()
 
 
 @app.get("/")

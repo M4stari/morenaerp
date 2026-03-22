@@ -66,6 +66,7 @@ class ProductCreate(ProductBase):
 class ProductUpdate(BaseModel):
     """Schema para atualizar Produto"""
     name: Optional[str] = None
+    sku: Optional[str] = None
     description: Optional[str] = None
     category: Optional[str] = None
     size: Optional[str] = None
@@ -149,6 +150,8 @@ class SaleBase(BaseModel):
     """Schema base para Venda"""
     customer_id: int
     notes: Optional[str] = None
+    due_date: Optional[datetime] = None
+    payment_notes: Optional[str] = None
 
 
 class SaleCreate(SaleBase):
@@ -166,6 +169,8 @@ class SaleUpdate(BaseModel):
     """Schema para atualizar Venda"""
     status: Optional[SaleStatus] = None
     notes: Optional[str] = None
+    due_date: Optional[datetime] = None
+    payment_notes: Optional[str] = None
 
 
 class SaleResponse(BaseModel):
@@ -174,9 +179,12 @@ class SaleResponse(BaseModel):
     customer_id: int
     customer: CustomerResponse
     sale_date: datetime
+    due_date: Optional[datetime]
+    paid_at: Optional[datetime]
     total_amount: float
     status: str
     notes: Optional[str]
+    payment_notes: Optional[str]
     sale_items: List[SaleItemResponse]
     created_at: datetime
     updated_at: datetime
@@ -190,8 +198,11 @@ class SaleListResponse(BaseModel):
     id: int
     customer_id: int
     sale_date: datetime
+    due_date: Optional[datetime]
+    paid_at: Optional[datetime]
     total_amount: float
     status: str
+    payment_notes: Optional[str]
     
     class Config:
         from_attributes = True

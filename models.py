@@ -75,9 +75,12 @@ class Sale(Base):
     id = Column(Integer, primary_key=True, index=True)
     customer_id = Column(Integer, ForeignKey("customers.id"), nullable=False, index=True)
     sale_date = Column(DateTime, default=datetime.utcnow)
+    due_date = Column(DateTime, nullable=True)
+    paid_at = Column(DateTime, nullable=True)
     total_amount = Column(Float, default=0, nullable=False)
     status = Column(String(20), default="Pendente", nullable=False)  # Pendente, Finalizada, Cancelada
     notes = Column(Text, nullable=True)
+    payment_notes = Column(Text, nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     

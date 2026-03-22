@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, datetime
 from typing import List
 
 from fastapi import APIRouter, Depends, HTTPException, Query
@@ -22,6 +22,8 @@ def create_sale(sale: SaleCreate, db: Session = Depends(get_db)):
         customer_id=sale.customer_id,
         status=SaleStatus.PENDENTE.value,
         notes=sale.notes,
+        due_date=sale.due_date,
+        payment_notes=sale.payment_notes,
     )
 
     total_amount = 0
@@ -110,6 +112,12 @@ def update_sale(
             value = value.value
         setattr(db_sale, key, value)
 
+    if "status" in update_data:
+        if db_sale.status == SaleStatus.FINALIZADA.value:
+            db_sale.paid_at = db_sale.paid_at or datetime.utcnow()
+        elif db_sale.status != SaleStatus.FINALIZADA.value:
+            db_sale.paid_at = None
+
     db.add(db_sale)
     db.commit()
     db.refresh(db_sale)
@@ -186,6 +194,7 @@ def cancel_sale(sale_id: int, db: Session = Depends(get_db)):
             db.add(stock)
 
     db_sale.status = SaleStatus.CANCELADA.value
+    db_sale.paid_at = None
     db.add(db_sale)
     db.commit()
     db.refresh(db_sale)
@@ -214,6 +223,7 @@ def finalize_sale(sale_id: int, db: Session = Depends(get_db)):
         )
 
     db_sale.status = SaleStatus.FINALIZADA.value
+    db_sale.paid_at = datetime.utcnow()
     db.add(db_sale)
     db.commit()
     db.refresh(db_sale)
@@ -246,6 +256,96 @@ def get_daily_report(
         "total_amount": total_sales,
         "total_items": total_items,
         "average_sale": total_sales / len(daily_sales) if daily_sales else 0,
+    }
+
+
+@router.get("/report/financial", response_model=dict)
+def get_financial_report(db: Session = Depends(get_db)):
+    """Retorna um resumo financeiro com valores recebidos e pendentes."""
+    sales = db.query(Sale).order_by(Sale.sale_date.desc()).all()
+
+    finalized_sales = [
+        sale for sale in sales if sale.status == SaleStatus.FINALIZADA.value
+    ]
+    pending_sales = [
+        sale for sale in sales if sale.status == SaleStatus.PENDENTE.value
+    ]
+
+    total_revenue_paid = sum(sale.total_amount for sale in finalized_sales)
+    total_receivable_pending = sum(sale.total_amount for sale in pending_sales)
+    average_ticket_paid = (
+        total_revenue_paid / len(finalized_sales) if finalized_sales else 0
+    )
+    average_ticket_overall = (
+        sum(sale.total_amount for sale in sales) / len(sales) if sales else 0
+    )
+
+    paid_profit = 0
+    for sale in finalized_sales:
+        for item in sale.sale_items:
+            product = db.query(Product).filter(Product.id == item.product_id).first()
+            purchase_price = product.purchase_price if product else 0
+            paid_profit += (item.unit_price - purchase_price) * item.quantity
+
+    unpaid_items = []
+    for sale in pending_sales:
+        for item in sale.sale_items:
+            unpaid_items.append(
+                {
+                    "sale_id": sale.id,
+                    "sale_date": sale.sale_date,
+                    "customer_id": sale.customer_id,
+                    "customer_name": sale.customer.name if sale.customer else "Cliente desconhecido",
+                    "product_id": item.product_id,
+                    "product_name": item.product.name if item.product else "Produto desconhecido",
+                    "quantity": item.quantity,
+                    "unit_price": item.unit_price,
+                    "subtotal": item.subtotal,
+                    "status": sale.status,
+                    "due_date": sale.due_date,
+                    "payment_notes": sale.payment_notes,
+                    "days_overdue": (
+                        (date.today() - sale.due_date.date()).days
+                        if sale.due_date and sale.due_date.date() < date.today()
+                        else 0
+                    ),
+                }
+            )
+
+    top_products = {}
+    for sale in finalized_sales:
+        for item in sale.sale_items:
+            product_name = item.product.name if item.product else "Produto desconhecido"
+            if product_name not in top_products:
+                top_products[product_name] = {"quantity": 0, "revenue": 0}
+            top_products[product_name]["quantity"] += item.quantity
+            top_products[product_name]["revenue"] += item.subtotal
+
+    best_sellers = sorted(
+        [
+            {
+                "product_name": name,
+                "quantity": data["quantity"],
+                "revenue": data["revenue"],
+            }
+            for name, data in top_products.items()
+        ],
+        key=lambda item: (item["quantity"], item["revenue"]),
+        reverse=True,
+    )[:5]
+
+    return {
+        "totals": {
+            "total_revenue_paid": total_revenue_paid,
+            "total_receivable_pending": total_receivable_pending,
+            "average_ticket_paid": average_ticket_paid,
+            "average_ticket_overall": average_ticket_overall,
+            "finalized_sales_count": len(finalized_sales),
+            "pending_sales_count": len(pending_sales),
+            "gross_profit_paid": paid_profit,
+        },
+        "pending_items": unpaid_items,
+        "best_sellers": best_sellers,
     }
 
 

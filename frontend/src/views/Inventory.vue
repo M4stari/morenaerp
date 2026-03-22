@@ -67,7 +67,9 @@
             <th class="px-6 py-4 text-left font-bold text-brand-green">Produto</th>
             <th class="px-6 py-4 text-left font-bold text-brand-green">SKU</th>
             <th class="px-6 py-4 text-left font-bold text-brand-green">Quantidade</th>
+            <th class="px-6 py-4 text-left font-bold text-brand-green">Custo medio</th>
             <th class="px-6 py-4 text-left font-bold text-brand-green">Status</th>
+            <th class="px-6 py-4 text-left font-bold text-brand-green">Margem</th>
             <th class="px-6 py-4 text-left font-bold text-brand-green">Preco de Venda</th>
             <th class="px-6 py-4 text-left font-bold text-brand-green">Acoes</th>
           </tr>
@@ -81,6 +83,7 @@
             <td class="px-6 py-4 font-semibold">{{ getProductName(stock.product_id) }}</td>
             <td class="px-6 py-4 text-gray-600">{{ getProductSku(stock.product_id) }}</td>
             <td class="px-6 py-4 font-bold">{{ stock.quantity }}</td>
+            <td class="px-6 py-4 text-gray-600">R$ {{ getProductCost(stock.product_id).toFixed(2) }}</td>
             <td class="px-6 py-4">
               <span
                 :class="getStatusBadgeClass(stock.quantity)"
@@ -89,7 +92,8 @@
                 {{ getStatusText(stock.quantity) }}
               </span>
             </td>
-              <td class="px-6 py-4 text-gray-600">R$ {{ getProductPrice(stock.product_id).toFixed(2) }}</td>
+            <td class="px-6 py-4 text-gray-600">{{ getProductMargin(stock.product_id) }}%</td>
+            <td class="px-6 py-4 text-gray-600">R$ {{ getProductPrice(stock.product_id).toFixed(2) }}</td>
             <td class="px-6 py-4 space-x-2">
               <button
                 @click="openMovementForm(stock)"
@@ -239,7 +243,13 @@ const emptyStockCount = computed(() =>
 const getProduct = (productId) => products.value.find((product) => product.id === productId)
 const getProductName = (productId) => getProduct(productId)?.name || 'Produto desconhecido'
 const getProductSku = (productId) => getProduct(productId)?.sku || ''
+const getProductCost = (productId) => getProduct(productId)?.purchase_price || 0
 const getProductPrice = (productId) => getProduct(productId)?.sale_price || 0
+const getProductMargin = (productId) => {
+  const product = getProduct(productId)
+  if (!product?.purchase_price) return '0'
+  return (((product.sale_price - product.purchase_price) / product.purchase_price) * 100).toFixed(0)
+}
 
 const getStatusText = (quantity) => {
   if (quantity === 0) return 'Zerado'
@@ -324,14 +334,16 @@ const deleteStock = async (stock) => {
 }
 
 const exportAsCsv = () => {
-  const headers = ['Produto', 'SKU', 'Quantidade', 'Status', 'Preco de Venda']
+  const headers = ['Produto', 'SKU', 'Quantidade', 'Custo medio', 'Status', 'Margem', 'Preco de Venda']
   const rows = filteredStocks.value.map((stock) => {
     const product = getProduct(stock.product_id)
     return [
       product?.name || 'Produto desconhecido',
       product?.sku || '',
       stock.quantity,
+      (product?.purchase_price || 0).toFixed(2),
       getStatusText(stock.quantity),
+      getProductMargin(stock.product_id),
       (product?.sale_price || 0).toFixed(2)
     ]
   })

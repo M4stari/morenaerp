@@ -116,7 +116,8 @@ export const salesAPI = {
   cancel: (id) => api.post(`/sales/${id}/cancel`),
   finalize: (id) => api.post(`/sales/${id}/finalize`),
   getByCustomer: (customerId) => api.get(`/sales/customer/${customerId}`),
-  dailyReport: (date) => api.get('/sales/report/daily', { params: date ? { date } : {} })
+  dailyReport: (date) => api.get('/sales/report/daily', { params: date ? { date } : {} }),
+  financialReport: () => api.get('/sales/report/financial')
 }
 
 export default api
