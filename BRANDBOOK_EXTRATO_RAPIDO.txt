@@ -1,0 +1,171 @@
+================================================================================
+BRANDBOOK MORENA CONCEPT - EXTRATO RAPIDO
+================================================================================
+
+NOME DA MARCA
+- Nome: MORENA CONCEPT
+- Tagline: IMAGINE A PLACE
+- Tipo: Brand de moda com foco em sustentabilidade e empoderamento feminino
+
+================================================================================
+PALETA DE CORES (8 cores)
+================================================================================
+
+CORES PRIMARIAS (2):
+
+1. PRETO
+   HEX: #373435
+   RGB: 55, 52, 53
+   CMYK: C:0% M:0% Y:0% K:100%
+   Uso: Tipografia, elementos principais
+
+2. ROSA MAGENTA
+   HEX: #FF43A3
+   RGB: 255, 67, 163
+   CMYK: C:0% M:74% Y:36% K:0%
+   Uso: Acentos, destaque visual
+
+================================================================================
+
+CORES SECUNDARIAS (6):
+
+3. CINZA
+   HEX: #BDBFC1
+   RGB: 189, 191, 193
+   CMYK: C:0% M:0% Y:0% K:30%
+
+4. AMARELO (vermelho claro)
+   HEX: #F84E4E
+   RGB: 255, 78, 78
+   CMYK: C:0% M:69% Y:69% K:0%
+
+5. VERDE
+   HEX: #5CC6D0
+   RGB: 92, 198, 208
+   CMYK: C:56% M:5% Y:0% K:18%
+
+6. TURQUESA
+   HEX: #00F281
+   RGB: 0, 242, 129
+   CMYK: C:100% M:0% Y:47% K:5%
+
+7. VERMELHO
+   HEX: #ED3237
+   RGB: 237, 50, 55
+   CMYK: C:0% M:79% Y:77% K:7%
+
+8. LARANJA
+   HEX: #F58634
+   RGB: 245, 134, 52
+   CMYK: C:0% M:45% Y:79% K:4%
+
+================================================================================
+TIPOGRAFIA
+================================================================================
+
+FONTE PRIMARIA:
+- Nome: Cameo
+- Pesos: Regular, Bold, Black
+- Uso: Titulos, destaques, logo
+
+FONTE SECUNDARIA:
+- Nome: Sans Regular
+- Pesos: Regular, SemiBold
+- Uso: Corpo de texto, descricoes
+
+================================================================================
+LOGO E ELEMENTOS VISUAIS
+================================================================================
+
+Logo:
+- Tipo: Primaria com icone e wordmark
+- Variantes: Horizontal, Vertical, Reduzida, Icone isolado
+- Tamanho minimo: 40px (web), 10mm (print)
+- Slogan: "IMAGINE A PLACE" (Cameo ou Sans)
+
+Padroes:
+- Florais - Elementos naturais em cores secundarias
+- Geometricos - Linhas minimalistas em preto/cinza/rosa
+
+Elementos Decorativos:
+- Linhas em preto
+- Florais em rosa magenta
+- Blocos de cor
+- Efeitos de transparencia
+
+================================================================================
+COMBINACOES DE CORES RECOMENDADAS
+================================================================================
+
+1. Preto + Rosa Magenta
+   -> Elementos principais, logotipo, destaques
+
+2. Cinza + Preto
+   -> Layouts neutros, tipografia, fundos
+
+3. Rosa Magenta + Amarelo
+   -> Elementos juvenis, dinamicos
+
+4. Verde + Turquesa
+   -> Mensagens de sustentabilidade
+
+================================================================================
+APLICACOES
+================================================================================
+
+PRINT:
+- Cartoes de visita
+- Papelaria corporativa
+- Embalagens
+- Catalogos
+- Materiais promocionais
+
+DIGITAL:
+- Website
+- Redes sociais
+- Publicidade digital
+- Apps mobile
+- Email marketing
+
+VESTUARIO:
+- Etiquetas
+- Hangtags
+- Logos em pecas
+- Acessorios
+
+================================================================================
+ESPACAMENTO DE RESPIRO
+================================================================================
+
+Area minima: 1x (sendo x = altura da marca)
+Aplicar em todos os lados da logo
+
+================================================================================
+RESUMO VISUAL
+================================================================================
+
+Total de cores: 8 (2 primarias + 6 secundarias)
+Fontes principais: 2 (Cameo + Sans Regular)
+Elementos graficos: Logos, padroes florais, elementos geometricos
+Paginas do brandbook: 14
+
+Status: COMPLETO
+Data: 21 de marco de 2026
+
+================================================================================
+ARQUIVOS GERADOS
+================================================================================
+
+1. BRANDBOOK_MORENA_CONCEPT_COMPLETO.json
+   -> JSON estruturado com todas as informacoes
+
+2. BRANDBOOK_SUMMARY.md
+   -> Sumario em Markdown formatado
+
+3. BRANDBOOK_COLORS_VISUALIZATION.html
+   -> Visualizacao interativa das cores em HTML
+
+4. BRANDBOOK_EXTRATO_RAPIDO.txt
+   -> Este arquivo - referencia rapida
+
+================================================================================

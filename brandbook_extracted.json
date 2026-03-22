@@ -1,0 +1,562 @@
+{
+  "marca": {
+    "nome": "Brand",
+    "descricao_logo": "Como posicionar uma marca de moda com os pilares de sustentabilidade e"
+  },
+  "cores": {
+    "primarias": [],
+    "secundarias": [],
+    "terciarias": [],
+    "paleta_completa": []
+  },
+  "tipografia": {
+    "fontes_principais": [],
+    "fontes_recomendadas": [
+      "Tipografia",
+      "FONTE P RIMÁRIA FONTE S ECUNDÁRIA",
+      "Download Fonte"
+    ]
+  },
+  "elementos_visuais": {
+    "padroes": [],
+    "elementos_decorativos": [],
+    "componentes": []
+  },
+  "imagens_extraidas": [
+    {
+      "pagina": 1,
+      "indice": 0,
+      "bbox": null
+    },
+    {
+      "pagina": 2,
+      "indice": 0,
+      "bbox": null
+    },
+    {
+      "pagina": 3,
+      "indice": 0,
+      "bbox": null
+    },
+    {
+      "pagina": 3,
+      "indice": 1,
+      "bbox": null
+    },
+    {
+      "pagina": 3,
+      "indice": 2,
+      "bbox": null
+    },
+    {
+      "pagina": 5,
+      "indice": 0,
+      "bbox": null
+    },
+    {
+      "pagina": 6,
+      "indice": 0,
+      "bbox": null
+    },
+    {
+      "pagina": 6,
+      "indice": 1,
+      "bbox": null
+    },
+    {
+      "pagina": 6,
+      "indice": 2,
+      "bbox": null
+    },
+    {
+      "pagina": 6,
+      "indice": 3,
+      "bbox": null
+    },
+    {
+      "pagina": 6,
+      "indice": 4,
+      "bbox": null
+    },
+    {
+      "pagina": 6,
+      "indice": 5,
+      "bbox": null
+    },
+    {
+      "pagina": 6,
+      "indice": 6,
+      "bbox": null
+    },
+    {
+      "pagina": 6,
+      "indice": 7,
+      "bbox": null
+    },
+    {
+      "pagina": 6,
+      "indice": 8,
+      "bbox": null
+    },
+    {
+      "pagina": 6,
+      "indice": 9,
+      "bbox": null
+    },
+    {
+      "pagina": 6,
+      "indice": 10,
+      "bbox": null
+    },
+    {
+      "pagina": 6,
+      "indice": 11,
+      "bbox": null
+    },
+    {
+      "pagina": 6,
+      "indice": 12,
+      "bbox": null
+    },
+    {
+      "pagina": 6,
+      "indice": 13,
+      "bbox": null
+    },
+    {
+      "pagina": 6,
+      "indice": 14,
+      "bbox": null
+    },
+    {
+      "pagina": 6,
+      "indice": 15,
+      "bbox": null
+    },
+    {
+      "pagina": 6,
+      "indice": 16,
+      "bbox": null
+    },
+    {
+      "pagina": 6,
+      "indice": 17,
+      "bbox": null
+    },
+    {
+      "pagina": 6,
+      "indice": 18,
+      "bbox": null
+    },
+    {
+      "pagina": 6,
+      "indice": 19,
+      "bbox": null
+    },
+    {
+      "pagina": 6,
+      "indice": 20,
+      "bbox": null
+    },
+    {
+      "pagina": 6,
+      "indice": 21,
+      "bbox": null
+    },
+    {
+      "pagina": 6,
+      "indice": 22,
+      "bbox": null
+    },
+    {
+      "pagina": 6,
+      "indice": 23,
+      "bbox": null
+    },
+    {
+      "pagina": 6,
+      "indice": 24,
+      "bbox": null
+    },
+    {
+      "pagina": 6,
+      "indice": 25,
+      "bbox": null
+    },
+    {
+      "pagina": 6,
+      "indice": 26,
+      "bbox": null
+    },
+    {
+      "pagina": 6,
+      "indice": 27,
+      "bbox": null
+    },
+    {
+      "pagina": 6,
+      "indice": 28,
+      "bbox": null
+    },
+    {
+      "pagina": 6,
+      "indice": 29,
+      "bbox": null
+    },
+    {
+      "pagina": 6,
+      "indice": 30,
+      "bbox": null
+    },
+    {
+      "pagina": 6,
+      "indice": 31,
+      "bbox": null
+    },
+    {
+      "pagina": 6,
+      "indice": 32,
+      "bbox": null
+    },
+    {
+      "pagina": 6,
+      "indice": 33,
+      "bbox": null
+    },
+    {
+      "pagina": 6,
+      "indice": 34,
+      "bbox": null
+    },
+    {
+      "pagina": 6,
+      "indice": 35,
+      "bbox": null
+    },
+    {
+      "pagina": 6,
+      "indice": 36,
+      "bbox": null
+    },
+    {
+      "pagina": 6,
+      "indice": 37,
+      "bbox": null
+    },
+    {
+      "pagina": 6,
+      "indice": 38,
+      "bbox": null
+    },
+    {
+      "pagina": 6,
+      "indice": 39,
+      "bbox": null
+    },
+    {
+      "pagina": 6,
+      "indice": 40,
+      "bbox": null
+    },
+    {
+      "pagina": 6,
+      "indice": 41,
+      "bbox": null
+    },
+    {
+      "pagina": 6,
+      "indice": 42,
+      "bbox": null
+    },
+    {
+      "pagina": 6,
+      "indice": 43,
+      "bbox": null
+    },
+    {
+      "pagina": 6,
+      "indice": 44,
+      "bbox": null
+    },
+    {
+      "pagina": 6,
+      "indice": 45,
+      "bbox": null
+    },
+    {
+      "pagina": 6,
+      "indice": 46,
+      "bbox": null
+    },
+    {
+      "pagina": 6,
+      "indice": 47,
+      "bbox": null
+    },
+    {
+      "pagina": 6,
+      "indice": 48,
+      "bbox": null
+    },
+    {
+      "pagina": 6,
+      "indice": 49,
+      "bbox": null
+    },
+    {
+      "pagina": 6,
+      "indice": 50,
+      "bbox": null
+    },
+    {
+      "pagina": 6,
+      "indice": 51,
+      "bbox": null
+    },
+    {
+      "pagina": 6,
+      "indice": 52,
+      "bbox": null
+    },
+    {
+      "pagina": 6,
+      "indice": 53,
+      "bbox": null
+    },
+    {
+      "pagina": 6,
+      "indice": 54,
+      "bbox": null
+    },
+    {
+      "pagina": 6,
+      "indice": 55,
+      "bbox": null
+    },
+    {
+      "pagina": 6,
+      "indice": 56,
+      "bbox": null
+    },
+    {
+      "pagina": 6,
+      "indice": 57,
+      "bbox": null
+    },
+    {
+      "pagina": 6,
+      "indice": 58,
+      "bbox": null
+    },
+    {
+      "pagina": 6,
+      "indice": 59,
+      "bbox": null
+    },
+    {
+      "pagina": 6,
+      "indice": 60,
+      "bbox": null
+    },
+    {
+      "pagina": 6,
+      "indice": 61,
+      "bbox": null
+    },
+    {
+      "pagina": 6,
+      "indice": 62,
+      "bbox": null
+    },
+    {
+      "pagina": 6,
+      "indice": 63,
+      "bbox": null
+    },
+    {
+      "pagina": 6,
+      "indice": 64,
+      "bbox": null
+    },
+    {
+      "pagina": 6,
+      "indice": 65,
+      "bbox": null
+    },
+    {
+      "pagina": 6,
+      "indice": 66,
+      "bbox": null
+    },
+    {
+      "pagina": 6,
+      "indice": 67,
+      "bbox": null
+    },
+    {
+      "pagina": 6,
+      "indice": 68,
+      "bbox": null
+    },
+    {
+      "pagina": 6,
+      "indice": 69,
+      "bbox": null
+    },
+    {
+      "pagina": 6,
+      "indice": 70,
+      "bbox": null
+    },
+    {
+      "pagina": 6,
+      "indice": 71,
+      "bbox": null
+    },
+    {
+      "pagina": 6,
+      "indice": 72,
+      "bbox": null
+    },
+    {
+      "pagina": 6,
+      "indice": 73,
+      "bbox": null
+    },
+    {
+      "pagina": 6,
+      "indice": 74,
+      "bbox": null
+    },
+    {
+      "pagina": 6,
+      "indice": 75,
+      "bbox": null
+    },
+    {
+      "pagina": 6,
+      "indice": 76,
+      "bbox": null
+    },
+    {
+      "pagina": 6,
+      "indice": 77,
+      "bbox": null
+    },
+    {
+      "pagina": 6,
+      "indice": 78,
+      "bbox": null
+    },
+    {
+      "pagina": 6,
+      "indice": 79,
+      "bbox": null
+    },
+    {
+      "pagina": 6,
+      "indice": 80,
+      "bbox": null
+    },
+    {
+      "pagina": 6,
+      "indice": 81,
+      "bbox": null
+    },
+    {
+      "pagina": 6,
+      "indice": 82,
+      "bbox": null
+    },
+    {
+      "pagina": 6,
+      "indice": 83,
+      "bbox": null
+    },
+    {
+      "pagina": 6,
+      "indice": 84,
+      "bbox": null
+    },
+    {
+      "pagina": 6,
+      "indice": 85,
+      "bbox": null
+    },
+    {
+      "pagina": 6,
+      "indice": 86,
+      "bbox": null
+    },
+    {
+      "pagina": 6,
+      "indice": 87,
+      "bbox": null
+    },
+    {
+      "pagina": 6,
+      "indice": 88,
+      "bbox": null
+    },
+    {
+      "pagina": 6,
+      "indice": 89,
+      "bbox": null
+    },
+    {
+      "pagina": 6,
+      "indice": 90,
+      "bbox": null
+    },
+    {
+      "pagina": 6,
+      "indice": 91,
+      "bbox": null
+    },
+    {
+      "pagina": 6,
+      "indice": 92,
+      "bbox": null
+    },
+    {
+      "pagina": 8,
+      "indice": 0,
+      "bbox": null
+    },
+    {
+      "pagina": 9,
+      "indice": 0,
+      "bbox": null
+    },
+    {
+      "pagina": 9,
+      "indice": 1,
+      "bbox": null
+    },
+    {
+      "pagina": 10,
+      "indice": 0,
+      "bbox": null
+    },
+    {
+      "pagina": 11,
+      "indice": 0,
+      "bbox": null
+    },
+    {
+      "pagina": 13,
+      "indice": 0,
+      "bbox": null
+    },
+    {
+      "pagina": 13,
+      "indice": 1,
+      "bbox": null
+    },
+    {
+      "pagina": 14,
+      "indice": 0,
+      "bbox": null
+    }
+  ]
+}

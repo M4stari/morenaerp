@@ -1,0 +1,190 @@
+================================================================================
+ERP MORENA CONCEPT - GUIA DE INSTALAÇÃO E EXECUÇÃO
+================================================================================
+
+REQUISITOS:
+-----------
+✓ Windows 7 ou superior
+✓ Python 3.9 ou superior
+✓ Internet para baixar dependências
+
+PASSO 1: VERIFICAR INSTALAÇÃO DO PYTHON
+========================================
+
+1. Abra o PowerShell (clique com botão direito e "Abrir como administrador")
+2. Digite: python --version
+3. Você deve ver algo como: Python 3.11.x
+
+SE NÃO TIVER PYTHON:
+   - Baixe em: https://www.python.org/downloads/
+   - Instale marcando "Add Python to PATH"
+
+PASSO 2: NAVEGAR PARA A PASTA DO PROJETO
+=========================================
+
+1. No PowerShell, digite:
+   cd "c:\ERP MORENA CONCEPT"
+
+2. Verifique se está no lugar certo digitando: dir
+   Você deve ver os arquivos (main.py, requirements.txt, etc.)
+
+PASSO 3: CRIAR AMBIENTE VIRTUAL
+================================
+
+1. No PowerShell, digite:
+   python -m venv venv
+
+2. Isso criará uma pasta "venv" (pode levar alguns minutos)
+
+PASSO 4: ATIVAR AMBIENTE VIRTUAL
+=================================
+
+1. No PowerShell, digite:
+   .\venv\Scripts\Activate.ps1
+
+   ⚠️ SE RECEBER ERRO DE SEGURANÇA:
+   - Execute: Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+   - Confirme digitando "Y"
+   - Depois tente novamente: .\venv\Scripts\Activate.ps1
+
+2. Se funcionou, verá "(venv)" no início da linha no PowerShell
+
+PASSO 5: INSTALAR DEPENDÊNCIAS
+===============================
+
+1. Com o ambiente virtual ativado, digite:
+   pip install -r requirements.txt
+
+2. Isso instalará todas as bibliotecas necessárias (pode levar alguns minutos)
+
+PASSO 6: EXECUTAR A APLICAÇÃO
+==============================
+
+1. Com o ambiente virtual ativado, digite:
+   python main.py
+
+2. Você verá algo como:
+   INFO:     Uvicorn running on http://0.0.0.0:8000
+   
+3. A API está rodando!
+
+PASSO 7: ACESSAR A API
+======================
+
+Abra em seu navegador Web:
+- Interface Gráfica (Swagger): http://localhost:8000/docs
+- Documentação Alternativa (ReDoc): http://localhost:8000/redoc
+
+PASSO 8: POPULAR O BANCO DE DADOS (OPCIONAL)
+=============================================
+
+Para adicionar dados de teste:
+
+1. Abra um NOVO PowerShell (deixe o anterior rodando)
+2. Navegue para a pasta: cd "c:\ERP MORENA CONCEPT"
+3. Ative o ambiente: .\venv\Scripts\Activate.ps1
+4. Popule o banco: python seed_database.py
+
+PASSO 9: TESTAR A API
+====================
+
+1. Vá para: http://localhost:8000/docs
+2. Clique em "Try it out" em qualquer endpoint
+3. Preencha os dados e clique em "Execute"
+
+Ou use o arquivo exemplos_uso.py do Python:
+
+1. Abra um novo PowerShell
+2. Ative o ambiente: cd "c:\ERP MORENA CONCEPT" e .\venv\Scripts\Activate.ps1
+3. Execute: python exemplos_uso.py
+
+================================================================================
+USANDO A API COMO ADMINISTRADOR
+================================================================================
+
+A API fornece várias abas (endpoints) principais:
+
+1️⃣  CLIENTES (/customers)
+   - POST /customers/ → Adicionar cliente
+   - GET /customers/ → Listar clientes
+   - GET /customers/search/by-cpf/{cpf} → Buscar cliente
+   - PUT /customers/{id} → Modificar cliente
+   - DELETE /customers/{id} → Remover cliente
+
+2️⃣  PRODUTOS (/products)
+   - POST /products/ → Adicionar produto
+   - GET /products/ → Listar produtos
+   - GET /products/category/{categoria} → Por categoria
+   - GET /products/search/by-sku/{sku} → Buscar por SKU
+   - PUT /products/{id} → Modificar produto
+
+3️⃣  ESTOQUE (/stocks)
+   - POST /stocks/ → Criar estoque
+   - GET /stocks/product/{produto_id} → Ver estoque do produto
+   - GET /stocks/low-stock/ → Produtos com pouco estoque
+   - POST /stocks/add/{id}?quantity=10 → Adicionar quantidade
+   - POST /stocks/remove/{id}?quantity=5 → Remover quantidade
+
+4️⃣  VENDAS (/sales)
+   - POST /sales/ → Criar venda
+   - GET /sales/ → Listar vendas
+   - GET /sales/customer/{id} → Vendas de um cliente
+   - POST /sales/{id}/finalize → Finalizar venda
+   - POST /sales/{id}/cancel → Cancelar venda
+   - GET /sales/report/daily → Relatório do dia
+
+================================================================================
+FLUXO TÍPICO DE OPERAÇÃO
+================================================================================
+
+1. Criar um cliente (aba CLIENTES)
+2. Criar produtos (aba PRODUTOS)
+3. Adicionar estoque (aba ESTOQUE)
+4. Realizar uma venda vinculando cliente e produtos (aba VENDAS)
+5. Acompanhar estoque em tempo real
+6. Gerar relatórios de vendas
+
+================================================================================
+SOLUÇÃO DE PROBLEMAS
+================================================================================
+
+❌ ERRO: "Module not found"
+✓ Solução: Certifique-se que ativou o ambiente virtual (procure por "(venv)")
+
+❌ ERRO: "Address already in use"
+✓ Solução: A porta 8000 está ocupada. Mude para outra:
+           python main.py --port 8001
+
+❌ ERRO: "Connection refused"
+✓ Solução: Certifique-se que a API está rodando (não feche a primeira aba)
+
+❌ ERRO ao PopularBD: "no such table"
+✓ Solução: Execute: python main.py (uma vez para criar tabelas)
+
+❌ ERRO: ExecutionPolicy
+✓ Solução: Run as Administrator e execute:
+           Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+
+================================================================================
+USANDO DATABASE SQL EXTERNO (PostgreSQL)
+================================================================================
+
+Se quiser usar PostgreSQL em vez de SQLite:
+
+1. Instale PostgreSQL em seu Windows
+2. Crie um banco: databases.sql
+3. Edite o arquivo .env:
+   DATABASE_URL=postgresql://usuario:senha@localhost:5432/erp_moda
+4. Execute: python main.py
+
+================================================================================
+DÚVIDAS?
+================================================================================
+
+1. Consulte o arquivo README.md para documentação completa
+2. Acesse http://localhost:8000/docs para ver todos os endpoints com exemplos
+3. Veja exemplos_uso.py para código Python de integração
+
+================================================================================
+BOM USO! 🎉
+================================================================================

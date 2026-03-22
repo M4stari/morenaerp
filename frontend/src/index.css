@@ -1,0 +1,159 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --brand-ink: #161314;
+  --brand-panel: #211d1f;
+  --brand-panel-soft: #2a2527;
+  --brand-line: rgba(255, 255, 255, 0.08);
+  --brand-text: #f4efef;
+  --brand-muted: #bdbfc1;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  font-family: 'Manrope', 'Segoe UI', sans-serif;
+  background:
+    radial-gradient(circle at top left, rgba(255, 67, 163, 0.16), transparent 28%),
+    radial-gradient(circle at top right, rgba(92, 198, 208, 0.12), transparent 24%),
+    linear-gradient(180deg, #110f10 0%, #191517 46%, #0d0c0d 100%);
+  color: var(--brand-text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#app {
+  min-height: 100vh;
+}
+
+h1,
+h2,
+h3,
+h4,
+.font-display {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  letter-spacing: 0.02em;
+}
+
+::selection {
+  background: rgba(255, 67, 163, 0.32);
+  color: #fff;
+}
+
+.brand-shell {
+  position: relative;
+  isolation: isolate;
+}
+
+.brand-shell::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 120px 120px;
+  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.7), transparent 85%);
+}
+
+.brand-card {
+  background: linear-gradient(180deg, rgba(39, 34, 36, 0.94), rgba(24, 21, 22, 0.96));
+  border: 1px solid var(--brand-line);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.24);
+}
+
+.brand-card-soft {
+  background: linear-gradient(180deg, rgba(48, 42, 45, 0.92), rgba(28, 24, 26, 0.94));
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.brand-input {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--brand-text);
+}
+
+input:not(.brand-input),
+select:not(.brand-input),
+textarea:not(.brand-input) {
+  color: #1f2937;
+}
+
+input:not(.brand-input)::placeholder,
+textarea:not(.brand-input)::placeholder {
+  color: #6b7280;
+}
+
+select:not(.brand-input) option {
+  color: #111827;
+  background: #ffffff;
+}
+
+.brand-input::placeholder {
+  color: rgba(244, 239, 239, 0.45);
+}
+
+.brand-input:focus {
+  outline: none;
+  border-color: rgba(255, 67, 163, 0.5);
+  box-shadow: 0 0 0 3px rgba(255, 67, 163, 0.14);
+}
+
+.brand-chip {
+  background: rgba(255, 67, 163, 0.12);
+  color: #ffd0e8;
+  border: 1px solid rgba(255, 67, 163, 0.28);
+}
+
+.brand-button-primary {
+  background: linear-gradient(135deg, #ff43a3, #ed3237 54%, #f58634);
+  color: white;
+  box-shadow: 0 12px 30px rgba(237, 50, 55, 0.22);
+}
+
+.brand-button-primary:hover {
+  filter: brightness(1.03);
+}
+
+.brand-button-secondary {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--brand-text);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-up {
+  animation: fadeUp 0.45s ease-out;
+}
+
+nav,
+main,
+footer {
+  position: relative;
+  z-index: 1;
+}

@@ -1,0 +1,19 @@
+{
+  "marca": {
+    "nome": "MORENA CONCEPT",
+    "tagline": "IMAGINE A PLACE",
+    "descricao": "Brand de moda com pilares de sustentabilidade e empoderamento feminino"
+  },
+  "cores": {
+    "primarias": [],
+    "secundarias": []
+  },
+  "tipografia": {
+    "primaria": null,
+    "secundaria": null
+  },
+  "elementos_visuais": {
+    "logo_descricao": "Logo Morena Concept com icone e wordmark",
+    "aplicacoes": []
+  }
+}

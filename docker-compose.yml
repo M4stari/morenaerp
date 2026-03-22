@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  # Serviço do banco de dados PostgreSQL
+  db:
+    image: postgres:15-alpine
+    container_name: erp_moda_db
+    environment:
+      POSTGRES_USER: erp_user
+      POSTGRES_PASSWORD: erp_password123
+      POSTGRES_DB: erp_moda
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U erp_user"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Serviço da aplicação FastAPI
+  api:
+    build: .
+    container_name: erp_moda_api
+    environment:
+      DATABASE_URL: postgresql://erp_user:erp_password123@db:5432/erp_moda
+      APP_NAME: ERP Morena Concept
+      DEBUG: "False"
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - .:/app
+    command: python main.py
+
+volumes:
+  postgres_data:
+    driver: local
+
+# Instruções de uso:
+# 1. Instale Docker Desktop para Windows
+# 2. Na pasta do projeto, execute: docker-compose up
+# 3. API estará disponível em: http://localhost:8000
+# 4. Banco de dados em: localhost:5432
+#
+# Comandos úteis:
+# - Ver logs: docker-compose logs -f api
+# - Parar: docker-compose down
+# - Remover volumes: docker-compose down -v
