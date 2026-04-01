@@ -59,7 +59,7 @@ def list_customers(
             )
         )
     
-    return query.offset(skip).limit(limit).all()
+    return query.order_by(Customer.id.desc()).offset(skip).limit(limit).all()
 
 
 @router.put("/{customer_id}", response_model=CustomerResponse)

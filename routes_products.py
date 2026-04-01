@@ -73,7 +73,7 @@ def list_products(
     if category:
         query = query.filter(Product.category.ilike(f"%{category}%"))
 
-    products = query.offset(skip).limit(limit).all()
+    products = query.order_by(Product.id.desc()).offset(skip).limit(limit).all()
     for product in products:
         ensure_stock_record(db, product)
 
@@ -148,9 +148,14 @@ def get_products_by_category(
     db: Session = Depends(get_db)
 ):
     """Obtem produtos por categoria."""
-    products = db.query(Product).filter(
-        Product.category.ilike(f"%{category}%")
-    ).offset(skip).limit(limit).all()
+    products = (
+        db.query(Product)
+        .filter(Product.category.ilike(f"%{category}%"))
+        .order_by(Product.id.desc())
+        .offset(skip)
+        .limit(limit)
+        .all()
+    )
 
     if not products:
         raise HTTPException(status_code=404, detail="Nenhum produto encontrado nesta categoria")

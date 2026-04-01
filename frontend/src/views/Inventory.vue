@@ -1,21 +1,22 @@
 <template>
   <div class="space-y-8">
-    <div class="bg-gradient-to-r from-brand-green via-brand-turquoise to-brand-green rounded-lg shadow-lg p-8">
-      <div class="flex justify-between items-center">
+    <div class="brand-card rounded-[30px] p-8">
+      <div class="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 class="text-4xl font-bold text-white mb-2">Controle de Estoque</h1>
-          <p class="text-white/80 text-sm">Acompanhe o inventario completo dos produtos cadastrados</p>
+          <p class="text-xs uppercase tracking-[0.35em] text-brand-pink">Operacao</p>
+          <h1 class="mt-3 text-3xl font-bold text-white sm:text-4xl mb-2">Controle de Estoque</h1>
+          <p class="brand-panel-copy text-sm">Acompanhe o inventario completo dos produtos cadastrados</p>
         </div>
-        <div class="flex gap-4">
+        <div class="flex flex-col gap-3 sm:flex-row">
           <button
             @click="fetchData"
-            class="bg-white text-brand-green px-4 py-2 rounded-lg hover:shadow-lg hover:shadow-brand-green/50 transition font-bold"
+            class="brand-button-secondary rounded-2xl px-5 py-3 transition font-bold"
           >
             Atualizar Lista
           </button>
           <button
             @click="exportAsCsv"
-            class="bg-white text-brand-green px-4 py-2 rounded-lg hover:shadow-lg hover:shadow-brand-green/50 transition font-bold"
+            class="brand-button-primary rounded-2xl px-5 py-3 transition font-bold"
           >
             Exportar CSV
           </button>
@@ -23,16 +24,16 @@
       </div>
     </div>
 
-    <div class="flex gap-4">
+    <div class="flex flex-col gap-4 md:flex-row">
       <input
         v-model="searchQuery"
         type="text"
         placeholder="Buscar por produto..."
-        class="flex-1 px-4 py-2 border-2 border-brand-green/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-green focus:border-transparent transition bg-white/50 hover:bg-white"
+        class="brand-field flex-1 rounded-2xl px-4 py-3 transition"
       />
       <select
         v-model="filterStatus"
-        class="px-4 py-2 border-2 border-brand-green/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-green focus:border-transparent transition bg-white hover:border-brand-green/60"
+        class="brand-field rounded-2xl px-4 py-3 transition"
       >
         <option value="">Todos os Produtos</option>
         <option value="baixo">Estoque Baixo</option>
@@ -41,49 +42,72 @@
       </select>
     </div>
 
+    <div v-if="loadError" class="rounded-2xl border border-red-300/25 bg-red-500/10 px-4 py-3 text-sm text-red-100">
+      {{ loadError }}
+    </div>
+
     <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-      <div class="bg-gradient-to-br from-brand-turquoise/10 to-brand-green/10 p-4 rounded-lg border-l-4 border-brand-turquoise">
-        <p class="text-brand-turquoise font-semibold text-sm">Total Produtos</p>
-        <p class="text-2xl font-bold text-brand-turquoise">{{ inventoryRows.length }}</p>
+      <div class="brand-metric-card rounded-[24px] p-5">
+        <p class="brand-kicker text-white/45">Total produtos</p>
+        <p class="brand-value mt-4 text-white">{{ inventoryRows.length }}</p>
+        <p class="mt-3 text-sm text-white/55">Catalogo hoje visivel no inventario.</p>
       </div>
-      <div class="bg-gradient-to-br from-brand-green/10 to-brand-turquoise/10 p-4 rounded-lg border-l-4 border-brand-green">
-        <p class="text-brand-green font-semibold text-sm">Em Estoque</p>
-        <p class="text-2xl font-bold text-brand-green">{{ totalQuantity }}</p>
+      <div class="brand-metric-card rounded-[24px] p-5">
+        <p class="brand-kicker text-white/45">Em estoque</p>
+        <p class="brand-value mt-4 text-brand-pink">{{ totalQuantity }}</p>
+        <p class="mt-3 text-sm text-white/55">Quantidade total pronta para venda.</p>
       </div>
-      <div class="bg-gradient-to-br from-brand-yellow/10 to-brand-orange/10 p-4 rounded-lg border-l-4 border-brand-yellow">
-        <p class="text-brand-yellow font-semibold text-sm">Estoque Baixo</p>
-        <p class="text-2xl font-bold text-brand-yellow">{{ lowStockCount }}</p>
+      <div class="brand-metric-card rounded-[24px] p-5">
+        <p class="brand-kicker text-white/45">Valor exposto</p>
+        <p class="brand-value mt-4 text-emerald-200">R$ {{ totalInventoryValue.toFixed(2) }}</p>
+        <p class="mt-3 text-sm text-white/55">Baseada no preco de venda unitario.</p>
       </div>
-      <div class="bg-gradient-to-br from-brand-red/10 to-brand-pink/10 p-4 rounded-lg border-l-4 border-brand-red">
-        <p class="text-brand-red font-semibold text-sm">Zerado</p>
-        <p class="text-2xl font-bold text-brand-red">{{ emptyStockCount }}</p>
+      <div class="brand-metric-card rounded-[24px] p-5">
+        <p class="brand-kicker text-white/45">Margem media</p>
+        <p class="brand-value mt-4 text-amber-100">{{ averageMargin }}%</p>
+        <p class="mt-3 text-sm text-white/55">{{ lowStockCount }} baixos • {{ emptyStockCount }} zerados.</p>
       </div>
     </div>
 
-    <div class="bg-white text-gray-800 rounded-lg shadow-lg overflow-x-auto border-l-4 border-brand-green">
+    <div v-if="loading" class="grid grid-cols-1 gap-4">
+      <div v-for="n in 5" :key="n" class="brand-surface rounded-[28px] p-5">
+        <div class="grid grid-cols-1 gap-3 md:grid-cols-[1.4fr_0.7fr_0.7fr_0.8fr_0.8fr]">
+          <div class="brand-skeleton h-5 rounded-full"></div>
+          <div class="brand-skeleton h-5 rounded-full"></div>
+          <div class="brand-skeleton h-5 rounded-full"></div>
+          <div class="brand-skeleton h-5 rounded-full"></div>
+          <div class="brand-skeleton h-5 rounded-full"></div>
+        </div>
+      </div>
+    </div>
+
+    <div v-else class="brand-surface overflow-x-auto rounded-[28px] text-white">
       <table class="w-full text-sm">
-        <thead class="bg-gradient-to-r from-brand-green/10 to-brand-turquoise/10 border-b-2 border-brand-green/30">
+        <thead class="border-b border-white/10 bg-white/5">
           <tr>
-            <th class="px-6 py-4 text-left font-bold text-brand-green">Produto</th>
-            <th class="px-6 py-4 text-left font-bold text-brand-green">SKU</th>
-            <th class="px-6 py-4 text-left font-bold text-brand-green">Quantidade</th>
-            <th class="px-6 py-4 text-left font-bold text-brand-green">Custo medio</th>
-            <th class="px-6 py-4 text-left font-bold text-brand-green">Status</th>
-            <th class="px-6 py-4 text-left font-bold text-brand-green">Margem</th>
-            <th class="px-6 py-4 text-left font-bold text-brand-green">Preco de Venda</th>
-            <th class="px-6 py-4 text-left font-bold text-brand-green">Acoes</th>
+            <th class="px-6 py-4 text-left font-bold text-white/60">Produto</th>
+            <th class="px-6 py-4 text-left font-bold text-white/60">Codigo</th>
+            <th class="px-6 py-4 text-left font-bold text-white/60">Quantidade</th>
+            <th class="px-6 py-4 text-left font-bold text-white/60">Custo medio</th>
+            <th class="px-6 py-4 text-left font-bold text-white/60">Status</th>
+            <th class="px-6 py-4 text-left font-bold text-white/60">Margem</th>
+            <th class="px-6 py-4 text-left font-bold text-white/60">Preco de Venda</th>
+            <th class="px-6 py-4 text-left font-bold text-white/60">Acoes</th>
           </tr>
         </thead>
         <tbody>
           <tr
             v-for="stock in filteredStocks"
             :key="stock.id ?? `product-${stock.product_id}`"
-            class="border-t border-brand-green/10 hover:bg-brand-green/5 transition"
+            class="border-t border-white/8 transition hover:bg-white/5"
           >
-            <td class="px-6 py-4 font-semibold">{{ getProductName(stock.product_id) }}</td>
-            <td class="px-6 py-4 text-gray-600">{{ getProductSku(stock.product_id) }}</td>
-            <td class="px-6 py-4 font-bold">{{ stock.quantity }}</td>
-            <td class="px-6 py-4 text-gray-600">R$ {{ getProductCost(stock.product_id).toFixed(2) }}</td>
+            <td class="px-6 py-4">
+              <div class="font-semibold text-white">{{ getProductName(stock.product_id) }}</div>
+              <div class="mt-1 text-xs uppercase tracking-[0.2em] text-white/35">{{ getStatusText(stock.quantity) }}</div>
+            </td>
+            <td class="px-6 py-4 text-white/55">{{ getProductSku(stock.product_id) }}</td>
+            <td class="px-6 py-4"><span class="brand-value text-brand-pink !text-[2rem]">{{ stock.quantity }}</span></td>
+            <td class="px-6 py-4 text-white/55">R$ {{ getProductCost(stock.product_id).toFixed(2) }}</td>
             <td class="px-6 py-4">
               <span
                 :class="getStatusBadgeClass(stock.quantity)"
@@ -92,42 +116,55 @@
                 {{ getStatusText(stock.quantity) }}
               </span>
             </td>
-            <td class="px-6 py-4 text-gray-600">{{ getProductMargin(stock.product_id) }}%</td>
-            <td class="px-6 py-4 text-gray-600">R$ {{ getProductPrice(stock.product_id).toFixed(2) }}</td>
-            <td class="px-6 py-4 space-x-2">
+            <td class="px-6 py-4 text-white/55">{{ getProductMargin(stock.product_id) }}%</td>
+            <td class="px-6 py-4 text-white/55">R$ {{ getProductPrice(stock.product_id).toFixed(2) }}</td>
+            <td class="px-6 py-4">
+              <div class="flex flex-wrap gap-2">
               <button
                 @click="openMovementForm(stock)"
-                class="bg-brand-green text-white px-3 py-1 rounded text-xs hover:bg-brand-turquoise transition"
+                class="brand-button-secondary brand-action-inline rounded-xl px-3 py-2 text-[11px] font-semibold transition"
               >
-                +
+                Ajustar
               </button>
               <button
                 @click="deleteStock(stock)"
-                class="bg-brand-red text-white px-3 py-1 rounded text-xs hover:bg-brand-pink transition"
+                class="brand-action-inline rounded-xl border border-red-400/30 bg-red-500/10 px-3 py-2 text-[11px] font-semibold text-red-100 transition hover:bg-red-500/20"
               >
-                X
+                Zerar
               </button>
+              </div>
             </td>
           </tr>
         </tbody>
       </table>
     </div>
 
-    <div v-if="showMovementForm" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div class="bg-white text-gray-800 rounded-lg p-8 w-full max-w-md shadow-2xl border-t-4 border-brand-green">
+    <div v-if="filteredStocks.length === 0" class="brand-surface-soft rounded-[28px] px-6 py-10 text-center">
+      <p class="text-xs uppercase tracking-[0.32em] text-brand-pink">Sem resultado</p>
+      <h3 class="mt-3 font-display text-4xl text-white">Nenhum item encontrado</h3>
+      <p class="mx-auto mt-3 max-w-lg text-sm leading-6 text-white/55">
+        Ajuste a busca, revise o filtro de status ou siga cadastrando produtos para visualizar o estoque consolidado aqui.
+      </p>
+    </div>
+
+    <div v-if="showMovementForm" class="brand-modal-shell fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4">
+      <div class="brand-modal-panel w-full max-w-md rounded-[28px] p-8 text-white">
         <div class="flex items-center justify-between mb-6">
-          <h2 class="text-2xl font-bold text-brand-green">
-            {{ selectedStock ? getProductName(selectedStock.product_id) : 'Movimentacao' }}
-          </h2>
-          <button @click="closeMovementForm" class="text-gray-400 hover:text-gray-600 text-2xl">X</button>
+          <div>
+            <p class="brand-kicker">Estoque</p>
+            <h2 class="mt-2 text-2xl font-bold text-white">
+              {{ selectedStock ? getProductName(selectedStock.product_id) : 'Movimentacao' }}
+            </h2>
+          </div>
+          <button @click="closeMovementForm" class="text-white/40 hover:text-white/80 text-2xl">X</button>
         </div>
 
         <form @submit.prevent="submitMovement" class="space-y-4">
           <div>
-            <label class="block text-sm font-semibold text-brand-green mb-2">Tipo</label>
+            <label class="block text-sm font-semibold text-white mb-2">Tipo</label>
             <select
               v-model="movement.type"
-              class="w-full px-4 py-3 border-2 border-brand-green/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-green focus:border-transparent transition bg-white hover:border-brand-green/60"
+              class="brand-field w-full rounded-2xl px-4 py-4 transition"
             >
               <option value="entrada">Entrada</option>
               <option value="saida">Saida</option>
@@ -136,38 +173,45 @@
           </div>
 
           <div>
-            <label class="block text-sm font-semibold text-brand-green mb-2">Quantidade</label>
+            <label class="block text-sm font-semibold text-white mb-2">Quantidade</label>
             <input
               v-model.number="movement.quantity"
               type="number"
-              placeholder="0"
+              placeholder="Quantidade para movimentacao"
               min="1"
               required
-              class="w-full px-4 py-3 border-2 border-brand-green/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-green focus:border-transparent transition bg-white hover:border-brand-green/60"
+              class="brand-field w-full rounded-2xl px-4 py-4 transition"
             />
+            <p class="mt-2 text-xs text-white/35">Informe quantas pecas entram, saem ou serao ajustadas.</p>
           </div>
 
           <div>
-            <label class="block text-sm font-semibold text-brand-green mb-2">Observacao</label>
+            <label class="block text-sm font-semibold text-white mb-2">Observacao</label>
             <textarea
               v-model="movement.note"
               placeholder="Motivo da movimentacao..."
               rows="3"
-              class="w-full px-4 py-3 border-2 border-brand-green/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-green focus:border-transparent transition bg-white hover:border-brand-green/60"
+              class="brand-field w-full rounded-2xl px-4 py-4 transition"
             ></textarea>
+          </div>
+
+          <div v-if="movementError" class="rounded-2xl border border-red-300/25 bg-red-500/10 px-4 py-3 text-sm text-red-100">
+            {{ movementError }}
           </div>
 
           <div class="flex gap-4 pt-4">
             <button
               type="submit"
-              class="flex-1 bg-gradient-to-r from-brand-green to-brand-turquoise text-white py-3 rounded-lg hover:shadow-lg hover:shadow-brand-green/50 transition font-medium transform hover:scale-105"
+              :disabled="savingMovement"
+              class="brand-button-primary flex-1 rounded-2xl py-4 transition font-medium"
             >
-              Confirmar
+              {{ savingMovement ? 'Salvando...' : 'Confirmar' }}
             </button>
             <button
               type="button"
               @click="closeMovementForm"
-              class="flex-1 bg-gray-200 text-gray-700 py-3 rounded-lg hover:bg-gray-300 transition font-medium"
+              :disabled="savingMovement"
+              class="brand-button-secondary flex-1 rounded-2xl py-4 transition font-medium"
             >
               Cancelar
             </button>
@@ -184,10 +228,14 @@ import { productsAPI, stocksAPI } from '../api/client'
 
 const stocks = ref([])
 const products = ref([])
+const loading = ref(false)
 const searchQuery = ref('')
 const filterStatus = ref('')
 const showMovementForm = ref(false)
 const selectedStock = ref(null)
+const loadError = ref('')
+const movementError = ref('')
+const savingMovement = ref(false)
 const movement = ref({
   type: 'entrada',
   quantity: 0,
@@ -231,6 +279,14 @@ const filteredStocks = computed(() =>
 const totalQuantity = computed(() =>
   inventoryRows.value.reduce((sum, stock) => sum + stock.quantity, 0)
 )
+const totalInventoryValue = computed(() =>
+  inventoryRows.value.reduce((sum, stock) => sum + (getProductPrice(stock.product_id) * stock.quantity), 0)
+)
+const averageMargin = computed(() => {
+  if (!inventoryRows.value.length) return '0'
+  const total = inventoryRows.value.reduce((sum, stock) => sum + Number(getProductMargin(stock.product_id)), 0)
+  return (total / inventoryRows.value.length).toFixed(0)
+})
 
 const lowStockCount = computed(() =>
   inventoryRows.value.filter((stock) => stock.quantity > 0 && stock.quantity < 5).length
@@ -266,22 +322,28 @@ const getStatusBadgeClass = (quantity) => {
 const closeMovementForm = () => {
   showMovementForm.value = false
   selectedStock.value = null
+  movementError.value = ''
+  savingMovement.value = false
   movement.value = { type: 'entrada', quantity: 0, note: '' }
 }
 
 const openMovementForm = (stock) => {
   selectedStock.value = stock
+  movementError.value = ''
   movement.value = { type: 'entrada', quantity: 0, note: '' }
   showMovementForm.value = true
 }
 
 const submitMovement = async () => {
   if (!selectedStock.value) return
+  savingMovement.value = true
+  movementError.value = ''
 
   try {
     if (!selectedStock.value.id) {
       if (movement.value.type === 'saida') {
-        alert('Nao e possivel registrar saida de um produto sem estoque criado.')
+        movementError.value = 'Nao e possivel registrar saida de um produto sem estoque criado.'
+        savingMovement.value = false
         return
       }
 
@@ -310,15 +372,16 @@ const submitMovement = async () => {
 
     closeMovementForm()
     await fetchData()
-    alert('Movimentacao registrada com sucesso!')
   } catch (error) {
-    alert(`Erro: ${error.response?.data?.detail || error.message}`)
+    movementError.value = error.response?.data?.detail || error.message || 'Nao foi possivel salvar a movimentacao.'
+  } finally {
+    savingMovement.value = false
   }
 }
 
 const deleteStock = async (stock) => {
   if (!stock?.id) {
-    alert('Esse produto ainda nao possui um registro de estoque para remover.')
+    loadError.value = 'Esse produto ainda nao possui um registro de estoque para remover.'
     return
   }
 
@@ -326,15 +389,14 @@ const deleteStock = async (stock) => {
     try {
       await stocksAPI.update(stock.id, { quantity: 0 })
       await fetchData()
-      alert('Estoque zerado com sucesso!')
     } catch (error) {
-      alert(`Erro: ${error.response?.data?.detail || error.message}`)
+      loadError.value = error.response?.data?.detail || error.message || 'Nao foi possivel zerar o estoque.'
     }
   }
 }
 
 const exportAsCsv = () => {
-  const headers = ['Produto', 'SKU', 'Quantidade', 'Custo medio', 'Status', 'Margem', 'Preco de Venda']
+  const headers = ['Produto', 'Codigo', 'Quantidade', 'Custo medio', 'Status', 'Margem', 'Preco de Venda']
   const rows = filteredStocks.value.map((stock) => {
     const product = getProduct(stock.product_id)
     return [
@@ -359,6 +421,8 @@ const exportAsCsv = () => {
 }
 
 const fetchData = async () => {
+  loading.value = true
+  loadError.value = ''
   try {
     const [stocksRes, productsRes] = await Promise.all([
       stocksAPI.list({ limit: 100 }),
@@ -367,7 +431,9 @@ const fetchData = async () => {
     stocks.value = stocksRes.data
     products.value = productsRes.data
   } catch (error) {
-    console.error('Erro ao carregar dados:', error)
+    loadError.value = error.response?.data?.detail || error.message || 'Nao foi possivel carregar o estoque.'
+  } finally {
+    loading.value = false
   }
 }
 

@@ -1,10 +1,10 @@
 <template>
   <div class="space-y-8 animate-fade-up">
-    <section class="rounded-[32px] border border-white/10 bg-[linear-gradient(135deg,rgba(92,198,208,0.18),rgba(255,67,163,0.14)_38%,rgba(17,15,16,0.94)_72%)] p-8 shadow-2xl shadow-black/30">
+    <section class="brand-card rounded-[32px] p-8">
       <div class="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
         <div>
-          <p class="text-xs uppercase tracking-[0.45em] text-brand-green">Performance lab</p>
-          <h1 class="mt-4 font-display text-5xl text-white">Relatorios e analises da operacao</h1>
+          <p class="text-xs uppercase tracking-[0.45em] text-brand-pink">Performance lab</p>
+          <h1 class="mt-4 font-display text-4xl text-white sm:text-5xl">Relatorios e analises da operacao</h1>
           <p class="mt-4 max-w-2xl text-base leading-7 text-white/70">
             Consolidado comercial com leitura mais limpa, visual escuro e destaque para receita,
             ticket medio e comportamento das vendas ao longo do periodo.
@@ -14,16 +14,16 @@
         <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
           <label class="block">
             <span class="mb-2 block text-xs uppercase tracking-[0.28em] text-white/50">Data inicial</span>
-            <input v-model="dateRange.start" type="date" class="brand-input w-full rounded-2xl px-4 py-3" />
+            <input v-model="dateRange.start" type="date" class="brand-field w-full rounded-2xl px-4 py-3" />
           </label>
           <label class="block">
             <span class="mb-2 block text-xs uppercase tracking-[0.28em] text-white/50">Data final</span>
-            <input v-model="dateRange.end" type="date" class="brand-input w-full rounded-2xl px-4 py-3" />
+            <input v-model="dateRange.end" type="date" class="brand-field w-full rounded-2xl px-4 py-3" />
           </label>
           <button @click="applyDateFilter" class="brand-button-primary rounded-2xl px-5 py-3 text-sm font-bold uppercase tracking-[0.22em]">
             Atualizar
           </button>
-          <div class="flex gap-2">
+          <div class="flex gap-2 sm:col-span-2">
             <button @click="exportToCSV" class="brand-button-secondary w-full rounded-2xl px-5 py-3 text-sm font-bold uppercase tracking-[0.22em]">
               CSV
             </button>
@@ -45,15 +45,15 @@
     <section class="grid gap-6 xl:grid-cols-[1.1fr_0.9fr]">
       <div class="brand-card rounded-[30px] p-8">
         <p class="text-xs uppercase tracking-[0.35em] text-brand-pink">Evolucao</p>
-        <h2 class="mt-3 font-display text-4xl text-white">Receita por dia</h2>
+        <h2 class="mt-3 font-display text-3xl text-white sm:text-4xl">Receita por dia</h2>
         <div class="mt-8">
           <canvas ref="salesChartRef" height="110"></canvas>
         </div>
       </div>
 
       <div class="brand-card rounded-[30px] p-8">
-        <p class="text-xs uppercase tracking-[0.35em] text-brand-green">Composicao</p>
-        <h2 class="mt-3 font-display text-4xl text-white">Status do estoque</h2>
+        <p class="text-xs uppercase tracking-[0.35em] text-brand-pink">Composicao</p>
+        <h2 class="mt-3 font-display text-3xl text-white sm:text-4xl">Status do estoque</h2>
         <div class="mt-8 space-y-6">
           <div v-for="item in stockBreakdown" :key="item.label">
             <div class="mb-2 flex justify-between text-sm text-white/70">
@@ -71,7 +71,7 @@
     <section class="grid gap-6 lg:grid-cols-[0.92fr_1.08fr]">
       <div class="brand-card rounded-[30px] p-8">
         <p class="text-xs uppercase tracking-[0.35em] text-brand-orange">Melhores clientes</p>
-        <h2 class="mt-3 font-display text-4xl text-white">Ranking comercial</h2>
+        <h2 class="mt-3 font-display text-3xl text-white sm:text-4xl">Ranking comercial</h2>
 
         <div class="mt-8 space-y-4">
           <div
@@ -88,15 +88,16 @@
             </div>
           </div>
 
-          <p v-if="topCustomers.length === 0" class="rounded-[22px] border border-dashed border-white/10 px-4 py-8 text-center text-sm text-white/40">
-            Ainda nao ha vendas suficientes para ranking.
-          </p>
+          <div v-if="topCustomers.length === 0" class="brand-surface-soft rounded-[22px] px-4 py-8 text-center">
+            <p class="text-xs uppercase tracking-[0.28em] text-brand-pink">Sem ranking</p>
+            <p class="mt-3 text-sm text-white/50">Ainda nao ha vendas suficientes para montar o ranking dos clientes.</p>
+          </div>
         </div>
       </div>
 
       <div class="brand-card rounded-[30px] p-8">
         <p class="text-xs uppercase tracking-[0.35em] text-brand-green">Detalhamento</p>
-        <h2 class="mt-3 font-display text-4xl text-white">Ultimas vendas completas</h2>
+        <h2 class="mt-3 font-display text-3xl text-white sm:text-4xl">Ultimas vendas completas</h2>
 
         <div class="mt-8 overflow-x-auto">
           <table class="min-w-full text-sm">
@@ -121,6 +122,13 @@
               </tr>
             </tbody>
           </table>
+          <div v-if="filteredDetailedSales.length === 0" class="brand-surface-soft mt-6 rounded-[24px] px-6 py-10 text-center">
+            <p class="text-xs uppercase tracking-[0.32em] text-brand-pink">Sem movimento</p>
+            <h3 class="mt-3 font-display text-4xl text-white">Nenhuma venda no periodo</h3>
+            <p class="mx-auto mt-3 max-w-lg text-sm leading-6 text-white/55">
+              Ajuste o intervalo de datas ou realize novas vendas para acompanhar a operacao por aqui com mais contexto.
+            </p>
+          </div>
         </div>
       </div>
     </section>
@@ -136,7 +144,6 @@ import { customersAPI, salesAPI, stocksAPI } from '../api/client'
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Filler, Tooltip, Legend)
 
 const customers = ref([])
-const listSales = ref([])
 const detailedSales = ref([])
 const stocks = ref([])
 const salesChartRef = ref(null)
@@ -264,15 +271,8 @@ const fetchReports = async () => {
   ])
 
   customers.value = customersRes.data
-  listSales.value = salesRes.data
   stocks.value = stocksRes.data
-
-  detailedSales.value = await Promise.all(
-    listSales.value.map(async sale => {
-      const response = await salesAPI.get(sale.id)
-      return response.data
-    })
-  )
+  detailedSales.value = salesRes.data
 
   await drawSalesChart()
 }
@@ -312,7 +312,7 @@ const exportToPDF = async () => {
     formatDate(sale.sale_date)
   ])
 
-  generateSimpleTablePDF(
+  await generateSimpleTablePDF(
     'Relatorio Morena Concept',
     headers,
     rows,

@@ -1,30 +1,31 @@
 <template>
   <div class="space-y-8">
-    <div class="bg-gradient-to-r from-brand-turquoise via-brand-green to-brand-turquoise rounded-lg shadow-lg p-8">
-      <div class="flex justify-between items-center">
+    <div class="brand-card rounded-[30px] p-8">
+      <div class="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 class="text-4xl font-bold text-white mb-2">Catalogo de Produtos</h1>
-          <p class="text-white/80 text-sm">Gerencie o catalogo e cadastre produtos completos para estoque e vendas</p>
+          <p class="text-xs uppercase tracking-[0.35em] text-brand-pink">Catalogo</p>
+          <h1 class="mt-3 text-3xl font-bold text-white sm:text-4xl mb-2">Catalogo de Produtos</h1>
+          <p class="brand-panel-copy text-sm">Gerencie o catalogo e cadastre produtos completos para estoque e vendas</p>
         </div>
         <button
           @click="openCreateForm"
-          class="bg-white text-brand-turquoise px-6 py-2 rounded-lg hover:shadow-lg hover:shadow-brand-turquoise/50 transition font-bold transform hover:scale-105"
+          class="brand-button-primary px-6 py-3 rounded-2xl transition font-bold"
         >
           Novo Produto
         </button>
       </div>
     </div>
 
-    <div class="flex gap-4">
+    <div class="flex flex-col gap-4 md:flex-row">
       <input
         v-model="searchQuery"
         type="text"
-        placeholder="Buscar por nome, categoria, SKU ou cor..."
-        class="flex-1 px-4 py-2 border-2 border-brand-turquoise/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-turquoise focus:border-transparent transition bg-white/50 hover:bg-white"
+        placeholder="Buscar por nome, categoria, codigo ou cor..."
+        class="brand-field flex-1 rounded-2xl px-4 py-3 transition"
       />
       <select
         v-model="filterCategory"
-        class="px-4 py-2 border-2 border-brand-turquoise/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-turquoise focus:border-transparent transition bg-white hover:border-brand-turquoise/60"
+        class="brand-field rounded-2xl px-4 py-3 transition"
       >
         <option value="">Todas as Categorias</option>
         <option value="Camisetas e Blusas">Camisetas e Blusas</option>
@@ -37,11 +38,15 @@
       </select>
     </div>
 
+    <div v-if="loadError" class="rounded-2xl border border-red-300/25 bg-red-500/10 px-4 py-3 text-sm text-red-100">
+      {{ loadError }}
+    </div>
+
     <div v-if="store.loading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      <div v-for="n in 6" :key="n" class="bg-white rounded-lg shadow p-6 animate-pulse">
-        <div class="h-48 bg-gray-200 rounded mb-4"></div>
-        <div class="h-4 bg-gray-200 rounded mb-2"></div>
-        <div class="h-4 bg-gray-200 rounded w-5/6"></div>
+      <div v-for="n in 6" :key="n" class="brand-surface rounded-[26px] p-6 animate-pulse">
+        <div class="brand-skeleton h-48 rounded-2xl mb-4"></div>
+        <div class="brand-skeleton h-4 rounded mb-2"></div>
+        <div class="brand-skeleton h-4 rounded w-5/6"></div>
       </div>
     </div>
 
@@ -49,193 +54,219 @@
       <div
         v-for="product in filteredProducts"
         :key="product.id"
-        class="bg-white text-gray-800 rounded-lg shadow-lg hover:shadow-xl transition overflow-hidden border-t-4 border-brand-turquoise"
+        class="brand-surface overflow-hidden rounded-[28px] transition hover:-translate-y-1 hover:shadow-2xl hover:shadow-black/30"
       >
-        <div class="h-48 bg-gradient-to-br from-brand-turquoise/20 to-brand-green/20 flex items-center justify-center">
+        <div class="h-48 flex items-center justify-center bg-[linear-gradient(135deg,rgba(255,67,163,0.12),rgba(245,134,52,0.08)_52%,rgba(255,255,255,0.02))]">
           <img
             v-if="product.image_url"
             :src="product.image_url"
             :alt="product.name"
             class="w-full h-full object-cover"
           />
-          <div v-else class="text-4xl">MC</div>
+          <div v-else class="text-4xl text-white/70">MC</div>
         </div>
 
-        <div class="p-4">
-          <h3 class="font-bold text-lg text-brand-turquoise mb-2">{{ product.name }}</h3>
-
-          <div class="space-y-2 text-sm text-gray-700 mb-4">
-            <p><span class="font-semibold">SKU:</span> <span class="text-brand-turquoise font-mono font-bold">{{ product.sku }}</span></p>
-            <p><span class="font-semibold">Categoria:</span> {{ product.category }}</p>
-            <p><span class="font-semibold">Tamanho:</span> {{ product.size }}</p>
-            <p v-if="product.color"><span class="font-semibold">Cor:</span> {{ product.color }}</p>
-            <p v-if="product.description"><span class="font-semibold">Descricao:</span> {{ product.description }}</p>
-          </div>
-
-          <div class="border-t-2 border-brand-turquoise/20 pt-4 mb-4">
-            <div class="flex justify-between items-center gap-3">
-              <div>
-                <p class="text-xs text-gray-500">Preco de Compra</p>
-                <p class="text-lg font-bold text-gray-700">R$ {{ Number(product.purchase_price).toFixed(2) }}</p>
-              </div>
-              <div>
-                <p class="text-xs text-gray-500">Preco de Venda</p>
-                <p class="text-lg font-bold text-brand-turquoise">R$ {{ Number(product.sale_price).toFixed(2) }}</p>
-              </div>
+        <div class="p-5">
+          <div class="flex items-start justify-between gap-3">
+            <div>
+              <p class="brand-kicker text-white/40">{{ product.category }}</p>
+              <h3 class="mt-2 font-bold text-lg text-white">{{ product.name }}</h3>
             </div>
+            <span class="rounded-full border border-white/10 bg-white/5 px-3 py-2 text-xs font-bold uppercase tracking-[0.18em] text-brand-pink">
+              {{ product.size }}
+            </span>
           </div>
 
-          <div class="bg-gradient-to-r from-brand-turquoise/10 to-brand-green/10 p-3 rounded mb-4 text-center border-l-4 border-brand-turquoise">
-            <p class="text-xs text-brand-turquoise font-semibold">Margem de Lucro</p>
-            <p class="text-lg font-bold text-brand-turquoise">{{ calculateProfit(product) }}%</p>
+          <div class="mt-4 space-y-2 text-sm text-white/70 mb-4">
+            <p><span class="font-semibold text-white">Codigo:</span> <span class="font-mono font-bold text-brand-pink">{{ product.sku }}</span></p>
+            <p v-if="product.color"><span class="font-semibold text-white">Cor:</span> {{ product.color }}</p>
+            <p v-if="product.description" class="max-h-11 overflow-hidden"><span class="font-semibold text-white">Descricao:</span> {{ product.description }}</p>
+          </div>
+
+          <div class="mb-4 grid grid-cols-2 gap-3 border-t border-white/10 pt-4">
+            <div class="brand-metric-card-muted rounded-2xl p-4">
+                <p class="text-xs uppercase tracking-[0.18em] text-white/35">Compra</p>
+                <p class="mt-2 text-lg font-bold text-white">R$ {{ Number(product.purchase_price).toFixed(2) }}</p>
+              </div>
+              <div class="brand-metric-card-muted rounded-2xl p-4">
+                <p class="text-xs uppercase tracking-[0.18em] text-white/35">Venda</p>
+                <p class="mt-2 text-lg font-bold text-brand-pink">R$ {{ Number(product.sale_price).toFixed(2) }}</p>
+              </div>
+          </div>
+
+          <div class="mb-4 rounded-2xl border border-white/10 bg-white/5 p-3 text-center">
+            <p class="text-xs font-semibold uppercase tracking-[0.2em] text-white/45">Margem de lucro</p>
+            <p class="text-lg font-bold text-brand-pink">{{ calculateProfit(product) }}%</p>
           </div>
 
           <div class="flex gap-2">
             <button
               @click="editProduct(product.id)"
-              class="flex-1 bg-brand-turquoise text-white py-2 rounded hover:bg-brand-green transition text-sm font-medium"
+              class="brand-button-secondary brand-action-inline flex-1 rounded-2xl py-3 text-sm font-medium"
             >
-              Editar
+              Editar item
             </button>
             <button
               @click="deleteProduct(product.id)"
-              class="flex-1 bg-brand-red text-white py-2 rounded hover:bg-brand-pink transition text-sm font-medium"
+              class="brand-action-inline flex-1 rounded-2xl border border-red-400/30 bg-red-500/10 py-3 text-sm font-medium text-red-100 transition hover:bg-red-500/20"
             >
-              Deletar
+              Excluir
             </button>
           </div>
         </div>
       </div>
     </div>
 
-    <div v-if="!store.loading && filteredProducts.length === 0" class="text-center py-12">
-      <p class="text-gray-300 text-lg">Nenhum produto encontrado.</p>
-      <button
-        @click="openCreateForm"
-        class="mt-4 bg-gradient-to-r from-brand-turquoise to-brand-green text-white px-6 py-2 rounded-lg hover:shadow-lg hover:shadow-brand-turquoise/50 transition font-medium"
-      >
-        Adicionar Primeiro Produto
+    <div v-if="!store.loading && filteredProducts.length === 0" class="brand-surface-soft rounded-[28px] px-6 py-12 text-center">
+      <p class="text-xs uppercase tracking-[0.32em] text-brand-pink">Catalogo vazio</p>
+      <h3 class="mt-3 font-display text-4xl text-white">Nenhum produto encontrado</h3>
+      <p class="mx-auto mt-3 max-w-lg text-sm leading-6 text-white/55">
+        Cadastre a primeira peca para alimentar estoque, vendas e relatorios com a identidade da marca desde o inicio.
+      </p>
+      <button @click="openCreateForm" class="brand-button-primary mt-6 rounded-2xl px-6 py-3 transition font-medium">
+        Adicionar primeiro produto
       </button>
     </div>
 
-    <div v-if="showForm" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div class="bg-white text-gray-800 rounded-lg p-8 w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-2xl border-t-4 border-brand-turquoise">
+    <div v-if="showForm" class="brand-modal-shell fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4">
+      <div class="brand-modal-panel w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-[30px] p-8 text-white">
         <div class="flex items-center justify-between mb-6">
-          <h2 class="text-2xl font-bold text-brand-turquoise">{{ isEditing ? 'Editar Produto' : 'Novo Produto' }}</h2>
-          <button @click="closeForm" class="text-gray-400 hover:text-gray-600 text-2xl">X</button>
+          <div>
+            <p class="text-xs uppercase tracking-[0.28em] text-brand-pink">Cadastro</p>
+            <h2 class="mt-2 text-2xl font-bold text-white">{{ isEditing ? 'Editar Produto' : 'Novo Produto' }}</h2>
+          </div>
+          <button @click="closeForm" class="text-white/40 hover:text-white/80 text-2xl">X</button>
         </div>
 
-        <form @submit.prevent="submitProduct" class="grid grid-cols-2 gap-4">
+        <form @submit.prevent="submitProduct" class="grid grid-cols-1 gap-4 md:grid-cols-2">
           <input
             v-model="newProduct.name"
             type="text"
             placeholder="Nome"
             required
-            class="col-span-2 px-4 py-3 border-2 border-brand-turquoise/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-turquoise focus:border-transparent transition bg-white hover:border-brand-turquoise/60"
+            class="brand-field col-span-2 rounded-2xl px-4 py-4 transition"
           />
           <input
             v-model="newProduct.sku"
             type="text"
-            placeholder="SKU"
+            placeholder="Codigo"
             required
-            class="px-4 py-3 border-2 border-brand-turquoise/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-turquoise focus:border-transparent transition bg-white hover:border-brand-turquoise/60"
+            class="brand-field rounded-2xl px-4 py-4 transition"
           />
           <input
             v-model="newProduct.category"
             type="text"
             placeholder="Categoria"
             required
-            class="px-4 py-3 border-2 border-brand-turquoise/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-turquoise focus:border-transparent transition bg-white hover:border-brand-turquoise/60"
+            class="brand-field rounded-2xl px-4 py-4 transition"
           />
           <input
             v-model="newProduct.size"
             type="text"
             placeholder="Tamanho"
             required
-            class="px-4 py-3 border-2 border-brand-turquoise/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-turquoise focus:border-transparent transition bg-white hover:border-brand-turquoise/60"
+            class="brand-field rounded-2xl px-4 py-4 transition"
           />
           <input
             v-model="newProduct.color"
             type="text"
             placeholder="Cor"
-            class="px-4 py-3 border-2 border-brand-turquoise/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-turquoise focus:border-transparent transition bg-white hover:border-brand-turquoise/60"
+            class="brand-field rounded-2xl px-4 py-4 transition"
           />
-          <input
-            v-model.number="newProduct.purchase_price"
-            type="number"
-            placeholder="Preco de Compra"
-            step="0.01"
-            min="0"
-            required
-            class="px-4 py-3 border-2 border-brand-turquoise/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-turquoise focus:border-transparent transition bg-white hover:border-brand-turquoise/60"
-          />
-          <div class="rounded-lg border border-brand-turquoise/20 bg-brand-turquoise/5 p-4">
-            <p class="text-xs font-bold uppercase tracking-[0.22em] text-brand-turquoise">Sugestao automatica</p>
-            <p class="mt-2 text-sm text-gray-600">
+          <div>
+            <input
+              v-model.number="newProduct.purchase_price"
+              type="number"
+              placeholder="Preco de compra"
+              step="0.01"
+              min="0"
+              required
+              class="brand-field w-full rounded-2xl px-4 py-4 transition"
+            />
+            <p class="mt-2 text-xs text-white/35">Preco de atacado ou custo da peca.</p>
+          </div>
+          <div class="rounded-2xl border border-white/10 bg-white/5 p-4">
+            <p class="text-xs font-bold uppercase tracking-[0.22em] text-brand-pink">Sugestao automatica</p>
+            <p class="mt-2 text-sm text-white/70">
               Com base no atacado, sugestao de venda: <strong>{{ formattedSuggestedSalePrice }}</strong>
             </p>
-            <p class="mt-1 text-xs text-gray-500">Referencia usando markup de 2,2x sobre o custo.</p>
+            <p class="mt-1 text-xs text-white/40">Referencia usando markup de 2,2x sobre o custo.</p>
             <button
               type="button"
               @click="applySuggestedSalePrice"
-              class="mt-3 rounded-lg bg-brand-turquoise px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-white transition hover:bg-brand-green"
+              class="brand-button-primary mt-3 rounded-2xl px-4 py-3 text-xs font-semibold uppercase tracking-[0.18em] transition"
             >
               Usar sugestao
             </button>
           </div>
-          <input
-            v-model.number="newProduct.sale_price"
-            type="number"
-            placeholder="Preco de Venda"
-            step="0.01"
-            min="0"
-            required
-            class="px-4 py-3 border-2 border-brand-turquoise/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-turquoise focus:border-transparent transition bg-white hover:border-brand-turquoise/60"
-          />
-          <input
-            v-model="newProduct.image_url"
-            type="text"
-            placeholder="URL da imagem"
-            class="col-span-2 px-4 py-3 border-2 border-brand-turquoise/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-turquoise focus:border-transparent transition bg-white hover:border-brand-turquoise/60"
-          />
+          <div>
+            <input
+              v-model.number="newProduct.sale_price"
+              type="number"
+              placeholder="Preco de venda"
+              step="0.01"
+              min="0"
+              required
+              class="brand-field w-full rounded-2xl px-4 py-4 transition"
+            />
+            <p class="mt-2 text-xs text-white/35">Valor final que sera exibido para venda.</p>
+          </div>
+          <div class="col-span-2 rounded-[24px] border border-white/10 bg-white/5 p-4">
+            <p class="brand-kicker text-white/40">Imagem</p>
+            <input
+              v-model="newProduct.image_url"
+              type="text"
+              placeholder="URL da imagem"
+              class="brand-field mt-4 w-full rounded-2xl px-4 py-4 transition"
+            />
+          </div>
           <div class="col-span-2">
-            <label class="mb-2 block text-xs font-bold uppercase tracking-[0.22em] text-gray-500">Upload de imagem</label>
+            <label class="mb-2 block text-xs font-bold uppercase tracking-[0.22em] text-white/45">Upload de imagem</label>
             <input
               type="file"
               accept="image/*"
               @change="handleImageUpload"
               :disabled="imageUploading"
-              class="block w-full rounded-lg border-2 border-dashed border-brand-turquoise/30 px-4 py-4 text-sm text-gray-600 file:mr-4 file:rounded-lg file:border-0 file:bg-brand-turquoise file:px-4 file:py-2 file:text-sm file:font-semibold file:text-white hover:border-brand-turquoise/60"
+              class="block w-full rounded-2xl border border-dashed border-white/14 bg-white/4 px-4 py-4 text-sm text-white/60 file:mr-4 file:rounded-2xl file:border-0 file:bg-white file:px-4 file:py-2 file:text-sm file:font-semibold file:text-brand-ink hover:border-white/25"
             />
-            <p class="mt-2 text-xs text-gray-500">
+            <p class="mt-2 text-xs text-white/35">
               {{ imageUploading ? 'Enviando imagem...' : 'Voce pode enviar uma imagem do computador ou manter uma URL externa.' }}
             </p>
           </div>
-          <div v-if="newProduct.image_url" class="col-span-2 overflow-hidden rounded-lg border border-brand-turquoise/20 bg-brand-turquoise/5">
+          <div v-if="newProduct.image_url" class="col-span-2 overflow-hidden rounded-2xl border border-white/10 bg-white/5">
             <img
               :src="newProduct.image_url"
               alt="Preview da imagem do produto"
               class="h-48 w-full object-cover"
             />
           </div>
-          <textarea
-            v-model="newProduct.description"
-            rows="3"
-            placeholder="Descricao"
-            class="col-span-2 px-4 py-3 border-2 border-brand-turquoise/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-turquoise focus:border-transparent transition bg-white hover:border-brand-turquoise/60"
-          ></textarea>
+          <div class="col-span-2 rounded-[24px] border border-white/10 bg-white/5 p-4">
+            <p class="brand-kicker text-white/40">Descricao</p>
+            <textarea
+              v-model="newProduct.description"
+              rows="3"
+              placeholder="Descricao"
+              class="brand-field mt-4 w-full rounded-2xl px-4 py-4 transition"
+            ></textarea>
+          </div>
 
-          <div class="col-span-2 flex gap-4 pt-4">
+          <div v-if="errorMessage" class="col-span-2 rounded-2xl border border-red-300/25 bg-red-500/10 px-4 py-3 text-sm text-red-100">
+            {{ errorMessage }}
+          </div>
+
+          <div class="col-span-1 flex flex-col gap-4 pt-4 md:col-span-2 md:flex-row">
             <button
               type="submit"
-              class="flex-1 bg-gradient-to-r from-brand-turquoise to-brand-green text-white py-3 rounded-lg hover:shadow-lg hover:shadow-brand-turquoise/50 transition font-medium transform hover:scale-105"
+              :disabled="saving || imageUploading"
+              class="brand-button-primary flex-1 rounded-2xl py-4 font-medium transition"
             >
-              Salvar
+              {{ saving ? 'Salvando...' : 'Salvar' }}
             </button>
             <button
               type="button"
               @click="closeForm"
-              class="flex-1 bg-gray-200 text-gray-700 py-3 rounded-lg hover:bg-gray-300 transition font-medium"
+              :disabled="saving"
+              class="brand-button-secondary flex-1 rounded-2xl py-4 font-medium transition"
             >
               Cancelar
             </button>
@@ -258,6 +289,9 @@ const filterCategory = ref('')
 const showForm = ref(false)
 const editingProductId = ref(null)
 const imageUploading = ref(false)
+const saving = ref(false)
+const errorMessage = ref('')
+const loadError = ref('')
 const initialProduct = () => ({
   name: '',
   sku: '',
@@ -289,7 +323,7 @@ const filteredProducts = computed(() =>
       const matchesCategory = !filterCategory.value || product.category === filterCategory.value
       return matchesSearch && matchesCategory
     })
-    .sort((a, b) => a.name.localeCompare(b.name))
+    .sort((a, b) => b.id - a.id)
 )
 
 const calculateProfit = (product) => {
@@ -347,11 +381,14 @@ const handleImageUpload = async (event) => {
 const closeForm = () => {
   showForm.value = false
   editingProductId.value = null
+  saving.value = false
+  errorMessage.value = ''
   newProduct.value = initialProduct()
 }
 
 const openCreateForm = () => {
   editingProductId.value = null
+  errorMessage.value = ''
   newProduct.value = initialProduct()
   showForm.value = true
 }
@@ -363,29 +400,33 @@ const submitProduct = async () => {
     sale_price: Number(newProduct.value.sale_price)
   }
 
+  saving.value = true
+  errorMessage.value = ''
+
   try {
     if (isEditing.value) {
       await store.updateProduct(editingProductId.value, payload)
-      alert('Produto atualizado com sucesso!')
     } else {
       await store.addProduct(payload)
-      alert('Produto adicionado com sucesso!')
     }
 
     closeForm()
   } catch (error) {
-    alert(`Erro: ${error.response?.data?.detail || error.message}`)
+    errorMessage.value = error.response?.data?.detail || error.message || 'Nao foi possivel salvar o produto.'
+  } finally {
+    saving.value = false
   }
 }
 
 const editProduct = (id) => {
   const product = store.products.find((item) => item.id === id)
   if (!product) {
-    alert('Produto nao encontrado para edicao.')
+    errorMessage.value = 'Produto nao encontrado para edicao.'
     return
   }
 
   editingProductId.value = id
+  errorMessage.value = ''
   newProduct.value = {
     name: product.name || '',
     sku: product.sku || '',
@@ -405,13 +446,21 @@ const deleteProduct = async (id) => {
 
   try {
     await store.deleteProduct(id)
-    alert('Produto deletado com sucesso!')
   } catch (error) {
-    alert(`Erro: ${error.response?.data?.detail || error.message}`)
+    loadError.value = error.response?.data?.detail || error.message || 'Nao foi possivel deletar o produto.'
   }
 }
 
-store.fetchProducts()
+const loadProducts = async () => {
+  loadError.value = ''
+  try {
+    await store.fetchProducts()
+  } catch (error) {
+    loadError.value = error.response?.data?.detail || error.message || 'Nao foi possivel carregar os produtos.'
+  }
+}
+
+loadProducts()
 </script>
 
 <style scoped>

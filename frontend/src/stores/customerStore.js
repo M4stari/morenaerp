@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import { customersAPI } from '../api/client'
 
 export const useCustomerStore = defineStore('customer', () => {
@@ -10,11 +10,12 @@ export const useCustomerStore = defineStore('customer', () => {
   const fetchCustomers = async () => {
     loading.value = true
     try {
-      const response = await customersAPI.list()
+      const response = await customersAPI.list({ limit: 100 })
       customers.value = response.data
       error.value = null
     } catch (err) {
-      error.value = err.message
+      error.value = err.response?.data?.detail || err.message
+      throw err
     } finally {
       loading.value = false
     }

@@ -1,7 +1,7 @@
 <template>
   <nav class="sticky top-0 z-40 border-b border-white/10 bg-[#120f10]/90 backdrop-blur-xl">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div class="flex min-h-[84px] items-center justify-between gap-4">
+      <div class="flex min-h-[84px] items-center justify-between gap-3">
         <Logo />
 
         <div class="hidden items-center gap-2 lg:flex">
@@ -9,32 +9,40 @@
             v-for="item in navItems"
             :key="item.to"
             :to="item.to"
-            class="rounded-full px-4 py-2 text-sm font-semibold tracking-wide text-white/70 transition hover:bg-white/5 hover:text-white"
-            :class="{ 'bg-white/10 text-white shadow-inner shadow-white/5': isActive(item.to) }"
+            class="brand-nav-pill rounded-full px-4 py-2 text-sm font-semibold tracking-wide transition"
+            :class="{ 'brand-nav-pill-active shadow-inner shadow-white/5': isActive(item.to) }"
           >
             {{ item.label }}
           </router-link>
         </div>
 
-        <div class="flex items-center gap-3">
+        <div class="flex items-center gap-2 sm:gap-3">
           <span class="hidden text-xs uppercase tracking-[0.35em] text-brand-gray xl:inline">
             lifestyle, moda e valor
           </span>
 
           <button
             @click="toggleTheme"
-            class="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs font-bold uppercase tracking-[0.25em] text-white/80 transition hover:bg-white/10"
+            class="brand-button-secondary rounded-full px-3 py-2 text-[11px] font-bold uppercase tracking-[0.22em] transition sm:px-4 sm:text-xs"
             :title="themeStore.isDarkMode ? 'Modo escuro' : 'Modo claro'"
           >
             {{ themeStore.isDarkMode ? 'Dark' : 'Light' }}
           </button>
 
+          <button
+            @click="showMobileMenu = !showMobileMenu"
+            class="brand-button-secondary rounded-full px-3 py-2 text-[11px] font-bold uppercase tracking-[0.22em] transition lg:hidden"
+          >
+            Menu
+          </button>
+
           <div class="relative">
             <button
               @click="showUserMenu = !showUserMenu"
-              class="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/10"
+              class="brand-button-secondary rounded-full px-3 py-2 text-xs font-semibold transition sm:px-4 sm:text-sm"
             >
-              {{ authStore.user?.name || 'Usuario' }}
+              <span class="hidden sm:inline">{{ authStore.user?.name || 'Usuario' }}</span>
+              <span class="sm:hidden">Perfil</span>
             </button>
 
             <div
@@ -58,6 +66,21 @@
           </div>
         </div>
       </div>
+
+      <div v-if="showMobileMenu" class="pb-4 lg:hidden">
+        <div class="brand-surface-soft grid gap-2 rounded-[24px] p-3">
+          <router-link
+            v-for="item in navItems"
+            :key="item.to"
+            :to="item.to"
+            class="brand-nav-pill rounded-2xl px-4 py-3 text-sm font-semibold transition"
+            :class="{ 'brand-nav-pill-active': isActive(item.to) }"
+            @click="showMobileMenu = false"
+          >
+            {{ item.label }}
+          </router-link>
+        </div>
+      </div>
     </div>
   </nav>
 </template>
@@ -74,6 +97,7 @@ const router = useRouter()
 const authStore = useAuthStore()
 const themeStore = useThemeStore()
 const showUserMenu = ref(false)
+const showMobileMenu = ref(false)
 
 const navItems = computed(() => [
   { to: '/dashboard', label: 'Dashboard' },
@@ -93,6 +117,7 @@ const toggleTheme = () => {
 const handleLogout = () => {
   authStore.logout()
   showUserMenu.value = false
+  showMobileMenu.value = false
   router.push('/login')
 }
 </script>

@@ -4,18 +4,18 @@
       <div class="grid gap-8 lg:grid-cols-[1.35fr_0.95fr]">
         <div>
           <p class="text-xs uppercase tracking-[0.45em] text-brand-pink">Brand control room</p>
-          <h1 class="mt-4 font-display text-5xl leading-tight text-white md:text-6xl">
+          <h1 class="mt-4 font-display text-4xl leading-tight text-white sm:text-5xl md:text-6xl">
             Operacao, financeiro e produtos pendentes em uma visao so.
           </h1>
           <p class="mt-5 max-w-2xl text-base leading-7 text-white/70">
             O dashboard agora combina volume comercial, margem e o que ja saiu do estoque mas ainda nao voltou como pagamento.
           </p>
 
-          <div class="mt-8 flex flex-wrap gap-3">
-            <router-link to="/sales" class="brand-button-primary rounded-full px-6 py-3 text-sm font-bold uppercase tracking-[0.22em] transition">
+          <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+            <router-link to="/sales" class="brand-button-primary rounded-full px-6 py-3 text-center text-sm font-bold uppercase tracking-[0.22em] transition">
               Nova venda
             </router-link>
-            <router-link to="/products" class="brand-button-secondary rounded-full px-6 py-3 text-sm font-bold uppercase tracking-[0.22em] transition">
+            <router-link to="/products" class="brand-button-secondary rounded-full px-6 py-3 text-center text-sm font-bold uppercase tracking-[0.22em] transition">
               Atualizar catalogo
             </router-link>
           </div>
@@ -45,11 +45,23 @@
       </div>
     </section>
 
-    <section class="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4">
-      <StatCard title="Clientes" :value="String(summary.customers)" icon="C" text-color="text-white" />
-      <StatCard title="Produtos" :value="String(summary.products)" icon="P" text-color="text-white" />
-      <StatCard title="Recebido" :value="formatCurrency(financial.total_revenue_paid)" icon="R$" text-color="text-emerald-200" />
-      <StatCard title="A receber" :value="formatCurrency(financial.total_receivable_pending)" icon="AR" text-color="text-amber-100" />
+    <section v-if="loadError" class="rounded-[24px] border border-red-200/30 bg-red-400/10 px-5 py-4 text-sm text-red-100">
+      {{ loadError }}
+    </section>
+
+    <section v-if="loading" class="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4">
+      <div v-for="n in 4" :key="n" class="brand-metric-card rounded-[28px] p-6">
+        <div class="brand-skeleton h-3 w-24 rounded-full"></div>
+        <div class="brand-skeleton mt-5 h-12 w-36 rounded-2xl"></div>
+        <div class="brand-skeleton mt-6 h-3 w-40 rounded-full"></div>
+      </div>
+    </section>
+
+    <section v-else class="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4">
+      <StatCard title="Clientes" :value="String(summary.customers)" icon="C" text-color="text-white" description="Base ativa para relacionamento e recorrencia." />
+      <StatCard title="Produtos" :value="String(summary.products)" icon="P" text-color="text-white" description="Itens prontos para estoque, venda e reposicao." />
+      <StatCard title="Recebido" :value="formatCurrency(financial.total_revenue_paid)" icon="R$" text-color="text-emerald-200" description="Valor efetivamente convertido em caixa." />
+      <StatCard title="A receber" :value="formatCurrency(financial.total_receivable_pending)" icon="AR" text-color="text-amber-100" description="Saldo em aberto das vendas ainda nao quitadas." />
     </section>
 
     <section class="grid gap-6 xl:grid-cols-[1.15fr_0.85fr]">
@@ -57,7 +69,7 @@
         <div class="flex items-center justify-between gap-4">
           <div>
             <p class="text-xs uppercase tracking-[0.35em] text-brand-pink">Indicadores</p>
-            <h2 class="mt-3 font-display text-4xl text-white">Pulso financeiro</h2>
+            <h2 class="mt-3 font-display text-3xl text-white sm:text-4xl">Pulso financeiro</h2>
           </div>
           <span class="brand-chip rounded-full px-4 py-2 text-xs font-bold uppercase tracking-[0.25em]">
             {{ financial.pending_sales_count }} pendentes
@@ -65,24 +77,24 @@
         </div>
 
         <div class="mt-8 grid gap-4 md:grid-cols-2">
-          <div class="brand-card-soft rounded-[24px] p-5">
-            <p class="text-xs uppercase tracking-[0.3em] text-white/40">Ticket medio geral</p>
-            <p class="mt-4 font-display text-4xl text-white">{{ formatCurrency(financial.average_ticket_overall) }}</p>
+          <div class="brand-metric-card-muted rounded-[24px] p-5">
+            <p class="brand-kicker text-white/40">Ticket medio geral</p>
+            <p class="brand-value mt-4 text-white">{{ formatCurrency(financial.average_ticket_overall) }}</p>
             <p class="mt-3 text-sm text-white/60">Considera vendas pagas e pendentes.</p>
           </div>
-          <div class="brand-card-soft rounded-[24px] p-5">
-            <p class="text-xs uppercase tracking-[0.3em] text-white/40">Vendas finalizadas</p>
-            <p class="mt-4 font-display text-4xl text-emerald-200">{{ financial.finalized_sales_count }}</p>
+          <div class="brand-metric-card-muted rounded-[24px] p-5">
+            <p class="brand-kicker text-white/40">Vendas finalizadas</p>
+            <p class="brand-value mt-4 text-emerald-200">{{ financial.finalized_sales_count }}</p>
             <p class="mt-3 text-sm text-white/60">Quantidade de vendas ja recebidas.</p>
           </div>
-          <div class="brand-card-soft rounded-[24px] p-5">
-            <p class="text-xs uppercase tracking-[0.3em] text-white/40">Estoque total</p>
-            <p class="mt-4 font-display text-4xl text-white">{{ summary.totalQuantity }}</p>
+          <div class="brand-metric-card-muted rounded-[24px] p-5">
+            <p class="brand-kicker text-white/40">Estoque total</p>
+            <p class="brand-value mt-4 text-white">{{ summary.totalQuantity }}</p>
             <p class="mt-3 text-sm text-white/60">Saldo total somado entre todos os produtos.</p>
           </div>
-          <div class="brand-card-soft rounded-[24px] p-5">
-            <p class="text-xs uppercase tracking-[0.3em] text-white/40">Itens pendentes</p>
-            <p class="mt-4 font-display text-4xl text-amber-100">{{ pendingItems.length }}</p>
+          <div class="brand-metric-card-muted rounded-[24px] p-5">
+            <p class="brand-kicker text-white/40">Itens pendentes</p>
+            <p class="brand-value mt-4 text-amber-100">{{ pendingItems.length }}</p>
             <p class="mt-3 text-sm text-white/60">Produtos vendidos em vendas ainda nao pagas.</p>
           </div>
         </div>
@@ -99,18 +111,19 @@
                 <p class="text-sm font-semibold text-white">{{ product.product_name }}</p>
                 <p class="mt-1 text-xs uppercase tracking-[0.24em] text-white/40">{{ product.quantity }} unidades</p>
               </div>
-              <span class="font-display text-3xl text-brand-pink">{{ formatCurrency(product.revenue) }}</span>
+              <span class="brand-value text-brand-pink !text-[2.2rem]">{{ formatCurrency(product.revenue) }}</span>
             </div>
-            <p v-if="bestSellers.length === 0" class="rounded-[22px] border border-dashed border-white/10 px-4 py-8 text-center text-sm text-white/40">
-              Nenhum produto vendido ainda.
-            </p>
+            <div v-if="bestSellers.length === 0" class="brand-surface-soft rounded-[22px] px-4 py-8 text-center">
+              <p class="text-xs uppercase tracking-[0.28em] text-brand-pink">Sem ranking</p>
+              <p class="mt-3 text-sm text-white/50">Nenhum produto vendido ainda para compor o destaque.</p>
+            </div>
           </div>
         </div>
       </div>
 
       <div class="brand-card rounded-[30px] p-8">
         <p class="text-xs uppercase tracking-[0.35em] text-brand-pink">A receber</p>
-        <h2 class="mt-3 font-display text-4xl text-white">Produtos nao pagos</h2>
+            <h2 class="mt-3 font-display text-3xl text-white sm:text-4xl">Produtos nao pagos</h2>
 
         <div class="mt-8 space-y-4">
           <div
@@ -133,17 +146,18 @@
               <div class="text-sm text-white/60">
                 {{ item.quantity }} un. • {{ formatCurrency(item.unit_price) }} cada
               </div>
-              <span class="font-display text-3xl text-amber-100">{{ formatCurrency(item.subtotal) }}</span>
+              <span class="brand-value text-amber-100 !text-[2.2rem]">{{ formatCurrency(item.subtotal) }}</span>
             </div>
             <div class="mt-2 flex items-center justify-between text-xs text-white/45">
               <span>Vencimento: {{ formatDueDate(item.due_date) }}</span>
-              <span v-if="item.payment_notes">{{ item.payment_notes }}</span>
+              <span>{{ item.payment_method }} • {{ item.paid_installments }}/{{ item.installment_count }}</span>
             </div>
           </div>
 
-          <p v-if="pendingItems.length === 0" class="rounded-[22px] border border-dashed border-white/10 px-4 py-8 text-center text-sm text-white/40">
-            Nenhum produto pendente de pagamento no momento.
-          </p>
+          <div v-if="pendingItems.length === 0" class="brand-surface-soft rounded-[22px] px-4 py-8 text-center">
+            <p class="text-xs uppercase tracking-[0.28em] text-brand-pink">Fluxo saudavel</p>
+            <p class="mt-3 text-sm text-white/50">Nenhum produto pendente de pagamento no momento.</p>
+          </div>
         </div>
       </div>
     </section>
@@ -153,7 +167,7 @@
         <div class="flex items-center justify-between gap-4">
           <div>
             <p class="text-xs uppercase tracking-[0.35em] text-brand-pink">Fluxos principais</p>
-            <h2 class="mt-3 font-display text-4xl text-white">Atalhos de operacao</h2>
+            <h2 class="mt-3 font-display text-3xl text-white sm:text-4xl">Atalhos de operacao</h2>
           </div>
           <span class="brand-chip rounded-full px-4 py-2 text-xs font-bold uppercase tracking-[0.25em]">finance + imagem</span>
         </div>
@@ -169,7 +183,7 @@
 
       <div class="brand-card rounded-[30px] p-8">
         <p class="text-xs uppercase tracking-[0.35em] text-brand-pink">Ultimas vendas</p>
-        <h2 class="mt-3 font-display text-4xl text-white">Ritmo comercial</h2>
+            <h2 class="mt-3 font-display text-3xl text-white sm:text-4xl">Ritmo comercial</h2>
 
         <div class="mt-8 space-y-4">
           <div
@@ -190,14 +204,15 @@
               </span>
             </div>
             <div class="mt-4 flex items-end justify-between">
-              <span class="font-display text-3xl text-brand-pink">{{ formatCurrency(sale.total_amount) }}</span>
+              <span class="brand-value text-brand-pink !text-[2.2rem]">{{ formatCurrency(sale.total_amount) }}</span>
               <span class="text-sm text-white/60">{{ formatDate(sale.sale_date) }}</span>
             </div>
           </div>
 
-          <p v-if="latestSales.length === 0" class="rounded-[22px] border border-dashed border-white/10 px-4 py-8 text-center text-sm text-white/40">
-            Nenhuma venda encontrada ainda.
-          </p>
+          <div v-if="latestSales.length === 0" class="brand-surface-soft rounded-[22px] px-4 py-8 text-center">
+            <p class="text-xs uppercase tracking-[0.28em] text-brand-pink">Sem ritmo</p>
+            <p class="mt-3 text-sm text-white/50">Nenhuma venda encontrada ainda.</p>
+          </div>
         </div>
       </div>
     </section>
@@ -207,7 +222,7 @@
 <script setup>
 import { computed, onMounted, reactive, ref } from 'vue'
 import StatCard from '../components/StatCard.vue'
-import { customersAPI, productsAPI, salesAPI, stocksAPI } from '../api/client'
+import { salesAPI } from '../api/client'
 
 const summary = reactive({
   customers: 0,
@@ -228,11 +243,12 @@ const financial = reactive({
 const latestSales = ref([])
 const pendingItems = ref([])
 const bestSellers = ref([])
-const customerMap = ref({})
+const loading = ref(false)
+const loadError = ref('')
 
 const quickLinks = [
   { to: '/customers', eyebrow: 'CRM', title: 'Clientes', description: 'Centralize cadastros, relacionamento e historico de compras.' },
-  { to: '/products', eyebrow: 'Catalogo', title: 'Produtos', description: 'Organize colecoes, SKUs, imagens e precificacao da marca.' },
+  { to: '/products', eyebrow: 'Catalogo', title: 'Produtos', description: 'Organize colecoes, codigos, imagens e precificacao da marca.' },
   { to: '/inventory', eyebrow: 'Operacao', title: 'Estoque', description: 'Acompanhe reposicao, saldo e produtos com giro mais sensivel.' },
   { to: '/reports', eyebrow: 'Inteligencia', title: 'Relatorios', description: 'Leia desempenho comercial com foco em ticket, margem e volume.' }
 ]
@@ -243,34 +259,26 @@ const formatCurrency = (value) =>
   new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value || 0)
 
 const fetchDashboard = async () => {
-  const [customersRes, productsRes, stocksRes, salesRes, financialRes] = await Promise.all([
-    customersAPI.list({ limit: 100 }),
-    productsAPI.list({ limit: 100 }),
-    stocksAPI.list({ limit: 100 }),
-    salesAPI.list({ limit: 8 }),
-    salesAPI.financialReport()
-  ])
+  loading.value = true
+  loadError.value = ''
 
-  const customers = customersRes.data
-  const products = productsRes.data
-  const stocks = stocksRes.data
-  const sales = salesRes.data
-  const financialData = financialRes.data
+  try {
+    const response = await salesAPI.dashboardSummary({ latest_sales_limit: 8 })
+    const data = response.data
 
-  customerMap.value = Object.fromEntries(customers.map((customer) => [customer.id, customer.name]))
-
-  summary.customers = customers.length
-  summary.products = products.length
-  summary.totalQuantity = stocks.reduce((acc, stock) => acc + stock.quantity, 0)
-
-  Object.assign(financial, financialData.totals || {})
-  pendingItems.value = financialData.pending_items || []
-  bestSellers.value = financialData.best_sellers || []
-
-  latestSales.value = sales.map((sale) => ({
-    ...sale,
-    customerName: customerMap.value[sale.customer_id] || 'Cliente desconhecido'
-  }))
+    Object.assign(summary, data.summary || {})
+    Object.assign(financial, data.financial || {})
+    pendingItems.value = data.pending_items || []
+    bestSellers.value = data.best_sellers || []
+    latestSales.value = (data.latest_sales || []).map((sale) => ({
+      ...sale,
+      customerName: sale.customer?.name || 'Cliente desconhecido'
+    }))
+  } catch (error) {
+    loadError.value = error.response?.data?.detail || error.message || 'Nao foi possivel carregar o dashboard.'
+  } finally {
+    loading.value = false
+  }
 }
 
 onMounted(fetchDashboard)

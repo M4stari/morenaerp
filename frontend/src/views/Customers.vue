@@ -1,16 +1,20 @@
 <template>
-  <div>
-    <!-- Header com Gradient -->
-    <div class="bg-gradient-to-r from-brand-pink via-brand-red to-brand-pink rounded-lg shadow-lg p-8 mb-8">
-      <div class="flex items-center justify-between">
+  <div class="space-y-8">
+    <div class="brand-card rounded-[30px] p-8">
+      <div class="flex items-center justify-between gap-4">
         <div>
-          <h1 class="text-4xl font-bold text-white mb-2">👥 Gerenciamento de Clientes</h1>
-          <p class="text-brand-gray text-sm">Organize e gerencie todos os seus clientes</p>
+          <p class="text-xs uppercase tracking-[0.35em] text-brand-pink">Relacionamento</p>
+          <h1 class="mt-3 text-3xl font-bold text-white sm:text-4xl">Clientes</h1>
+          <p class="brand-panel-copy mt-2 text-sm">
+            Centralize cadastros, contatos e relacionamento comercial em uma base mais organizada.
+          </p>
         </div>
-        <div class="text-6xl opacity-20">👥</div>
+        <div class="rounded-2xl border border-white/10 bg-white/5 px-5 py-4 text-3xl text-white/50">
+          CR
+        </div>
       </div>
     </div>
-    
+
     <CustomerForm />
   </div>
 </template>

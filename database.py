@@ -37,6 +37,12 @@ def _ensure_sales_columns():
         statements.append(f"ALTER TABLE sales ADD COLUMN paid_at {datetime_type}")
     if "payment_notes" not in existing_columns:
         statements.append("ALTER TABLE sales ADD COLUMN payment_notes TEXT")
+    if "payment_method" not in existing_columns:
+        statements.append("ALTER TABLE sales ADD COLUMN payment_method VARCHAR(30) NOT NULL DEFAULT 'Dinheiro'")
+    if "installment_count" not in existing_columns:
+        statements.append("ALTER TABLE sales ADD COLUMN installment_count INTEGER NOT NULL DEFAULT 1")
+    if "paid_installments" not in existing_columns:
+        statements.append("ALTER TABLE sales ADD COLUMN paid_installments INTEGER NOT NULL DEFAULT 0")
 
     if not statements:
         return

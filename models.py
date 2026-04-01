@@ -78,7 +78,10 @@ class Sale(Base):
     due_date = Column(DateTime, nullable=True)
     paid_at = Column(DateTime, nullable=True)
     total_amount = Column(Float, default=0, nullable=False)
-    status = Column(String(20), default="Pendente", nullable=False)  # Pendente, Finalizada, Cancelada
+    status = Column(String(20), default="Pendente", nullable=False)  # Pendente, Parcial, Finalizada, Cancelada
+    payment_method = Column(String(30), default="Dinheiro", nullable=False)
+    installment_count = Column(Integer, default=1, nullable=False)
+    paid_installments = Column(Integer, default=0, nullable=False)
     notes = Column(Text, nullable=True)
     payment_notes = Column(Text, nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)

@@ -2,6 +2,8 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import { productsAPI } from '../api/client'
 
+const extractErrorMessage = (err) => err.response?.data?.detail || err.message || 'Erro ao processar produto'
+
 export const useProductStore = defineStore('product', () => {
   const products = ref([])
   const loading = ref(false)
@@ -14,7 +16,8 @@ export const useProductStore = defineStore('product', () => {
       products.value = response.data
       error.value = null
     } catch (err) {
-      error.value = err.message
+      error.value = extractErrorMessage(err)
+      throw err
     } finally {
       loading.value = false
     }
@@ -24,8 +27,9 @@ export const useProductStore = defineStore('product', () => {
     try {
       await productsAPI.create(productData)
       await fetchProducts()
+      error.value = null
     } catch (err) {
-      error.value = err.message
+      error.value = extractErrorMessage(err)
       throw err
     }
   }
@@ -34,8 +38,9 @@ export const useProductStore = defineStore('product', () => {
     try {
       await productsAPI.update(id, productData)
       await fetchProducts()
+      error.value = null
     } catch (err) {
-      error.value = err.message
+      error.value = extractErrorMessage(err)
       throw err
     }
   }
@@ -44,8 +49,9 @@ export const useProductStore = defineStore('product', () => {
     try {
       await productsAPI.delete(id)
       await fetchProducts()
+      error.value = null
     } catch (err) {
-      error.value = err.message
+      error.value = extractErrorMessage(err)
       throw err
     }
   }

@@ -151,6 +151,8 @@ class SaleBase(BaseModel):
     customer_id: int
     notes: Optional[str] = None
     due_date: Optional[datetime] = None
+    payment_method: str = Field(default="Dinheiro", min_length=1, max_length=30)
+    installment_count: int = Field(default=1, ge=1, le=24)
     payment_notes: Optional[str] = None
 
 
@@ -161,6 +163,7 @@ class SaleCreate(SaleBase):
 
 class SaleStatus(str, Enum):
     PENDENTE = "Pendente"
+    PARCIAL = "Parcial"
     FINALIZADA = "Finalizada"
     CANCELADA = "Cancelada"
 
@@ -170,6 +173,9 @@ class SaleUpdate(BaseModel):
     status: Optional[SaleStatus] = None
     notes: Optional[str] = None
     due_date: Optional[datetime] = None
+    payment_method: Optional[str] = Field(default=None, min_length=1, max_length=30)
+    installment_count: Optional[int] = Field(default=None, ge=1, le=24)
+    paid_installments: Optional[int] = Field(default=None, ge=0, le=24)
     payment_notes: Optional[str] = None
 
 
@@ -183,6 +189,9 @@ class SaleResponse(BaseModel):
     paid_at: Optional[datetime]
     total_amount: float
     status: str
+    payment_method: str
+    installment_count: int
+    paid_installments: int
     notes: Optional[str]
     payment_notes: Optional[str]
     sale_items: List[SaleItemResponse]
@@ -197,12 +206,18 @@ class SaleListResponse(BaseModel):
     """Schema para listar Vendas (sem itens detalhados)"""
     id: int
     customer_id: int
+    customer: CustomerResponse
     sale_date: datetime
     due_date: Optional[datetime]
     paid_at: Optional[datetime]
     total_amount: float
     status: str
+    payment_method: str
+    installment_count: int
+    paid_installments: int
+    notes: Optional[str]
     payment_notes: Optional[str]
+    sale_items: List[SaleItemResponse]
     
     class Config:
         from_attributes = True

@@ -82,6 +82,46 @@ h4,
   border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
+.brand-surface {
+  background: linear-gradient(180deg, rgba(29, 25, 27, 0.96), rgba(19, 17, 18, 0.98));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.24);
+}
+
+.brand-surface-soft {
+  background: linear-gradient(180deg, rgba(39, 34, 36, 0.86), rgba(24, 21, 22, 0.92));
+  border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.brand-panel-title {
+  color: var(--brand-text);
+}
+
+.brand-panel-copy {
+  color: rgba(244, 239, 239, 0.62);
+}
+
+.brand-field {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--brand-text);
+}
+
+.brand-field::placeholder {
+  color: rgba(244, 239, 239, 0.34);
+}
+
+.brand-field:focus {
+  outline: none;
+  border-color: rgba(255, 67, 163, 0.38);
+  box-shadow: 0 0 0 3px rgba(255, 67, 163, 0.12);
+}
+
+.brand-field option {
+  color: #111827;
+  background: #ffffff;
+}
+
 .brand-input {
   background: rgba(255, 255, 255, 0.04);
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -136,6 +176,130 @@ select:not(.brand-input) option {
   border: 1px solid rgba(255, 255, 255, 0.12);
 }
 
+.brand-button-secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.brand-nav-pill {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.04);
+  color: rgba(244, 239, 239, 0.72);
+}
+
+.brand-nav-pill:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--brand-text);
+}
+
+.brand-nav-pill-active {
+  background: linear-gradient(135deg, rgba(255, 67, 163, 0.18), rgba(245, 134, 52, 0.14));
+  border: 1px solid rgba(255, 67, 163, 0.22);
+  color: var(--brand-text);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.brand-notice {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  backdrop-filter: blur(16px);
+  box-shadow: 0 18px 34px rgba(0, 0, 0, 0.28);
+}
+
+.brand-notice-success {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(10, 30, 25, 0.92));
+  color: #d9fff0;
+}
+
+.brand-notice-error {
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.22), rgba(41, 16, 18, 0.92));
+  color: #ffe3e3;
+}
+
+.brand-notice-warning {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.22), rgba(45, 27, 9, 0.92));
+  color: #fff0cf;
+}
+
+.brand-notice-info {
+  background: linear-gradient(135deg, rgba(92, 198, 208, 0.22), rgba(16, 28, 33, 0.92));
+  color: #daf8fb;
+}
+
+.brand-empty {
+  border: 1px dashed rgba(255, 255, 255, 0.12);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02));
+}
+
+.brand-kicker {
+  color: rgba(255, 67, 163, 0.92);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+}
+
+.brand-value {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(2rem, 4vw, 3.25rem);
+  line-height: 0.95;
+  letter-spacing: 0.01em;
+}
+
+.brand-metric-card {
+  background:
+    radial-gradient(circle at top right, rgba(255, 67, 163, 0.12), transparent 35%),
+    linear-gradient(180deg, rgba(39, 34, 36, 0.92), rgba(19, 17, 18, 0.98));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 24px 50px rgba(0, 0, 0, 0.24);
+}
+
+.brand-metric-card-muted {
+  background: linear-gradient(180deg, rgba(31, 27, 29, 0.82), rgba(17, 15, 16, 0.94));
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.brand-data-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.brand-modal-shell {
+  background: rgba(4, 4, 5, 0.72);
+  backdrop-filter: blur(10px);
+}
+
+.brand-modal-panel {
+  background:
+    radial-gradient(circle at top right, rgba(255, 67, 163, 0.1), transparent 32%),
+    linear-gradient(180deg, rgba(36, 31, 34, 0.98), rgba(17, 15, 16, 0.99));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 32px 80px rgba(0, 0, 0, 0.36);
+}
+
+.brand-action-inline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.brand-skeleton {
+  position: relative;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.brand-skeleton::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.12), transparent);
+  animation: shimmer 1.35s ease-in-out infinite;
+}
+
 @keyframes fadeUp {
   from {
     opacity: 0;
@@ -144,6 +308,12 @@ select:not(.brand-input) option {
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
   }
 }
 

@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException, Query
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 from database import get_db
 from models import Stock, Product
 from schemas import StockCreate, StockUpdate, StockResponse, ProductUpdate, ProductResponse
@@ -38,7 +38,12 @@ def create_stock(stock: StockCreate, db: Session = Depends(get_db)):
 @router.get("/{stock_id}", response_model=StockResponse)
 def get_stock(stock_id: int, db: Session = Depends(get_db)):
     """Obtém um registro de estoque pelo ID"""
-    db_stock = db.query(Stock).filter(Stock.id == stock_id).first()
+    db_stock = (
+        db.query(Stock)
+        .options(joinedload(Stock.product))
+        .filter(Stock.id == stock_id)
+        .first()
+    )
     if not db_stock:
         raise HTTPException(status_code=404, detail="Estoque não encontrado")
     return db_stock
@@ -53,7 +58,7 @@ def list_stocks(
     db: Session = Depends(get_db)
 ):
     """Lista estoques com filtros"""
-    query = db.query(Stock)
+    query = db.query(Stock).options(joinedload(Stock.product))
     
     if product_id:
         query = query.filter(Stock.product_id == product_id)
@@ -61,7 +66,7 @@ def list_stocks(
     if warehouse:
         query = query.filter(Stock.warehouse.ilike(f"%{warehouse}%"))
     
-    return query.offset(skip).limit(limit).all()
+    return query.order_by(Stock.id.desc()).offset(skip).limit(limit).all()
 
 
 @router.put("/{stock_id}", response_model=StockResponse)
@@ -96,7 +101,12 @@ def get_stock_by_product(
     if not product:
         raise HTTPException(status_code=404, detail="Produto não encontrado")
     
-    stocks = db.query(Stock).filter(Stock.product_id == product_id).all()
+    stocks = (
+        db.query(Stock)
+        .options(joinedload(Stock.product))
+        .filter(Stock.product_id == product_id)
+        .all()
+    )
     return stocks
 
 
@@ -162,7 +172,12 @@ def get_available_stocks(
     db: Session = Depends(get_db)
 ):
     """Obtém estoques com quantidade mínima especificada"""
-    stocks = db.query(Stock).filter(Stock.quantity >= min_quantity).all()
+    stocks = (
+        db.query(Stock)
+        .options(joinedload(Stock.product))
+        .filter(Stock.quantity >= min_quantity)
+        .all()
+    )
     return stocks
 
 
@@ -172,7 +187,12 @@ def get_low_stock(
     db: Session = Depends(get_db)
 ):
     """Obtém produtos com estoque baixo"""
-    stocks = db.query(Stock).filter(Stock.quantity <= threshold).all()
+    stocks = (
+        db.query(Stock)
+        .options(joinedload(Stock.product))
+        .filter(Stock.quantity <= threshold)
+        .all()
+    )
     return stocks
 
 

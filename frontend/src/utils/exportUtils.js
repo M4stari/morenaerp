@@ -1,51 +1,74 @@
 import jsPDF from 'jspdf'
 import html2canvas from 'html2canvas'
+import morenaLogo from '../assets/morena-logo-original.png'
 
 const BRAND = {
-  ink: [22, 19, 20],
-  panel: [33, 29, 31],
-  pink: [255, 67, 163],
-  red: [237, 50, 55],
-  orange: [245, 134, 52],
-  text: [244, 239, 239],
-  muted: [120, 120, 125],
-  line: [228, 228, 231]
+  black: [9, 9, 10],
+  panel: [17, 17, 18],
+  panelSoft: [26, 26, 28],
+  white: [245, 245, 245],
+  softWhite: [220, 220, 224],
+  muted: [132, 132, 138],
+  line: [54, 54, 58],
+  accent: [198, 198, 204]
 }
+
+let brandLogoDataUrlPromise
 
 const formatCurrency = (value) =>
   new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(Number(value || 0))
 
-const drawBrandHeader = (pdf, title, subtitle = 'MORENA CONCEPT') => {
+const getBrandLogoDataUrl = async () => {
+  if (!brandLogoDataUrlPromise) {
+    brandLogoDataUrlPromise = fetch(morenaLogo)
+      .then((response) => response.blob())
+      .then(
+        (blob) =>
+          new Promise((resolve, reject) => {
+            const reader = new FileReader()
+            reader.onloadend = () => resolve(reader.result)
+            reader.onerror = reject
+            reader.readAsDataURL(blob)
+          })
+      )
+  }
+
+  return brandLogoDataUrlPromise
+}
+
+const drawBrandHeader = async (pdf, title, subtitle = 'MORENA CONCEPT') => {
   const pageWidth = pdf.internal.pageSize.getWidth()
+  const logoDataUrl = await getBrandLogoDataUrl()
 
-  pdf.setFillColor(...BRAND.ink)
-  pdf.rect(0, 0, pageWidth, 34, 'F')
+  pdf.setFillColor(...BRAND.black)
+  pdf.rect(0, 0, pageWidth, 38, 'F')
 
-  pdf.setFillColor(...BRAND.pink)
-  pdf.rect(0, 0, pageWidth * 0.34, 3, 'F')
-  pdf.setFillColor(...BRAND.red)
-  pdf.rect(pageWidth * 0.34, 0, pageWidth * 0.33, 3, 'F')
-  pdf.setFillColor(...BRAND.orange)
-  pdf.rect(pageWidth * 0.67, 0, pageWidth * 0.33, 3, 'F')
+  pdf.setDrawColor(...BRAND.line)
+  pdf.line(14, 31, pageWidth - 14, 31)
 
-  pdf.setTextColor(...BRAND.text)
+  pdf.addImage(logoDataUrl, 'PNG', 14, 7, 18, 18)
+
+  pdf.setTextColor(...BRAND.white)
   pdf.setFont('helvetica', 'bold')
-  pdf.setFontSize(18)
-  pdf.text(subtitle, 14, 15)
+  pdf.setFontSize(15)
+  pdf.text(subtitle, 38, 14)
 
   pdf.setFont('helvetica', 'normal')
-  pdf.setFontSize(9)
-  pdf.text('Imagine a Place', 14, 21)
+  pdf.setFontSize(8)
+  pdf.setTextColor(...BRAND.muted)
+  pdf.text('Documento comercial', 38, 20)
 
   pdf.setFont('helvetica', 'bold')
   pdf.setFontSize(16)
-  pdf.text(title, pageWidth - 14, 18, { align: 'right' })
+  pdf.setTextColor(...BRAND.white)
+  pdf.text(title, pageWidth - 14, 15, { align: 'right' })
 
   pdf.setFont('helvetica', 'normal')
-  pdf.setFontSize(9)
-  pdf.text(`Gerado em ${new Date().toLocaleDateString('pt-BR')}`, pageWidth - 14, 24, { align: 'right' })
+  pdf.setFontSize(8)
+  pdf.setTextColor(...BRAND.softWhite)
+  pdf.text(`Gerado em ${new Date().toLocaleDateString('pt-BR')}`, pageWidth - 14, 21, { align: 'right' })
 
-  return 44
+  return 42
 }
 
 const drawBrandFooter = (pdf) => {
@@ -53,15 +76,15 @@ const drawBrandFooter = (pdf) => {
   const pageHeight = pdf.internal.pageSize.getHeight()
 
   pdf.setDrawColor(...BRAND.line)
-  pdf.line(14, pageHeight - 14, pageWidth - 14, pageHeight - 14)
+  pdf.line(14, pageHeight - 15, pageWidth - 14, pageHeight - 15)
   pdf.setTextColor(...BRAND.muted)
   pdf.setFontSize(8)
-  pdf.text('ERP MORENA CONCEPT', 14, pageHeight - 8)
-  pdf.text(`Pagina ${pdf.getCurrentPageInfo().pageNumber}`, pageWidth - 14, pageHeight - 8, { align: 'right' })
+  pdf.text('MORENA CONCEPT • ERP', 14, pageHeight - 9)
+  pdf.text(`Pagina ${pdf.getCurrentPageInfo().pageNumber}`, pageWidth - 14, pageHeight - 9, { align: 'right' })
 }
 
-const drawPageShell = (pdf, title, subtitle) => {
-  const y = drawBrandHeader(pdf, title, subtitle)
+const drawPageShell = async (pdf, title, subtitle) => {
+  const y = await drawBrandHeader(pdf, title, subtitle)
   drawBrandFooter(pdf)
   return y
 }
@@ -89,7 +112,7 @@ export async function exportToPDF(elementId, filename) {
 
     const pageWidth = pdf.internal.pageSize.getWidth()
     const pageHeight = pdf.internal.pageSize.getHeight()
-    const topY = drawPageShell(pdf, 'Exportacao visual', 'MORENA CONCEPT')
+    const topY = await drawPageShell(pdf, 'Exportacao visual', 'MORENA CONCEPT')
     const imgWidth = pageWidth - 20
     const imgHeight = (canvas.height * imgWidth) / canvas.width
     let heightLeft = imgHeight
@@ -100,7 +123,7 @@ export async function exportToPDF(elementId, filename) {
 
     while (heightLeft >= 0) {
       pdf.addPage()
-      const pageTopY = drawPageShell(pdf, 'Exportacao visual', 'MORENA CONCEPT')
+      const pageTopY = await drawPageShell(pdf, 'Exportacao visual', 'MORENA CONCEPT')
       position = pageTopY - (imgHeight - heightLeft)
       pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight)
       heightLeft -= pageHeight - (pageTopY + 20)
@@ -130,11 +153,11 @@ export function exportTableToCSV(headers, rows, filename) {
   document.body.removeChild(link)
 }
 
-export function generateSimpleTablePDF(title, headers, rows, filename) {
+export async function generateSimpleTablePDF(title, headers, rows, filename) {
   const pdf = new jsPDF()
   const pageWidth = pdf.internal.pageSize.getWidth()
   const pageHeight = pdf.internal.pageSize.getHeight()
-  let yPosition = drawPageShell(pdf, title, 'MORENA CONCEPT')
+  let yPosition = await drawPageShell(pdf, title, 'MORENA CONCEPT')
 
   pdf.setFontSize(9)
   pdf.setTextColor(...BRAND.muted)
@@ -146,24 +169,24 @@ export function generateSimpleTablePDF(title, headers, rows, filename) {
   const cellHeight = 8
 
   pdf.setFillColor(...BRAND.panel)
-  pdf.setTextColor(...BRAND.text)
+  pdf.setTextColor(...BRAND.white)
   headers.forEach((header, index) => {
     pdf.roundedRect(14 + index * cellWidth, yPosition, cellWidth, cellHeight, 1.5, 1.5, 'F')
     pdf.text(header, 16 + index * cellWidth, yPosition + 5.2, { maxWidth: cellWidth - 4 })
   })
   yPosition += cellHeight + 2
 
-  pdf.setTextColor(35, 35, 35)
+  pdf.setTextColor(32, 32, 32)
   let alternateColor = false
 
-  rows.forEach((row) => {
+  for (const row of rows) {
     if (yPosition > pageHeight - 20) {
       pdf.addPage()
-      yPosition = drawPageShell(pdf, title, 'MORENA CONCEPT')
+      yPosition = await drawPageShell(pdf, title, 'MORENA CONCEPT')
     }
 
     if (alternateColor) {
-      pdf.setFillColor(248, 248, 249)
+      pdf.setFillColor(242, 242, 244)
       pdf.roundedRect(14, yPosition - 1.5, pageWidth - 28, cellHeight, 1.2, 1.2, 'F')
     }
 
@@ -175,87 +198,105 @@ export function generateSimpleTablePDF(title, headers, rows, filename) {
 
     yPosition += cellHeight
     alternateColor = !alternateColor
-  })
+  }
 
+  drawBrandFooter(pdf)
   pdf.save(`${filename}.pdf`)
 }
 
-export function generateOrderPDF({ title, customerName, notes, dueDate, paymentNotes, items, total, filename }) {
+export async function generateOrderPDF({ title, customerName, notes, dueDate, paymentNotes, items, total, filename }) {
   const pdf = new jsPDF()
   const pageWidth = pdf.internal.pageSize.getWidth()
   const pageHeight = pdf.internal.pageSize.getHeight()
-  let y = drawPageShell(pdf, title || 'Pedido', 'MORENA CONCEPT')
+  let y = await drawPageShell(pdf, title || 'Pedido', 'MORENA CONCEPT')
 
-  pdf.setFillColor(252, 250, 251)
-  pdf.roundedRect(14, y, pageWidth - 28, 30, 3, 3, 'F')
+  pdf.setFillColor(...BRAND.panel)
+  pdf.roundedRect(14, y, pageWidth - 28, 34, 4, 4, 'F')
 
+  pdf.setTextColor(...BRAND.softWhite)
   pdf.setFont('helvetica', 'bold')
-  pdf.setFontSize(11)
-  pdf.setTextColor(...BRAND.panel)
-  pdf.text('Cliente', 18, y + 8)
-  pdf.text('Pagamento', 108, y + 8)
+  pdf.setFontSize(8)
+  pdf.text('CLIENTE', 18, y + 8)
+  pdf.text('PAGAMENTO', 108, y + 8)
 
   pdf.setFont('helvetica', 'normal')
   pdf.setFontSize(10)
+  pdf.setTextColor(...BRAND.white)
   pdf.text(customerName || 'Nao informado', 18, y + 15)
   pdf.text(`Vencimento: ${dueDate || 'Sem vencimento'}`, 108, y + 15)
-  pdf.text(paymentNotes || 'Sem observacoes financeiras', 108, y + 22)
-  y += 38
+
+  pdf.setTextColor(...BRAND.accent)
+  const wrappedPayment = pdf.splitTextToSize(paymentNotes || 'Sem observacoes financeiras', pageWidth - 122)
+  pdf.text(wrappedPayment, 108, y + 22)
+  y += 42
 
   if (notes) {
+    pdf.setFillColor(244, 244, 246)
+    const wrappedNotes = pdf.splitTextToSize(notes, pageWidth - 36)
+    const noteHeight = Math.max(16, wrappedNotes.length * 5 + 8)
+    pdf.roundedRect(14, y, pageWidth - 28, noteHeight, 3, 3, 'F')
     pdf.setFont('helvetica', 'bold')
-    pdf.setFontSize(10)
-    pdf.text('Observacoes', 14, y)
-    y += 5
+    pdf.setFontSize(9)
+    pdf.setTextColor(...BRAND.panelSoft)
+    pdf.text('OBSERVACOES', 18, y + 7)
     pdf.setFont('helvetica', 'normal')
-    pdf.setTextColor(...BRAND.muted)
-    const wrappedNotes = pdf.splitTextToSize(notes, pageWidth - 28)
-    pdf.text(wrappedNotes, 14, y)
-    y += wrappedNotes.length * 5 + 5
+    pdf.setTextColor(60, 60, 65)
+    pdf.text(wrappedNotes, 18, y + 13)
+    y += noteHeight + 8
   }
 
-  pdf.setFillColor(...BRAND.panel)
-  pdf.setTextColor(...BRAND.text)
-  pdf.roundedRect(14, y, pageWidth - 28, 9, 2, 2, 'F')
-  pdf.text('Produto', 18, y + 5.8)
-  pdf.text('Qtd', 120, y + 5.8)
-  pdf.text('Unitario', 144, y + 5.8)
-  pdf.text('Subtotal', 173, y + 5.8)
-  y += 13
+  pdf.setFillColor(...BRAND.black)
+  pdf.setTextColor(...BRAND.white)
+  pdf.roundedRect(14, y, pageWidth - 28, 10, 2, 2, 'F')
+  pdf.text('Produto', 18, y + 6.2)
+  pdf.text('Qtd', 118, y + 6.2)
+  pdf.text('Unitario', 142, y + 6.2)
+  pdf.text('Subtotal', 171, y + 6.2)
+  y += 14
 
-  pdf.setTextColor(35, 35, 35)
-  items.forEach((item, index) => {
-    if (y > pageHeight - 24) {
+  pdf.setTextColor(28, 28, 30)
+  for (const [index, item] of items.entries()) {
+    if (y > pageHeight - 30) {
       pdf.addPage()
-      y = drawPageShell(pdf, title || 'Pedido', 'MORENA CONCEPT')
+      y = await drawPageShell(pdf, title || 'Pedido', 'MORENA CONCEPT')
+
+      pdf.setFillColor(...BRAND.black)
+      pdf.setTextColor(...BRAND.white)
+      pdf.roundedRect(14, y, pageWidth - 28, 10, 2, 2, 'F')
+      pdf.text('Produto', 18, y + 6.2)
+      pdf.text('Qtd', 118, y + 6.2)
+      pdf.text('Unitario', 142, y + 6.2)
+      pdf.text('Subtotal', 171, y + 6.2)
+      y += 14
     }
 
-    if (index % 2 === 0) {
-      pdf.setFillColor(250, 247, 248)
-      pdf.roundedRect(14, y - 4.8, pageWidth - 28, 9, 1.5, 1.5, 'F')
-    }
+    pdf.setFillColor(index % 2 === 0 ? 247 : 238, index % 2 === 0 ? 247 : 238, index % 2 === 0 ? 249 : 240)
+    pdf.roundedRect(14, y - 5, pageWidth - 28, 10, 1.8, 1.8, 'F')
 
     pdf.text(String(item.name), 18, y)
-    pdf.text(String(item.quantity), 122, y)
-    pdf.text(formatCurrency(item.unitPrice), 144, y)
-    pdf.text(formatCurrency(item.subtotal), 173, y)
-    y += 9
-  })
+    pdf.text(String(item.quantity), 120, y)
+    pdf.text(formatCurrency(item.unitPrice), 142, y)
+    pdf.text(formatCurrency(item.subtotal), 171, y)
+    y += 11
+  }
 
-  y += 4
-  pdf.setDrawColor(...BRAND.line)
-  pdf.line(120, y, pageWidth - 14, y)
-  y += 8
-
+  y += 3
+  pdf.setFillColor(...BRAND.black)
+  pdf.roundedRect(126, y, pageWidth - 140, 16, 3, 3, 'F')
+  pdf.setTextColor(...BRAND.softWhite)
+  pdf.setFont('helvetica', 'normal')
+  pdf.setFontSize(8)
+  pdf.text('TOTAL DO PEDIDO', pageWidth - 18, y + 5.5, { align: 'right' })
   pdf.setFont('helvetica', 'bold')
   pdf.setFontSize(16)
-  pdf.setTextColor(...BRAND.pink)
-  pdf.text(`Total ${formatCurrency(total)}`, pageWidth - 14, y, { align: 'right' })
+  pdf.setTextColor(...BRAND.white)
+  pdf.text(formatCurrency(total), pageWidth - 18, y + 12, { align: 'right' })
 
   pdf.setFont('helvetica', 'normal')
-  pdf.setFontSize(9)
+  pdf.setFontSize(8)
   pdf.setTextColor(...BRAND.muted)
   pdf.text('Documento gerado pelo ERP Morena Concept', 14, pageHeight - 18)
 
+  drawBrandFooter(pdf)
   pdf.save(`${filename}.pdf`)
 }

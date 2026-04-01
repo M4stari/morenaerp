@@ -115,9 +115,11 @@ export const salesAPI = {
   delete: (id) => api.delete(`/sales/${id}`),
   cancel: (id) => api.post(`/sales/${id}/cancel`),
   finalize: (id) => api.post(`/sales/${id}/finalize`),
+  payInstallment: (id, quantity = 1) => api.post(`/sales/${id}/pay-installment`, null, { params: { quantity } }),
   getByCustomer: (customerId) => api.get(`/sales/customer/${customerId}`),
   dailyReport: (date) => api.get('/sales/report/daily', { params: date ? { date } : {} }),
-  financialReport: () => api.get('/sales/report/financial')
+  financialReport: () => api.get('/sales/report/financial'),
+  dashboardSummary: (params) => api.get('/sales/report/dashboard-summary', { params })
 }
 
 export default api
