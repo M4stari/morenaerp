@@ -3,11 +3,10 @@
     <section class="brand-card rounded-[32px] p-8">
       <div class="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
         <div>
-          <p class="text-xs uppercase tracking-[0.45em] text-brand-pink">Performance lab</p>
-          <h1 class="mt-4 font-display text-4xl text-white sm:text-5xl">Relatorios e analises da operacao</h1>
+          <p class="text-xs uppercase tracking-[0.45em] text-brand-pink">Maison insight</p>
+          <h1 class="mt-4 font-display text-4xl text-white sm:text-5xl">Leituras estratégicas da boutique</h1>
           <p class="mt-4 max-w-2xl text-base leading-7 text-white/70">
-            Consolidado comercial com leitura mais limpa, visual escuro e destaque para receita,
-            ticket medio e comportamento das vendas ao longo do periodo.
+            Acompanhe receita, ticket médio e comportamento comercial com uma leitura mais refinada para decisões da marca.
           </p>
         </div>
 
@@ -38,7 +37,7 @@
     <section class="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4">
       <StatCard title="Receita" :value="`R$ ${metrics.totalAmount.toFixed(2)}`" icon="R$" text-color="text-brand-pink" />
       <StatCard title="Vendas" :value="String(metrics.totalSales)" icon="V" text-color="text-white" />
-      <StatCard title="Ticket medio" :value="`R$ ${metrics.averageTicket.toFixed(2)}`" icon="TM" text-color="text-brand-orange" />
+      <StatCard title="Ticket médio" :value="`R$ ${metrics.averageTicket.toFixed(2)}`" icon="TM" text-color="text-brand-orange" />
       <StatCard title="Itens em estoque" :value="String(metrics.totalStockQuantity)" icon="E" text-color="text-brand-green" />
     </section>
 
@@ -70,8 +69,8 @@
 
     <section class="grid gap-6 lg:grid-cols-[0.92fr_1.08fr]">
       <div class="brand-card rounded-[30px] p-8">
-        <p class="text-xs uppercase tracking-[0.35em] text-brand-orange">Melhores clientes</p>
-        <h2 class="mt-3 font-display text-3xl text-white sm:text-4xl">Ranking comercial</h2>
+        <p class="text-xs uppercase tracking-[0.35em] text-brand-orange">Clientes em destaque</p>
+        <h2 class="mt-3 font-display text-3xl text-white sm:text-4xl">Ranking de relacionamento</h2>
 
         <div class="mt-8 space-y-4">
           <div
@@ -90,14 +89,14 @@
 
           <div v-if="topCustomers.length === 0" class="brand-surface-soft rounded-[22px] px-4 py-8 text-center">
             <p class="text-xs uppercase tracking-[0.28em] text-brand-pink">Sem ranking</p>
-            <p class="mt-3 text-sm text-white/50">Ainda nao ha vendas suficientes para montar o ranking dos clientes.</p>
+            <p class="mt-3 text-sm text-white/50">Ainda não há vendas suficientes para montar o ranking de clientes.</p>
           </div>
         </div>
       </div>
 
       <div class="brand-card rounded-[30px] p-8">
         <p class="text-xs uppercase tracking-[0.35em] text-brand-green">Detalhamento</p>
-        <h2 class="mt-3 font-display text-3xl text-white sm:text-4xl">Ultimas vendas completas</h2>
+        <h2 class="mt-3 font-display text-3xl text-white sm:text-4xl">Últimos pedidos concluídos</h2>
 
         <div class="mt-8 overflow-x-auto">
           <table class="min-w-full text-sm">
@@ -126,7 +125,7 @@
             <p class="text-xs uppercase tracking-[0.32em] text-brand-pink">Sem movimento</p>
             <h3 class="mt-3 font-display text-4xl text-white">Nenhuma venda no periodo</h3>
             <p class="mx-auto mt-3 max-w-lg text-sm leading-6 text-white/55">
-              Ajuste o intervalo de datas ou realize novas vendas para acompanhar a operacao por aqui com mais contexto.
+              Ajuste o intervalo de datas ou realize novas vendas para acompanhar a operação com mais contexto.
             </p>
           </div>
         </div>
@@ -192,7 +191,7 @@ const stockBreakdown = computed(() => {
 const topCustomers = computed(() => {
   const totals = {}
   filteredDetailedSales.value.forEach(sale => {
-    const name = customerDictionary.value[sale.customer_id] || 'Cliente desconhecido'
+    const name = customerDictionary.value[sale.customer_id] || 'Cliente não identificado'
     if (!totals[name]) {
       totals[name] = { name, total: 0, sales: 0 }
     }
@@ -205,7 +204,7 @@ const topCustomers = computed(() => {
     .slice(0, 5)
 })
 
-const customerName = (customerId) => customerDictionary.value[customerId] || 'Cliente desconhecido'
+const customerName = (customerId) => customerDictionary.value[customerId] || 'Cliente não identificado'
 const formatDate = (value) => new Date(value).toLocaleDateString('pt-BR')
 
 const drawSalesChart = async () => {

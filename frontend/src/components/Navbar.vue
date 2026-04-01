@@ -18,7 +18,7 @@
 
         <div class="flex items-center gap-2 sm:gap-3">
           <span class="hidden text-xs uppercase tracking-[0.35em] text-brand-gray xl:inline">
-            lifestyle, moda e valor
+            curadoria, desejo e presença
           </span>
 
           <button
@@ -41,7 +41,7 @@
               @click="showUserMenu = !showUserMenu"
               class="brand-button-secondary rounded-full px-3 py-2 text-xs font-semibold transition sm:px-4 sm:text-sm"
             >
-              <span class="hidden sm:inline">{{ authStore.user?.name || 'Usuario' }}</span>
+              <span class="hidden sm:inline">{{ authStore.user?.name || 'Ateliê' }}</span>
               <span class="sm:hidden">Perfil</span>
             </button>
 
@@ -52,7 +52,7 @@
               <div class="border-b border-white/10 px-4 py-4">
                 <p class="font-semibold text-white">{{ authStore.user?.name }}</p>
                 <p class="mt-1 text-xs uppercase tracking-[0.28em] text-brand-gray">
-                  {{ authStore.user?.role || 'usuario' }}
+                  {{ authStore.user?.role || 'usuário' }}
                 </p>
                 <p class="mt-3 text-sm text-white/70">{{ authStore.user?.email }}</p>
               </div>
@@ -60,7 +60,7 @@
                 @click="handleLogout"
                 class="w-full px-4 py-4 text-left text-sm font-semibold text-brand-pink transition hover:bg-white/5"
               >
-                Encerrar sessao
+                Encerrar sessão
               </button>
             </div>
           </div>
@@ -105,7 +105,7 @@ const navItems = computed(() => [
   { to: '/products', label: 'Produtos' },
   { to: '/inventory', label: 'Estoque' },
   { to: '/sales', label: 'Vendas' },
-  { to: '/reports', label: 'Relatorios' }
+  { to: '/reports', label: 'Relatórios' }
 ])
 
 const isActive = (path) => route.path === path || (path === '/dashboard' && route.path === '/')

@@ -3,9 +3,9 @@
     <div class="brand-card rounded-[30px] p-8">
       <div class="flex items-center justify-between gap-4">
         <div>
-          <p class="text-xs uppercase tracking-[0.35em] text-brand-pink">Comercial</p>
-          <h1 class="mt-3 text-3xl font-bold text-white sm:text-4xl mb-2">Gestao de Vendas</h1>
-          <p class="brand-panel-copy text-sm">Realize vendas, acompanhe pendencias e movimente a operacao da marca.</p>
+          <p class="text-xs uppercase tracking-[0.35em] text-brand-pink">Atendimento</p>
+          <h1 class="mt-3 text-3xl font-bold text-white sm:text-4xl mb-2">Experiência de Vendas</h1>
+          <p class="brand-panel-copy text-sm">Conduza pedidos, acompanhe pagamentos e mantenha a experiência comercial da boutique sob controle.</p>
         </div>
         <div class="text-6xl text-white/10">$</div>
       </div>
@@ -15,29 +15,29 @@
       <div class="brand-metric-card rounded-[24px] p-5">
         <p class="brand-kicker text-white/45">Pedidos em aberto</p>
         <p class="brand-value mt-4 text-white">{{ pendingSales.length }}</p>
-        <p class="mt-3 text-sm text-white/55">Vendas aguardando quitacao total.</p>
+        <p class="mt-3 text-sm text-white/55">Pedidos aguardando quitação integral.</p>
       </div>
       <div class="brand-metric-card rounded-[24px] p-5">
         <p class="brand-kicker text-white/45">Itens no carrinho</p>
         <p class="brand-value mt-4 text-brand-pink">{{ cart.length }}</p>
-        <p class="mt-3 text-sm text-white/55">Produtos separados para o pedido atual.</p>
+        <p class="mt-3 text-sm text-white/55">Peças selecionadas para este atendimento.</p>
       </div>
       <div class="brand-metric-card rounded-[24px] p-5">
         <p class="brand-kicker text-white/45">Valor em aberto</p>
         <p class="brand-value mt-4 text-amber-100">R$ {{ pendingBalance.toFixed(2) }}</p>
-        <p class="mt-3 text-sm text-white/55">Saldo comercial aguardando pagamento.</p>
+        <p class="mt-3 text-sm text-white/55">Valor ainda aguardando retorno financeiro.</p>
       </div>
       <div class="brand-metric-card rounded-[24px] p-5">
         <p class="brand-kicker text-white/45">Ticket atual</p>
         <p class="brand-value mt-4 text-emerald-200">R$ {{ total.toFixed(2) }}</p>
-        <p class="mt-3 text-sm text-white/55">Valor do carrinho em construcao.</p>
+        <p class="mt-3 text-sm text-white/55">Valor do pedido em construção.</p>
       </div>
     </div>
 
     <div class="grid grid-cols-1 gap-6 xl:grid-cols-[1.2fr_0.8fr]">
       <div>
         <div class="brand-surface rounded-[28px] p-6 space-y-4 text-white">
-          <h2 class="text-2xl font-bold text-white">Nova Venda</h2>
+          <h2 class="text-2xl font-bold text-white">Novo atendimento</h2>
 
           <div v-if="saleError" class="rounded-2xl border border-red-300/25 bg-red-500/10 px-4 py-3 text-sm text-red-100">
             {{ saleError }}
@@ -92,10 +92,10 @@
           </div>
 
           <div>
-            <label class="mb-2 block text-sm font-semibold text-white">Observacoes</label>
+            <label class="mb-2 block text-sm font-semibold text-white">Observações</label>
             <textarea
               v-model="newSale.notes"
-              placeholder="Anotacoes sobre a venda..."
+              placeholder="Anotações sobre a venda..."
               rows="3"
               class="brand-field w-full rounded-2xl px-4 py-4 transition"
             ></textarea>
@@ -111,7 +111,7 @@
               <input
                 v-model="newSale.payment_notes"
                 type="text"
-                placeholder="Pix, prazo, parcial..."
+                placeholder="Pix, prazo, cobrança parcial..."
                 class="brand-field w-full rounded-2xl px-4 py-4 transition"
               />
             </div>
@@ -142,7 +142,7 @@
           <div class="mb-4 flex items-start justify-between gap-4">
             <div>
               <p class="brand-kicker text-white/40">Pedido atual</p>
-              <h2 class="mt-2 text-2xl font-bold text-white">Carrinho</h2>
+              <h2 class="mt-2 text-2xl font-bold text-white">Seleção da cliente</h2>
             </div>
             <div class="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-right">
               <p class="text-[11px] uppercase tracking-[0.18em] text-white/35">Forma</p>
@@ -221,8 +221,8 @@
         <div class="brand-surface rounded-[28px] p-6 text-white">
           <div class="flex items-center justify-between gap-4">
             <div>
-              <h2 class="text-2xl font-bold text-white">A receber</h2>
-              <p class="mt-1 text-sm text-white/45">Produtos vendidos em vendas ainda pendentes.</p>
+              <h2 class="text-2xl font-bold text-white">Contas a receber</h2>
+              <p class="mt-1 text-sm text-white/45">Peças já faturadas que ainda aguardam retorno financeiro.</p>
             </div>
             <span class="brand-chip rounded-full px-3 py-2 text-xs font-bold uppercase tracking-[0.2em]">
               {{ pendingSales.length }} pendentes
@@ -260,8 +260,8 @@
     <div class="brand-surface rounded-[28px] p-6 text-white">
       <div class="mb-4 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
         <div>
-          <h2 class="text-2xl font-bold text-white">Vendas Recentes</h2>
-          <p class="mt-1 text-sm text-white/45">Filtre rapidamente por status de pagamento.</p>
+          <h2 class="text-2xl font-bold text-white">Movimento recente</h2>
+          <p class="mt-1 text-sm text-white/45">Acompanhe o histórico comercial por status de pagamento.</p>
         </div>
         <div>
           <label class="mb-2 block text-xs font-semibold uppercase tracking-[0.2em] text-white/45">Filtro</label>
@@ -287,7 +287,7 @@
               <th class="px-4 py-3 text-left font-bold text-white/60">Pagamento</th>
               <th class="px-4 py-3 text-left font-bold text-white/60">Data</th>
               <th class="px-4 py-3 text-left font-bold text-white/60">Status</th>
-              <th class="px-4 py-3 text-left font-bold text-white/60">Acoes</th>
+              <th class="px-4 py-3 text-left font-bold text-white/60">Ações</th>
             </tr>
           </thead>
           <tbody>
@@ -351,8 +351,8 @@
         <div class="flex items-start justify-between gap-4">
           <div>
             <p class="text-xs uppercase tracking-[0.25em] text-brand-pink">Pagamento</p>
-            <h3 class="mt-2 text-2xl font-bold text-white">Configurar forma de pagamento</h3>
-            <p class="mt-2 text-sm text-white/45">Escolha como a venda sera paga e quantas parcelas ficarao em aberto.</p>
+            <h3 class="mt-2 text-2xl font-bold text-white">Configurar pagamento</h3>
+            <p class="mt-2 text-sm text-white/45">Defina a forma de pagamento e o parcelamento com a mesma elegância do atendimento.</p>
           </div>
           <button @click="closePaymentModal" type="button" class="rounded-full border border-white/10 px-3 py-2 text-sm text-white/70 transition hover:bg-white/8 hover:text-white">
             Fechar
@@ -361,7 +361,7 @@
 
         <div class="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2">
           <div>
-            <label class="mb-2 block text-sm font-semibold text-white">Tipo de pagamento</label>
+            <label class="mb-2 block text-sm font-semibold text-white">Forma de pagamento</label>
             <select v-model="paymentDraft.method" class="brand-field w-full rounded-2xl px-4 py-4 transition">
               <option v-for="option in paymentMethods" :key="option" :value="option">
                 {{ option }}
@@ -369,7 +369,7 @@
             </select>
           </div>
           <div>
-            <label class="mb-2 block text-sm font-semibold text-white">Numero de parcelas</label>
+            <label class="mb-2 block text-sm font-semibold text-white">Número de parcelas</label>
             <input
               v-model.number="paymentDraft.installments"
               type="number"
@@ -377,7 +377,7 @@
               max="24"
               class="brand-field w-full rounded-2xl px-4 py-4 transition"
             />
-            <p class="mt-2 text-[11px] text-white/35">Depois voce podera quitar uma parcela por vez na lista de vendas.</p>
+            <p class="mt-2 text-[11px] text-white/35">Depois, você poderá quitar uma parcela por vez na lista de vendas.</p>
           </div>
         </div>
 
@@ -400,7 +400,7 @@
             Cancelar
           </button>
           <button @click="applyPaymentSettings" type="button" class="brand-button-primary rounded-2xl px-5 py-3 font-semibold transition">
-            Aplicar configuracao
+            Aplicar configuração
           </button>
         </div>
       </div>
@@ -424,7 +424,7 @@ const loadError = ref('')
 const saleError = ref('')
 const actionLoadingId = ref(null)
 const showPaymentModal = ref(false)
-const paymentMethods = ['Dinheiro', 'Pix', 'Cartao de Debito', 'Cartao de Credito', 'Boleto', 'Transferencia']
+const paymentMethods = ['Dinheiro', 'Pix', 'Cartão de Débito', 'Cartão de Crédito', 'Boleto', 'Transferência']
 const newItem = ref({ product_id: '', quantity: 1 })
 const paymentDraft = ref({
   method: 'Dinheiro',
@@ -584,7 +584,7 @@ const submitSale = async () => {
     }
     await fetchData()
   } catch (error) {
-    saleError.value = error.response?.data?.detail || error.message || 'Nao foi possivel registrar a venda.'
+    saleError.value = error.response?.data?.detail || error.message || 'Não foi possível registrar a venda.'
   } finally {
     submittingSale.value = false
   }
@@ -597,7 +597,7 @@ const finalizeSale = async (saleId) => {
     await salesAPI.finalize(saleId)
     await fetchData()
   } catch (error) {
-    loadError.value = error.response?.data?.detail || error.message || 'Nao foi possivel atualizar a venda.'
+    loadError.value = error.response?.data?.detail || error.message || 'Não foi possível atualizar a venda.'
   } finally {
     actionLoadingId.value = null
   }
@@ -612,7 +612,7 @@ const cancelSale = async (saleId) => {
     await salesAPI.cancel(saleId)
     await fetchData()
   } catch (error) {
-    loadError.value = error.response?.data?.detail || error.message || 'Nao foi possivel cancelar a venda.'
+    loadError.value = error.response?.data?.detail || error.message || 'Não foi possível cancelar a venda.'
   } finally {
     actionLoadingId.value = null
   }
@@ -625,7 +625,7 @@ const payOneInstallment = async (saleId) => {
     await salesAPI.payInstallment(saleId, 1)
     await fetchData()
   } catch (error) {
-    loadError.value = error.response?.data?.detail || error.message || 'Nao foi possivel quitar a parcela.'
+    loadError.value = error.response?.data?.detail || error.message || 'Não foi possível quitar a parcela.'
   } finally {
     actionLoadingId.value = null
   }
@@ -634,7 +634,7 @@ const payOneInstallment = async (saleId) => {
 const formatDate = (value) => new Date(value).toLocaleDateString('pt-BR')
 const buildOrderPayload = (saleLike, items) => ({
   title: saleLike.id ? `Pedido / Venda #${saleLike.id}` : 'Pedido em aberto',
-  customerName: saleLike.customer_name || customers.value.find((customer) => customer.id === Number(saleLike.customer_id))?.name || 'Cliente nao informado',
+  customerName: saleLike.customer_name || customers.value.find((customer) => customer.id === Number(saleLike.customer_id))?.name || 'Cliente não informado',
   notes: saleLike.notes,
   dueDate: formatDueDate(saleLike.due_date),
   paymentNotes: `${saleLike.payment_method || newSale.value.payment_method} • ${installmentLabel(saleLike)}${saleLike.payment_notes ? ` • ${saleLike.payment_notes}` : ''}`,
@@ -677,10 +677,10 @@ const fetchData = async () => {
     products.value = productsRes.data
     recentSales.value = salesRes.data.map((sale) => ({
       ...sale,
-      customer_name: sale.customer?.name || customers.value.find((customer) => customer.id === sale.customer_id)?.name || 'Cliente desconhecido'
+      customer_name: sale.customer?.name || customers.value.find((customer) => customer.id === sale.customer_id)?.name || 'Cliente não identificado'
     }))
   } catch (error) {
-    loadError.value = error.response?.data?.detail || error.message || 'Nao foi possivel carregar as vendas.'
+    loadError.value = error.response?.data?.detail || error.message || 'Não foi possível carregar as vendas.'
   } finally {
     loadingData.value = false
   }

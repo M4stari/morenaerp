@@ -93,7 +93,7 @@ export async function exportToPDF(elementId, filename) {
   try {
     const element = document.getElementById(elementId)
     if (!element) {
-      alert('Elemento nao encontrado para exportacao')
+      alert('Elemento não encontrado para exportação')
       return
     }
 
@@ -130,7 +130,7 @@ export async function exportToPDF(elementId, filename) {
     }
 
     pdf.save(`${filename}.pdf`)
-    alert(`Arquivo exportado: ${filename}.pdf`)
+      alert(`Arquivo exportado: ${filename}.pdf`)
   } catch (error) {
     alert(`Erro ao exportar PDF: ${error.message}`)
   }
@@ -222,11 +222,11 @@ export async function generateOrderPDF({ title, customerName, notes, dueDate, pa
   pdf.setFont('helvetica', 'normal')
   pdf.setFontSize(10)
   pdf.setTextColor(...BRAND.white)
-  pdf.text(customerName || 'Nao informado', 18, y + 15)
+  pdf.text(customerName || 'Não informado', 18, y + 15)
   pdf.text(`Vencimento: ${dueDate || 'Sem vencimento'}`, 108, y + 15)
 
   pdf.setTextColor(...BRAND.accent)
-  const wrappedPayment = pdf.splitTextToSize(paymentNotes || 'Sem observacoes financeiras', pageWidth - 122)
+  const wrappedPayment = pdf.splitTextToSize(paymentNotes || 'Sem observações financeiras', pageWidth - 122)
   pdf.text(wrappedPayment, 108, y + 22)
   y += 42
 
@@ -238,7 +238,7 @@ export async function generateOrderPDF({ title, customerName, notes, dueDate, pa
     pdf.setFont('helvetica', 'bold')
     pdf.setFontSize(9)
     pdf.setTextColor(...BRAND.panelSoft)
-    pdf.text('OBSERVACOES', 18, y + 7)
+    pdf.text('OBSERVAÇÕES', 18, y + 7)
     pdf.setFont('helvetica', 'normal')
     pdf.setTextColor(60, 60, 65)
     pdf.text(wrappedNotes, 18, y + 13)

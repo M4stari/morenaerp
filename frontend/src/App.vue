@@ -14,7 +14,7 @@
           <p class="mt-3 text-xs uppercase tracking-[0.4em] text-brand-pink">Imagine a Place</p>
         </div>
         <div class="max-w-xl text-sm leading-6 text-white/60">
-          Moda sustentavel com identidade forte, atmosfera premium e uma experiencia de gestao mais alinhada a marca.
+          Moda sustentável com identidade forte, atmosfera premium e uma experiência de gestão alinhada à marca.
         </div>
       </div>
     </footer>

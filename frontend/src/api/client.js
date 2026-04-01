@@ -11,7 +11,7 @@ const api = axios.create({
   }
 })
 
-const normalizeErrorMessage = (detail, fallback = 'Erro na validacao dos dados') => {
+const normalizeErrorMessage = (detail, fallback = 'Erro na validação dos dados') => {
   if (!detail) return fallback
 
   if (typeof detail === 'string') return detail
@@ -49,7 +49,7 @@ api.interceptors.response.use(
   (response) => {
     if (['post', 'put', 'delete'].includes(response.config.method)) {
       const notificationStore = useNotificationStore()
-      notificationStore.addNotification('Acao realizada com sucesso!', 'success', 3000)
+      notificationStore.addNotification('Ação realizada com sucesso.', 'success', 3000)
     }
     return response
   },

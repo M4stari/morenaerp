@@ -3,7 +3,7 @@
     <div class="brand-card rounded-[30px] p-8">
       <div class="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <p class="text-xs uppercase tracking-[0.35em] text-brand-pink">Operacao</p>
+          <p class="text-xs uppercase tracking-[0.35em] text-brand-pink">Operação</p>
           <h1 class="mt-3 text-3xl font-bold text-white sm:text-4xl mb-2">Controle de Estoque</h1>
           <p class="brand-panel-copy text-sm">Acompanhe o inventario completo dos produtos cadastrados</p>
         </div>
@@ -35,10 +35,10 @@
         v-model="filterStatus"
         class="brand-field rounded-2xl px-4 py-3 transition"
       >
-        <option value="">Todos os Produtos</option>
-        <option value="baixo">Estoque Baixo</option>
-        <option value="ok">Estoque OK</option>
-        <option value="vazio">Estoque Vazio</option>
+        <option value="">Todos os produtos</option>
+        <option value="baixo">Estoque baixo</option>
+        <option value="ok">Estoque regular</option>
+        <option value="vazio">Estoque zerado</option>
       </select>
     </div>
 
@@ -50,7 +50,7 @@
       <div class="brand-metric-card rounded-[24px] p-5">
         <p class="brand-kicker text-white/45">Total produtos</p>
         <p class="brand-value mt-4 text-white">{{ inventoryRows.length }}</p>
-        <p class="mt-3 text-sm text-white/55">Catalogo hoje visivel no inventario.</p>
+        <p class="mt-3 text-sm text-white/55">Catálogo disponível hoje no inventário.</p>
       </div>
       <div class="brand-metric-card rounded-[24px] p-5">
         <p class="brand-kicker text-white/45">Em estoque</p>
@@ -63,7 +63,7 @@
         <p class="mt-3 text-sm text-white/55">Baseada no preco de venda unitario.</p>
       </div>
       <div class="brand-metric-card rounded-[24px] p-5">
-        <p class="brand-kicker text-white/45">Margem media</p>
+        <p class="brand-kicker text-white/45">Margem média</p>
         <p class="brand-value mt-4 text-amber-100">{{ averageMargin }}%</p>
         <p class="mt-3 text-sm text-white/55">{{ lowStockCount }} baixos • {{ emptyStockCount }} zerados.</p>
       </div>
@@ -86,13 +86,13 @@
         <thead class="border-b border-white/10 bg-white/5">
           <tr>
             <th class="px-6 py-4 text-left font-bold text-white/60">Produto</th>
-            <th class="px-6 py-4 text-left font-bold text-white/60">Codigo</th>
+            <th class="px-6 py-4 text-left font-bold text-white/60">Código</th>
             <th class="px-6 py-4 text-left font-bold text-white/60">Quantidade</th>
-            <th class="px-6 py-4 text-left font-bold text-white/60">Custo medio</th>
+            <th class="px-6 py-4 text-left font-bold text-white/60">Custo médio</th>
             <th class="px-6 py-4 text-left font-bold text-white/60">Status</th>
             <th class="px-6 py-4 text-left font-bold text-white/60">Margem</th>
             <th class="px-6 py-4 text-left font-bold text-white/60">Preco de Venda</th>
-            <th class="px-6 py-4 text-left font-bold text-white/60">Acoes</th>
+            <th class="px-6 py-4 text-left font-bold text-white/60">Ações</th>
           </tr>
         </thead>
         <tbody>
@@ -143,7 +143,7 @@
       <p class="text-xs uppercase tracking-[0.32em] text-brand-pink">Sem resultado</p>
       <h3 class="mt-3 font-display text-4xl text-white">Nenhum item encontrado</h3>
       <p class="mx-auto mt-3 max-w-lg text-sm leading-6 text-white/55">
-        Ajuste a busca, revise o filtro de status ou siga cadastrando produtos para visualizar o estoque consolidado aqui.
+        Ajuste a busca, revise o filtro de status ou continue cadastrando produtos para visualizar o estoque consolidado.
       </p>
     </div>
 
@@ -153,7 +153,7 @@
           <div>
             <p class="brand-kicker">Estoque</p>
             <h2 class="mt-2 text-2xl font-bold text-white">
-              {{ selectedStock ? getProductName(selectedStock.product_id) : 'Movimentacao' }}
+              {{ selectedStock ? getProductName(selectedStock.product_id) : 'Movimentação' }}
             </h2>
           </div>
           <button @click="closeMovementForm" class="text-white/40 hover:text-white/80 text-2xl">X</button>
@@ -177,19 +177,19 @@
             <input
               v-model.number="movement.quantity"
               type="number"
-              placeholder="Quantidade para movimentacao"
+              placeholder="Quantidade para movimentação"
               min="1"
               required
               class="brand-field w-full rounded-2xl px-4 py-4 transition"
             />
-            <p class="mt-2 text-xs text-white/35">Informe quantas pecas entram, saem ou serao ajustadas.</p>
+            <p class="mt-2 text-xs text-white/35">Informe quantas peças entram, saem ou serão ajustadas.</p>
           </div>
 
           <div>
             <label class="block text-sm font-semibold text-white mb-2">Observacao</label>
             <textarea
               v-model="movement.note"
-              placeholder="Motivo da movimentacao..."
+              placeholder="Motivo da movimentação..."
               rows="3"
               class="brand-field w-full rounded-2xl px-4 py-4 transition"
             ></textarea>
@@ -342,7 +342,7 @@ const submitMovement = async () => {
   try {
     if (!selectedStock.value.id) {
       if (movement.value.type === 'saida') {
-        movementError.value = 'Nao e possivel registrar saida de um produto sem estoque criado.'
+        movementError.value = 'Não é possível registrar saída de um produto sem estoque criado.'
         savingMovement.value = false
         return
       }
@@ -373,7 +373,7 @@ const submitMovement = async () => {
     closeMovementForm()
     await fetchData()
   } catch (error) {
-    movementError.value = error.response?.data?.detail || error.message || 'Nao foi possivel salvar a movimentacao.'
+    movementError.value = error.response?.data?.detail || error.message || 'Não foi possível salvar a movimentação.'
   } finally {
     savingMovement.value = false
   }
@@ -381,7 +381,7 @@ const submitMovement = async () => {
 
 const deleteStock = async (stock) => {
   if (!stock?.id) {
-    loadError.value = 'Esse produto ainda nao possui um registro de estoque para remover.'
+    loadError.value = 'Este produto ainda não possui um registro de estoque para remoção.'
     return
   }
 
@@ -390,13 +390,13 @@ const deleteStock = async (stock) => {
       await stocksAPI.update(stock.id, { quantity: 0 })
       await fetchData()
     } catch (error) {
-      loadError.value = error.response?.data?.detail || error.message || 'Nao foi possivel zerar o estoque.'
+      loadError.value = error.response?.data?.detail || error.message || 'Não foi possível zerar o estoque.'
     }
   }
 }
 
 const exportAsCsv = () => {
-  const headers = ['Produto', 'Codigo', 'Quantidade', 'Custo medio', 'Status', 'Margem', 'Preco de Venda']
+  const headers = ['Produto', 'Código', 'Quantidade', 'Custo médio', 'Status', 'Margem', 'Preço de Venda']
   const rows = filteredStocks.value.map((stock) => {
     const product = getProduct(stock.product_id)
     return [
@@ -431,7 +431,7 @@ const fetchData = async () => {
     stocks.value = stocksRes.data
     products.value = productsRes.data
   } catch (error) {
-    loadError.value = error.response?.data?.detail || error.message || 'Nao foi possivel carregar o estoque.'
+    loadError.value = error.response?.data?.detail || error.message || 'Não foi possível carregar o estoque.'
   } finally {
     loading.value = false
   }

@@ -11,7 +11,7 @@
         @click="openCreateForm"
         class="brand-button-primary rounded-2xl px-6 py-3 font-medium transition"
       >
-        Novo Cliente
+        Nova cliente
       </button>
     </div>
 
@@ -22,7 +22,7 @@
             <th class="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-white/60">Nome</th>
             <th class="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-white/60">CPF</th>
             <th class="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-white/60">Email</th>
-            <th class="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-white/60">Acoes</th>
+            <th class="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-white/60">Ações</th>
           </tr>
         </thead>
         <tbody>
@@ -53,7 +53,7 @@
       <p class="text-xs uppercase tracking-[0.32em] text-brand-pink">Base de clientes</p>
       <h3 class="mt-3 font-display text-4xl text-white">Nenhum cliente encontrado</h3>
       <p class="mx-auto mt-3 max-w-lg text-sm leading-6 text-white/55">
-        Comece seu relacionamento comercial cadastrando o primeiro cliente ou ajuste a busca para encontrar um contato ja existente.
+        Inicie o relacionamento da boutique cadastrando a primeira cliente ou ajuste a busca para localizar um contato já existente.
       </p>
       <button @click="openCreateForm" class="brand-button-primary mt-6 rounded-2xl px-6 py-3 font-medium transition">
         Cadastrar cliente
@@ -64,8 +64,8 @@
       <div class="brand-card w-full max-w-md rounded-[28px] p-8 text-white shadow-2xl">
         <div class="mb-6 flex items-center justify-between">
           <div>
-            <p class="text-xs uppercase tracking-[0.28em] text-brand-pink">Cadastro</p>
-            <h2 class="mt-2 text-2xl font-bold text-white">{{ editingCustomerId ? 'Editar Cliente' : 'Novo Cliente' }}</h2>
+            <p class="text-xs uppercase tracking-[0.28em] text-brand-pink">Relacionamento</p>
+            <h2 class="mt-2 text-2xl font-bold text-white">{{ editingCustomerId ? 'Editar cliente' : 'Nova cliente' }}</h2>
           </div>
           <button @click="closeForm" class="text-2xl text-white/40 hover:text-white/80">X</button>
         </div>
@@ -88,7 +88,7 @@
           <input
             v-model="newCustomer.email"
             type="email"
-            placeholder="Email"
+            placeholder="E-mail"
             class="brand-field w-full rounded-2xl px-4 py-4 transition"
           />
           <input
@@ -197,19 +197,19 @@ const submitCustomer = async () => {
 
     closeForm()
   } catch (error) {
-    errorMessage.value = error.response?.data?.detail || error.message || 'Erro ao salvar cliente.'
+    errorMessage.value = error.response?.data?.detail || error.message || 'Não foi possível salvar o cadastro da cliente.'
   } finally {
     saving.value = false
   }
 }
 
 const deleteCustomer = async (id) => {
-  if (!confirm('Tem certeza que deseja deletar este cliente?')) return
+  if (!confirm('Tem certeza de que deseja excluir esta cliente?')) return
 
   try {
     await store.deleteCustomer(id)
   } catch (error) {
-    errorMessage.value = error.response?.data?.detail || error.message || 'Erro ao deletar cliente.'
+    errorMessage.value = error.response?.data?.detail || error.message || 'Não foi possível excluir a cliente.'
   }
 }
 

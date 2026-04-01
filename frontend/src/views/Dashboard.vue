@@ -3,12 +3,12 @@
     <section class="overflow-hidden rounded-[32px] border border-white/10 bg-[linear-gradient(135deg,rgba(255,67,163,0.18),rgba(237,50,55,0.14)_35%,rgba(17,15,16,0.95)_72%)] p-8 shadow-2xl shadow-black/30">
       <div class="grid gap-8 lg:grid-cols-[1.35fr_0.95fr]">
         <div>
-          <p class="text-xs uppercase tracking-[0.45em] text-brand-pink">Brand control room</p>
+          <p class="text-xs uppercase tracking-[0.45em] text-brand-pink">Maison overview</p>
           <h1 class="mt-4 font-display text-4xl leading-tight text-white sm:text-5xl md:text-6xl">
-            Operacao, financeiro e produtos pendentes em uma visao so.
+            A leitura essencial da boutique, em uma visão sofisticada.
           </h1>
           <p class="mt-5 max-w-2xl text-base leading-7 text-white/70">
-            O dashboard agora combina volume comercial, margem e o que ja saiu do estoque mas ainda nao voltou como pagamento.
+            Acompanhe o ritmo comercial da marca, a saúde financeira e as peças que ainda aguardam retorno em caixa.
           </p>
 
           <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
@@ -16,13 +16,13 @@
               Nova venda
             </router-link>
             <router-link to="/products" class="brand-button-secondary rounded-full px-6 py-3 text-center text-sm font-bold uppercase tracking-[0.22em] transition">
-              Atualizar catalogo
+              Refinar catálogo
             </router-link>
           </div>
         </div>
 
         <div class="brand-card-soft rounded-[28px] p-6">
-          <p class="text-xs uppercase tracking-[0.35em] text-white/40">Financeiro rapido</p>
+          <p class="text-xs uppercase tracking-[0.35em] text-white/40">Panorama financeiro</p>
           <div class="mt-6 space-y-5">
             <div class="flex items-center justify-between border-b border-white/10 pb-4">
               <span class="text-sm uppercase tracking-[0.24em] text-white/40">Recebido</span>
@@ -58,10 +58,10 @@
     </section>
 
     <section v-else class="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4">
-      <StatCard title="Clientes" :value="String(summary.customers)" icon="C" text-color="text-white" description="Base ativa para relacionamento e recorrencia." />
-      <StatCard title="Produtos" :value="String(summary.products)" icon="P" text-color="text-white" description="Itens prontos para estoque, venda e reposicao." />
-      <StatCard title="Recebido" :value="formatCurrency(financial.total_revenue_paid)" icon="R$" text-color="text-emerald-200" description="Valor efetivamente convertido em caixa." />
-      <StatCard title="A receber" :value="formatCurrency(financial.total_receivable_pending)" icon="AR" text-color="text-amber-100" description="Saldo em aberto das vendas ainda nao quitadas." />
+      <StatCard title="Clientes" :value="String(summary.customers)" icon="C" text-color="text-white" description="Relacionamentos ativos que sustentam a recorrência da marca." />
+      <StatCard title="Produtos" :value="String(summary.products)" icon="P" text-color="text-white" description="Peças prontas para catálogo, estoque e experiência de venda." />
+      <StatCard title="Recebido" :value="formatCurrency(financial.total_revenue_paid)" icon="R$" text-color="text-emerald-200" description="Valor já convertido em caixa com consistência comercial." />
+      <StatCard title="A receber" :value="formatCurrency(financial.total_receivable_pending)" icon="AR" text-color="text-amber-100" description="Saldo ainda em aberto nas vendas com pagamento pendente." />
     </section>
 
     <section class="grid gap-6 xl:grid-cols-[1.15fr_0.85fr]">
@@ -69,7 +69,7 @@
         <div class="flex items-center justify-between gap-4">
           <div>
             <p class="text-xs uppercase tracking-[0.35em] text-brand-pink">Indicadores</p>
-            <h2 class="mt-3 font-display text-3xl text-white sm:text-4xl">Pulso financeiro</h2>
+            <h2 class="mt-3 font-display text-3xl text-white sm:text-4xl">Pulso da operação</h2>
           </div>
           <span class="brand-chip rounded-full px-4 py-2 text-xs font-bold uppercase tracking-[0.25em]">
             {{ financial.pending_sales_count }} pendentes
@@ -78,29 +78,29 @@
 
         <div class="mt-8 grid gap-4 md:grid-cols-2">
           <div class="brand-metric-card-muted rounded-[24px] p-5">
-            <p class="brand-kicker text-white/40">Ticket medio geral</p>
+            <p class="brand-kicker text-white/40">Ticket médio geral</p>
             <p class="brand-value mt-4 text-white">{{ formatCurrency(financial.average_ticket_overall) }}</p>
-            <p class="mt-3 text-sm text-white/60">Considera vendas pagas e pendentes.</p>
+            <p class="mt-3 text-sm text-white/60">Considera vendas liquidadas e vendas ainda em aberto.</p>
           </div>
           <div class="brand-metric-card-muted rounded-[24px] p-5">
             <p class="brand-kicker text-white/40">Vendas finalizadas</p>
             <p class="brand-value mt-4 text-emerald-200">{{ financial.finalized_sales_count }}</p>
-            <p class="mt-3 text-sm text-white/60">Quantidade de vendas ja recebidas.</p>
+            <p class="mt-3 text-sm text-white/60">Pedidos que já retornaram como receita efetiva.</p>
           </div>
           <div class="brand-metric-card-muted rounded-[24px] p-5">
             <p class="brand-kicker text-white/40">Estoque total</p>
             <p class="brand-value mt-4 text-white">{{ summary.totalQuantity }}</p>
-            <p class="mt-3 text-sm text-white/60">Saldo total somado entre todos os produtos.</p>
+            <p class="mt-3 text-sm text-white/60">Volume total disponível no acervo comercial.</p>
           </div>
           <div class="brand-metric-card-muted rounded-[24px] p-5">
             <p class="brand-kicker text-white/40">Itens pendentes</p>
             <p class="brand-value mt-4 text-amber-100">{{ pendingItems.length }}</p>
-            <p class="mt-3 text-sm text-white/60">Produtos vendidos em vendas ainda nao pagas.</p>
+            <p class="mt-3 text-sm text-white/60">Peças já entregues que ainda aguardam quitação.</p>
           </div>
         </div>
 
         <div class="mt-8">
-          <p class="text-xs uppercase tracking-[0.35em] text-brand-pink">Mais vendidos</p>
+        <p class="text-xs uppercase tracking-[0.35em] text-brand-pink">Mais vendidos</p>
           <div class="mt-4 space-y-3">
             <div
               v-for="product in bestSellers"
@@ -115,7 +115,7 @@
             </div>
             <div v-if="bestSellers.length === 0" class="brand-surface-soft rounded-[22px] px-4 py-8 text-center">
               <p class="text-xs uppercase tracking-[0.28em] text-brand-pink">Sem ranking</p>
-              <p class="mt-3 text-sm text-white/50">Nenhum produto vendido ainda para compor o destaque.</p>
+              <p class="mt-3 text-sm text-white/50">Assim que a boutique ganhar giro, o ranking aparecerá aqui com destaque.</p>
             </div>
           </div>
         </div>
@@ -123,7 +123,7 @@
 
       <div class="brand-card rounded-[30px] p-8">
         <p class="text-xs uppercase tracking-[0.35em] text-brand-pink">A receber</p>
-            <h2 class="mt-3 font-display text-3xl text-white sm:text-4xl">Produtos nao pagos</h2>
+            <h2 class="mt-3 font-display text-3xl text-white sm:text-4xl">Peças ainda não quitadas</h2>
 
         <div class="mt-8 space-y-4">
           <div
@@ -156,7 +156,7 @@
 
           <div v-if="pendingItems.length === 0" class="brand-surface-soft rounded-[22px] px-4 py-8 text-center">
             <p class="text-xs uppercase tracking-[0.28em] text-brand-pink">Fluxo saudavel</p>
-            <p class="mt-3 text-sm text-white/50">Nenhum produto pendente de pagamento no momento.</p>
+            <p class="mt-3 text-sm text-white/50">No momento, não há peças aguardando retorno financeiro.</p>
           </div>
         </div>
       </div>
@@ -166,8 +166,8 @@
       <div class="brand-card rounded-[30px] p-8">
         <div class="flex items-center justify-between gap-4">
           <div>
-            <p class="text-xs uppercase tracking-[0.35em] text-brand-pink">Fluxos principais</p>
-            <h2 class="mt-3 font-display text-3xl text-white sm:text-4xl">Atalhos de operacao</h2>
+            <p class="text-xs uppercase tracking-[0.35em] text-brand-pink">Fluxos essenciais</p>
+            <h2 class="mt-3 font-display text-3xl text-white sm:text-4xl">Atalhos da maison</h2>
           </div>
           <span class="brand-chip rounded-full px-4 py-2 text-xs font-bold uppercase tracking-[0.25em]">finance + imagem</span>
         </div>
@@ -182,8 +182,8 @@
       </div>
 
       <div class="brand-card rounded-[30px] p-8">
-        <p class="text-xs uppercase tracking-[0.35em] text-brand-pink">Ultimas vendas</p>
-            <h2 class="mt-3 font-display text-3xl text-white sm:text-4xl">Ritmo comercial</h2>
+        <p class="text-xs uppercase tracking-[0.35em] text-brand-pink">Últimas vendas</p>
+            <h2 class="mt-3 font-display text-3xl text-white sm:text-4xl">Ritmo da boutique</h2>
 
         <div class="mt-8 space-y-4">
           <div
@@ -247,10 +247,10 @@ const loading = ref(false)
 const loadError = ref('')
 
 const quickLinks = [
-  { to: '/customers', eyebrow: 'CRM', title: 'Clientes', description: 'Centralize cadastros, relacionamento e historico de compras.' },
-  { to: '/products', eyebrow: 'Catalogo', title: 'Produtos', description: 'Organize colecoes, codigos, imagens e precificacao da marca.' },
-  { to: '/inventory', eyebrow: 'Operacao', title: 'Estoque', description: 'Acompanhe reposicao, saldo e produtos com giro mais sensivel.' },
-  { to: '/reports', eyebrow: 'Inteligencia', title: 'Relatorios', description: 'Leia desempenho comercial com foco em ticket, margem e volume.' }
+  { to: '/customers', eyebrow: 'Relacionamento', title: 'Clientes', description: 'Centralize cadastros, histórico e vínculos que fortalecem a experiência da marca.' },
+  { to: '/products', eyebrow: 'Coleção', title: 'Produtos', description: 'Organize peças, códigos, imagens e precificação com apresentação mais refinada.' },
+  { to: '/inventory', eyebrow: 'Acervo', title: 'Estoque', description: 'Acompanhe reposição, saldo e itens de giro mais sensível com clareza.' },
+  { to: '/reports', eyebrow: 'Leitura', title: 'Relatórios', description: 'Observe desempenho, ticket, margem e volume com visão mais estratégica.' }
 ]
 
 const formatDate = (value) => new Date(value).toLocaleDateString('pt-BR')
@@ -272,10 +272,10 @@ const fetchDashboard = async () => {
     bestSellers.value = data.best_sellers || []
     latestSales.value = (data.latest_sales || []).map((sale) => ({
       ...sale,
-      customerName: sale.customer?.name || 'Cliente desconhecido'
+      customerName: sale.customer?.name || 'Cliente não identificado'
     }))
   } catch (error) {
-    loadError.value = error.response?.data?.detail || error.message || 'Nao foi possivel carregar o dashboard.'
+    loadError.value = error.response?.data?.detail || error.message || 'Não foi possível carregar o dashboard.'
   } finally {
     loading.value = false
   }

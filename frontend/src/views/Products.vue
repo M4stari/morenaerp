@@ -3,15 +3,15 @@
     <div class="brand-card rounded-[30px] p-8">
       <div class="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <p class="text-xs uppercase tracking-[0.35em] text-brand-pink">Catalogo</p>
-          <h1 class="mt-3 text-3xl font-bold text-white sm:text-4xl mb-2">Catalogo de Produtos</h1>
-          <p class="brand-panel-copy text-sm">Gerencie o catalogo e cadastre produtos completos para estoque e vendas</p>
+          <p class="text-xs uppercase tracking-[0.35em] text-brand-pink">Coleção</p>
+          <h1 class="mt-3 text-3xl font-bold text-white sm:text-4xl mb-2">Curadoria de Produtos</h1>
+          <p class="brand-panel-copy text-sm">Organize a coleção com apresentação refinada, preço bem posicionado e imagem alinhada à marca.</p>
         </div>
         <button
           @click="openCreateForm"
           class="brand-button-primary px-6 py-3 rounded-2xl transition font-bold"
         >
-          Novo Produto
+          Nova peça
         </button>
       </div>
     </div>
@@ -20,14 +20,14 @@
       <input
         v-model="searchQuery"
         type="text"
-        placeholder="Buscar por nome, categoria, codigo ou cor..."
+        placeholder="Buscar por nome, categoria, código ou cor..."
         class="brand-field flex-1 rounded-2xl px-4 py-3 transition"
       />
       <select
         v-model="filterCategory"
         class="brand-field rounded-2xl px-4 py-3 transition"
       >
-        <option value="">Todas as Categorias</option>
+        <option value="">Todas as categorias</option>
         <option value="Camisetas e Blusas">Camisetas e Blusas</option>
         <option value="Blusas">Blusas</option>
         <option value="Tops">Tops</option>
@@ -78,9 +78,9 @@
           </div>
 
           <div class="mt-4 space-y-2 text-sm text-white/70 mb-4">
-            <p><span class="font-semibold text-white">Codigo:</span> <span class="font-mono font-bold text-brand-pink">{{ product.sku }}</span></p>
+            <p><span class="font-semibold text-white">Código:</span> <span class="font-mono font-bold text-brand-pink">{{ product.sku }}</span></p>
             <p v-if="product.color"><span class="font-semibold text-white">Cor:</span> {{ product.color }}</p>
-            <p v-if="product.description" class="max-h-11 overflow-hidden"><span class="font-semibold text-white">Descricao:</span> {{ product.description }}</p>
+            <p v-if="product.description" class="max-h-11 overflow-hidden"><span class="font-semibold text-white">Descrição:</span> {{ product.description }}</p>
           </div>
 
           <div class="mb-4 grid grid-cols-2 gap-3 border-t border-white/10 pt-4">
@@ -95,7 +95,7 @@
           </div>
 
           <div class="mb-4 rounded-2xl border border-white/10 bg-white/5 p-3 text-center">
-            <p class="text-xs font-semibold uppercase tracking-[0.2em] text-white/45">Margem de lucro</p>
+            <p class="text-xs font-semibold uppercase tracking-[0.2em] text-white/45">Margem estimada</p>
             <p class="text-lg font-bold text-brand-pink">{{ calculateProfit(product) }}%</p>
           </div>
 
@@ -104,7 +104,7 @@
               @click="editProduct(product.id)"
               class="brand-button-secondary brand-action-inline flex-1 rounded-2xl py-3 text-sm font-medium"
             >
-              Editar item
+              Editar peça
             </button>
             <button
               @click="deleteProduct(product.id)"
@@ -118,13 +118,13 @@
     </div>
 
     <div v-if="!store.loading && filteredProducts.length === 0" class="brand-surface-soft rounded-[28px] px-6 py-12 text-center">
-      <p class="text-xs uppercase tracking-[0.32em] text-brand-pink">Catalogo vazio</p>
+      <p class="text-xs uppercase tracking-[0.32em] text-brand-pink">Coleção em construção</p>
       <h3 class="mt-3 font-display text-4xl text-white">Nenhum produto encontrado</h3>
       <p class="mx-auto mt-3 max-w-lg text-sm leading-6 text-white/55">
-        Cadastre a primeira peca para alimentar estoque, vendas e relatorios com a identidade da marca desde o inicio.
+        Cadastre a primeira peça para compor a coleção, abastecer o estoque e fortalecer a experiência comercial da boutique.
       </p>
       <button @click="openCreateForm" class="brand-button-primary mt-6 rounded-2xl px-6 py-3 transition font-medium">
-        Adicionar primeiro produto
+        Adicionar primeira peça
       </button>
     </div>
 
@@ -132,8 +132,8 @@
       <div class="brand-modal-panel w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-[30px] p-8 text-white">
         <div class="flex items-center justify-between mb-6">
           <div>
-            <p class="text-xs uppercase tracking-[0.28em] text-brand-pink">Cadastro</p>
-            <h2 class="mt-2 text-2xl font-bold text-white">{{ isEditing ? 'Editar Produto' : 'Novo Produto' }}</h2>
+            <p class="text-xs uppercase tracking-[0.28em] text-brand-pink">Coleção</p>
+            <h2 class="mt-2 text-2xl font-bold text-white">{{ isEditing ? 'Editar peça' : 'Nova peça' }}</h2>
           </div>
           <button @click="closeForm" class="text-white/40 hover:text-white/80 text-2xl">X</button>
         </div>
@@ -149,7 +149,7 @@
           <input
             v-model="newProduct.sku"
             type="text"
-            placeholder="Codigo"
+            placeholder="Código"
             required
             class="brand-field rounded-2xl px-4 py-4 transition"
           />
@@ -177,39 +177,39 @@
             <input
               v-model.number="newProduct.purchase_price"
               type="number"
-              placeholder="Preco de compra"
+              placeholder="Preço de compra"
               step="0.01"
               min="0"
               required
               class="brand-field w-full rounded-2xl px-4 py-4 transition"
             />
-            <p class="mt-2 text-xs text-white/35">Preco de atacado ou custo da peca.</p>
+            <p class="mt-2 text-xs text-white/35">Preço de atacado ou custo da peça.</p>
           </div>
           <div class="rounded-2xl border border-white/10 bg-white/5 p-4">
-            <p class="text-xs font-bold uppercase tracking-[0.22em] text-brand-pink">Sugestao automatica</p>
+            <p class="text-xs font-bold uppercase tracking-[0.22em] text-brand-pink">Sugestão inteligente</p>
             <p class="mt-2 text-sm text-white/70">
-              Com base no atacado, sugestao de venda: <strong>{{ formattedSuggestedSalePrice }}</strong>
+              Com base no valor de atacado, a sugestão de venda é: <strong>{{ formattedSuggestedSalePrice }}</strong>
             </p>
-            <p class="mt-1 text-xs text-white/40">Referencia usando markup de 2,2x sobre o custo.</p>
+            <p class="mt-1 text-xs text-white/40">Referência construída com markup de 2,2x sobre o custo.</p>
             <button
               type="button"
               @click="applySuggestedSalePrice"
               class="brand-button-primary mt-3 rounded-2xl px-4 py-3 text-xs font-semibold uppercase tracking-[0.18em] transition"
             >
-              Usar sugestao
+              Usar sugestão
             </button>
           </div>
           <div>
             <input
               v-model.number="newProduct.sale_price"
               type="number"
-              placeholder="Preco de venda"
+              placeholder="Preço de venda"
               step="0.01"
               min="0"
               required
               class="brand-field w-full rounded-2xl px-4 py-4 transition"
             />
-            <p class="mt-2 text-xs text-white/35">Valor final que sera exibido para venda.</p>
+            <p class="mt-2 text-xs text-white/35">Valor final que será apresentado à cliente.</p>
           </div>
           <div class="col-span-2 rounded-[24px] border border-white/10 bg-white/5 p-4">
             <p class="brand-kicker text-white/40">Imagem</p>
@@ -230,22 +230,22 @@
               class="block w-full rounded-2xl border border-dashed border-white/14 bg-white/4 px-4 py-4 text-sm text-white/60 file:mr-4 file:rounded-2xl file:border-0 file:bg-white file:px-4 file:py-2 file:text-sm file:font-semibold file:text-brand-ink hover:border-white/25"
             />
             <p class="mt-2 text-xs text-white/35">
-              {{ imageUploading ? 'Enviando imagem...' : 'Voce pode enviar uma imagem do computador ou manter uma URL externa.' }}
+              {{ imageUploading ? 'Enviando imagem...' : 'Você pode enviar uma imagem do computador ou manter uma URL externa.' }}
             </p>
           </div>
           <div v-if="newProduct.image_url" class="col-span-2 overflow-hidden rounded-2xl border border-white/10 bg-white/5">
             <img
               :src="newProduct.image_url"
-              alt="Preview da imagem do produto"
+              alt="Prévia da imagem do produto"
               class="h-48 w-full object-cover"
             />
           </div>
           <div class="col-span-2 rounded-[24px] border border-white/10 bg-white/5 p-4">
-            <p class="brand-kicker text-white/40">Descricao</p>
+            <p class="brand-kicker text-white/40">Descrição</p>
             <textarea
               v-model="newProduct.description"
               rows="3"
-              placeholder="Descricao"
+              placeholder="Descrição"
               class="brand-field mt-4 w-full rounded-2xl px-4 py-4 transition"
             ></textarea>
           </div>
@@ -362,7 +362,7 @@ const handleImageUpload = async (event) => {
       imageUploading.value = false
       return
     } catch (error) {
-      console.warn('Upload em nuvem indisponivel, usando fallback local.', error)
+      console.warn('Upload em nuvem indisponível; usando fallback local.', error)
     }
   }
 
@@ -373,7 +373,7 @@ const handleImageUpload = async (event) => {
   }
   reader.onerror = () => {
     imageUploading.value = false
-    alert('Nao foi possivel ler a imagem selecionada.')
+    alert('Não foi possível ler a imagem selecionada.')
   }
   reader.readAsDataURL(file)
 }
@@ -412,7 +412,7 @@ const submitProduct = async () => {
 
     closeForm()
   } catch (error) {
-    errorMessage.value = error.response?.data?.detail || error.message || 'Nao foi possivel salvar o produto.'
+    errorMessage.value = error.response?.data?.detail || error.message || 'Não foi possível salvar o produto.'
   } finally {
     saving.value = false
   }
@@ -421,7 +421,7 @@ const submitProduct = async () => {
 const editProduct = (id) => {
   const product = store.products.find((item) => item.id === id)
   if (!product) {
-    errorMessage.value = 'Produto nao encontrado para edicao.'
+    errorMessage.value = 'Produto não encontrado para edição.'
     return
   }
 
@@ -447,7 +447,7 @@ const deleteProduct = async (id) => {
   try {
     await store.deleteProduct(id)
   } catch (error) {
-    loadError.value = error.response?.data?.detail || error.message || 'Nao foi possivel deletar o produto.'
+    loadError.value = error.response?.data?.detail || error.message || 'Não foi possível excluir o produto.'
   }
 }
 
@@ -456,7 +456,7 @@ const loadProducts = async () => {
   try {
     await store.fetchProducts()
   } catch (error) {
-    loadError.value = error.response?.data?.detail || error.message || 'Nao foi possivel carregar os produtos.'
+    loadError.value = error.response?.data?.detail || error.message || 'Não foi possível carregar os produtos.'
   }
 }
 

@@ -6,7 +6,7 @@
           <div>
             <p class="text-xs uppercase tracking-[0.45em] text-brand-pink">Morena Concept</p>
             <h1 class="mt-6 max-w-xl font-display text-6xl leading-[0.95] text-white">
-              Imagine a Place com uma operacao a altura da marca.
+              Imagine a Place com uma operação à altura da marca.
             </h1>
             <p class="mt-6 max-w-lg text-base leading-7 text-white/70">
               Painel redesenhado com atmosfera escura, contraste sofisticado e a paleta oficial do brandbook aplicada em toda a experiencia.
@@ -36,7 +36,7 @@
           <p class="mt-6 text-xs uppercase tracking-[0.35em] text-brand-pink">Sistema ERP</p>
           <h2 class="mt-4 font-display text-5xl text-white">Entrar</h2>
           <p class="mt-3 text-sm leading-6 text-white/60">
-            Use as credenciais configuradas no backend para acessar a operacao da marca.
+            Use as credenciais configuradas no backend para acessar a operação da marca.
           </p>
         </div>
 
