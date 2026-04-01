@@ -162,7 +162,10 @@ def get_dashboard_summary(
     )
 
     financial_payload = _build_financial_payload(sales)
-    latest_sales = sales[:latest_sales_limit]
+    latest_sales = [
+        SaleListResponse.model_validate(sale).model_dump(mode="json")
+        for sale in sales[:latest_sales_limit]
+    ]
 
     total_customers = db.query(func.count(Customer.id)).scalar() or 0
     total_products = db.query(func.count(Product.id)).scalar() or 0
