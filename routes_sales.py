@@ -11,8 +11,23 @@ from schemas import SaleCreate, SaleListResponse, SaleResponse, SaleStatus, Sale
 router = APIRouter(prefix="/sales", tags=["Sales"])
 
 
+def _sale_installment_count(sale: Sale) -> int:
+    return max(1, sale.installment_count or 1)
+
+
+def _sale_paid_installments(sale: Sale) -> int:
+    installment_count = _sale_installment_count(sale)
+    paid_installments = max(0, min(sale.paid_installments or 0, installment_count))
+
+    # Compatibilidade com vendas antigas que ja estavam quitadas antes do parcelamento.
+    if sale.status == SaleStatus.FINALIZADA.value and paid_installments == 0:
+        return installment_count
+
+    return paid_installments
+
+
 def _normalize_sale_payment_state(db_sale: Sale):
-    db_sale.installment_count = max(1, db_sale.installment_count or 1)
+    db_sale.installment_count = _sale_installment_count(db_sale)
     db_sale.paid_installments = max(0, min(db_sale.paid_installments or 0, db_sale.installment_count))
 
     if db_sale.status == SaleStatus.CANCELADA.value:
@@ -42,13 +57,13 @@ def _build_financial_payload(sales: List[Sale]) -> dict:
     ]
 
     total_revenue_paid = sum(
-        sale.total_amount * ((sale.paid_installments or 0) / max(1, sale.installment_count or 1))
+        sale.total_amount * (_sale_paid_installments(sale) / _sale_installment_count(sale))
         for sale in sales
         if sale.status != SaleStatus.CANCELADA.value
     )
     total_receivable_pending = sum(
         sale.total_amount - (
-            sale.total_amount * ((sale.paid_installments or 0) / max(1, sale.installment_count or 1))
+            sale.total_amount * (_sale_paid_installments(sale) / _sale_installment_count(sale))
         )
         for sale in open_sales
     )
@@ -64,7 +79,7 @@ def _build_financial_payload(sales: List[Sale]) -> dict:
         if sale.status == SaleStatus.CANCELADA.value:
             continue
 
-        paid_ratio = (sale.paid_installments or 0) / max(1, sale.installment_count or 1)
+        paid_ratio = _sale_paid_installments(sale) / _sale_installment_count(sale)
         if paid_ratio <= 0:
             continue
 
@@ -74,7 +89,7 @@ def _build_financial_payload(sales: List[Sale]) -> dict:
 
     unpaid_items = []
     for sale in open_sales:
-        paid_ratio = (sale.paid_installments or 0) / max(1, sale.installment_count or 1)
+        paid_ratio = _sale_paid_installments(sale) / _sale_installment_count(sale)
         received_amount = sale.total_amount * paid_ratio
         remaining_amount = max(0, sale.total_amount - received_amount)
         for item in sale.sale_items:
@@ -91,9 +106,9 @@ def _build_financial_payload(sales: List[Sale]) -> dict:
                     "subtotal": item.subtotal,
                     "status": sale.status,
                     "payment_method": sale.payment_method,
-                    "installment_count": sale.installment_count,
-                    "paid_installments": sale.paid_installments,
-                    "remaining_installments": max(0, sale.installment_count - sale.paid_installments),
+                    "installment_count": _sale_installment_count(sale),
+                    "paid_installments": _sale_paid_installments(sale),
+                    "remaining_installments": max(0, _sale_installment_count(sale) - _sale_paid_installments(sale)),
                     "received_amount": received_amount,
                     "remaining_amount": remaining_amount,
                     "due_date": sale.due_date,
