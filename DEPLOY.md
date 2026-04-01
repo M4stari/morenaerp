@@ -26,6 +26,7 @@
 - O arquivo `render.yaml` ja sugere:
   - Build command: `pip install -r requirements.txt`
   - Start command: `uvicorn main:app --host 0.0.0.0 --port $PORT`
+- No plano free do Render, nao use `preDeployCommand`; a inicializacao do banco ja acontece no startup da API.
 
 ### Variaveis obrigatorias
 
