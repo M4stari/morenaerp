@@ -10,7 +10,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-BASE_URL = "http://localhost:8000"
+BASE_URL = f"http://localhost:{os.getenv('PORT', '8888')}"
 SESSION = requests.Session()
 
 

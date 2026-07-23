@@ -1,8 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session, joinedload
-from database import get_db
-from models import Stock, Product
-from schemas import StockCreate, StockUpdate, StockResponse, ProductUpdate, ProductResponse
+from app.core.database import get_db
+from app.modules.stocks.models import Stock
+from app.modules.products.models import Product
+from app.modules.stocks.schemas import StockCreate, StockUpdate, StockResponse
+from app.modules.products.schemas import ProductUpdate, ProductResponse
 from typing import List
 
 router = APIRouter(prefix="/stocks", tags=["Stocks"])

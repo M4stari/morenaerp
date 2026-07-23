@@ -5,7 +5,9 @@ Produtos da Morena Concept - Blusas e Tops diversos
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from models import Base, Product, Stock
+from app.core.database import Base
+from app.modules.products.models import Product
+from app.modules.stocks.models import Stock
 import os
 from datetime import datetime
 
@@ -300,4 +302,4 @@ except Exception as e:
 finally:
     db.close()
 
-print("Acesse http://localhost:8000/docs para testar os novos produtos!")
+print("Acesse http://localhost:8888/docs para testar os novos produtos!")

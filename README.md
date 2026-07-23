@@ -2,80 +2,86 @@
 
 ## 📋 Descrição
 
-Sistema Backend completo em Python para gerenciamento de uma empresa de moda, incluindo:
-- ✅ Gerenciamento de Clientes
-- ✅ Cadastro e Controle de Produtos
-- ✅ Controle de Estoque
-- ✅ Gestão de Vendas
-- ✅ Geração de Relatórios
+Sistema Backend completo em Python utilizando **FastAPI** e **SQLAlchemy**, com uma **Arquitetura Modular baseada em Contextos (Package-by-Feature)** para maior legibilidade, escalabilidade e facilidade de manutenção. 
+
+O sistema gerencia os seguintes contextos:
+- 👥 **Auth**: Autenticação de usuários baseada em JWT tokens.
+- 👥 **Customers**: Gerenciamento completo de clientes.
+- 📦 **Products**: Cadastro, controle e duplicação de produtos.
+- 📊 **Stocks**: Manutenção de estoque por armazém.
+- 🛒 **Sales**: Vendas com parcelamento dinâmico e relatórios financeiros/dashboard.
+
+## 📁 Arquitetura Modular do Projeto
+
+O código-fonte está estruturado sob a pasta `app/`, separando cada domínio por contexto:
+```
+app/
+  core/           # Configurações globais e inicialização do Banco de Dados
+  modules/
+    auth/         # Contexto de Autenticação (JWT, Login, Me)
+    customers/    # Contexto de Clientes (Models, Schemas, Router)
+    products/     # Contexto de Produtos (Models, Schemas, Router)
+    stocks/       # Contexto de Estoque (Models, Schemas, Router)
+    sales/        # Contexto de Vendas e Relatórios (Models, Schemas, Router)
+```
 
 ## 🚀 Requisitos
 
 - Python 3.9+
 - pip (gerenciador de pacotes Python)
 
-## 📦 Instalação
+## 📦 Instalação e Execução Local
 
-### 1. Clone ou extraia o projeto
+### 1. Clone ou acesse a pasta do projeto
 ```bash
-cd "c:\ERP MORENA CONCEPT"
+cd "c:\Users\Pichau\Desktop\projects\morenaerp"
 ```
 
-### 2. Crie um ambiente virtual
+### 2. Crie e ative um ambiente virtual (Opcional, mas recomendado)
 ```bash
+# Criar ambiente virtual
 python -m venv venv
-```
 
-### 3. Ative o ambiente virtual
-
-**Windows (PowerShell):**
-```powershell
+# Ativar ambiente virtual (Windows PowerShell)
 .\venv\Scripts\Activate.ps1
-```
 
-**Windows (CMD):**
-```cmd
+# Ativar ambiente virtual (Windows CMD)
 venv\Scripts\activate.bat
-```
 
-**Linux/Mac:**
-```bash
+# Ativar ambiente virtual (Linux/Mac)
 source venv/bin/activate
 ```
 
-### 4. Instale as dependências
+### 3. Instale as dependências (FastAPI, SQLAlchemy, Uvicorn, etc.)
 ```bash
 pip install -r requirements.txt
 ```
 
-## ⚙️ Configuração
-
-### Banco de Dados
-
-O projeto usa SQLite por padrão. Se desejar usar PostgreSQL:
-
-1. Edite o arquivo `.env`:
-```
-DATABASE_URL=postgresql://usuario:senha@localhost:5432/erp_moda
-```
-
-2. Instale o driver PostgreSQL:
+### 4. Configuração Automática do Banco de Dados (SQLite)
+O projeto vem configurado para rodar com **SQLite** localmente por padrão, **sem necessidade de instalar nenhum servidor de banco de dados**.
+Copie o arquivo `.env.example` para `.env` ou use o padrão gerado automaticamente:
 ```bash
-pip install psycopg2-binary
+# No Windows PowerShell:
+Copy-Item .env.example .env
 ```
+O banco de dados SQLite (`erp_moda.db`) será criado e configurado automaticamente na primeira execução.
+
+---
 
 ## 🏃 Executando a Aplicação
 
+Para iniciar o servidor FastAPI local na porta **8888** (definida no arquivo `.env`):
 ```bash
 python main.py
 ```
+A API estará disponível em: **http://localhost:8888**
 
-A API estará disponível em: **http://localhost:8000**
+### 🎨 Documentação Interativa (Swagger UI)
+O FastAPI gera automaticamente a documentação interativa baseada na especificação OpenAPI (Swagger). Todos os endpoints e schemas do projeto estão mapeados nela:
 
-### Documentação Interativa
+- **Swagger UI**: [http://localhost:8888/docs](http://localhost:8888/docs) (Permite testar requisições diretamente do navegador)
+- **ReDoc**: [http://localhost:8888/redoc](http://localhost:8888/redoc)
 
-- **Swagger UI**: http://localhost:8000/docs
-- **ReDoc**: http://localhost:8000/redoc
 
 ## 📚 Endpoints Principais
 
@@ -304,33 +310,33 @@ Para produção, recomenda-se:
 
 ### Criar Cliente
 ```bash
-curl -X POST "http://localhost:8000/customers/" \
+curl -X POST "http://localhost:8888/customers/" \
   -H "Content-Type: application/json" \
   -d "{\"name\":\"Maria Silva\",\"cpf\":\"12345678901\",\"email\":\"maria@email.com\"}"
 ```
 
 ### Listar Clientes
 ```bash
-curl "http://localhost:8000/customers/?search=Maria&skip=0&limit=10"
+curl "http://localhost:8888/customers/?search=Maria&skip=0&limit=10"
 ```
 
 ### Criar Produto
 ```bash
-curl -X POST "http://localhost:8000/products/" \
+curl -X POST "http://localhost:8888/products/" \
   -H "Content-Type: application/json" \
   -d "{\"name\":\"Vestido Floral\",\"sku\":\"VEST-001\",\"category\":\"Vestidos\",\"size\":\"M\",\"purchase_price\":30,\"sale_price\":89.90}"
 ```
 
 ### Criar Estoque
 ```bash
-curl -X POST "http://localhost:8000/stocks/" \
+curl -X POST "http://localhost:8888/stocks/" \
   -H "Content-Type: application/json" \
   -d "{\"product_id\":1,\"quantity\":100,\"warehouse\":\"Principal\"}"
 ```
 
 ### Fazer Venda
 ```bash
-curl -X POST "http://localhost:8000/sales/" \
+curl -X POST "http://localhost:8888/sales/" \
   -H "Content-Type: application/json" \
   -d "{\"customer_id\":1,\"items\":[{\"product_id\":1,\"quantity\":2}],\"notes\":\"Venda de teste\"}"
 ```
@@ -338,8 +344,8 @@ curl -X POST "http://localhost:8000/sales/" \
 ## 📧 Suporte
 
 Para dúvidas ou problemas, consulte a documentação interativa em:
-- Swagger: http://localhost:8000/docs
-- ReDoc: http://localhost:8000/redoc
+- Swagger: http://localhost:8888/docs
+- ReDoc: http://localhost:8888/redoc
 
 ## 📄 Licença
 

@@ -23,7 +23,7 @@ class Settings:
         )
         self.app_name = os.getenv("APP_NAME", "ERP Morena Concept")
         self.debug = os.getenv("DEBUG", "False").lower() == "true"
-        self.port = int(os.getenv("PORT", "8000"))
+        self.port = int(os.getenv("PORT", "8888"))
         cors_origins = os.getenv(
             "CORS_ORIGINS",
             "http://localhost:5173,http://127.0.0.1:5173"
