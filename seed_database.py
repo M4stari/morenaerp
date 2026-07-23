@@ -3,8 +3,11 @@ Script para popular o banco de dados com dados de teste
 Execute: python seed_database.py
 """
 
-from database import SessionLocal, init_db
-from models import Customer, Product, Stock, Sale, SaleItem
+from app.core.database import SessionLocal, init_db
+from app.modules.customers.models import Customer
+from app.modules.products.models import Product
+from app.modules.stocks.models import Stock
+from app.modules.sales.models import Sale, SaleItem
 from datetime import datetime, timedelta
 import random
 

@@ -1,7 +1,7 @@
 from sqlalchemy import create_engine, inspect, text
 from sqlalchemy.orm import declarative_base, sessionmaker
 
-from config import settings
+from app.core.config import settings
 
 engine = create_engine(
     settings.database_url,
@@ -56,3 +56,10 @@ def init_db():
     """Inicializa o banco de dados criando tabelas e colunas novas."""
     Base.metadata.create_all(bind=engine)
     _ensure_sales_columns()
+
+# Import all models to register them on Base.metadata for registry compilation safety
+from app.modules.customers.models import Customer
+from app.modules.products.models import Product
+from app.modules.stocks.models import Stock
+from app.modules.sales.models import Sale, SaleItem
+

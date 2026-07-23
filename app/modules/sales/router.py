@@ -4,9 +4,12 @@ from typing import List
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session, joinedload, selectinload
 
-from database import get_db
-from models import Customer, Product, Sale, SaleItem, Stock
-from schemas import SaleCreate, SaleListResponse, SaleResponse, SaleStatus, SaleUpdate
+from app.core.database import get_db
+from app.modules.customers.models import Customer
+from app.modules.products.models import Product
+from app.modules.stocks.models import Stock
+from app.modules.sales.models import Sale, SaleItem
+from app.modules.sales.schemas import SaleCreate, SaleListResponse, SaleResponse, SaleStatus, SaleUpdate
 
 router = APIRouter(prefix="/sales", tags=["Sales"])
 
