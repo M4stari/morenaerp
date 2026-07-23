@@ -1,26 +1,39 @@
-# ERP Morena Concept - Frontend Vue
+# ERP Morena Concept - Frontend React (TypeScript + MUI)
 
-Interface moderna e responsiva para o sistema ERP.
+Interface moderna, escura e de alto padrão desenvolvida em **React, TypeScript e Material-UI (MUI)** para o ecossistema ERP da Morena Concept.
 
-## 🚀 Começar Rápido
+A identidade visual foi alinhada ao brandbook da marca, adotando a paleta de cores escuras e contrastantes da boutique (burgundy/pink, laranja aceso, preto e cinza soft).
 
-### Instalação
+---
 
+## 🚀 Como Começar
+
+### 1. Pré-requisitos
+Certifique-se de ter o **Node.js** (versão 18 ou superior) instalado em sua máquina.
+- Caso não tenha o Node instalado, faça o download em: [nodejs.org](https://nodejs.org/)
+
+### 2. Instalação das Dependências
+Entre na pasta do frontend e execute a instalação dos pacotes:
 ```bash
 cd frontend
 npm install
 ```
 
-### Desenvolvimento
+### 3. Configuração do Ambiente (.env)
+Crie um arquivo `.env` na raiz do diretório `frontend/` (caso não tenha sido criado automaticamente) com a variável correspondente à URL da API do backend:
+```env
+VITE_API_URL=http://localhost:8888
+```
 
+### 4. Executando em Modo de Desenvolvimento
+Inicie o servidor local do Vite:
 ```bash
 npm run dev
 ```
+O painel estará disponível em: **`http://localhost:5173`**
 
-Acesse: **http://localhost:5173**
-
-### Build para Produção
-
+### 5. Compilação de Produção
+Para verificar erros de tipo e compilar os arquivos estáticos para produção:
 ```bash
 npm run build
 ```
@@ -32,131 +45,51 @@ npm run build
 ```
 frontend/
 ├── src/
-│   ├── components/        # Componentes reutilizáveis
-│   │   ├── Navbar.vue     # Barra de navegação
-│   │   ├── CustomerForm.vue # Formulário de clientes
-│   │   ├── Alert.vue      # Componente de alerta
-│   │   └── StatCard.vue   # Card de estatísticas
-│   ├── views/             # Páginas principais
-│   │   ├── Dashboard.vue  # Dashboard principal
-│   │   ├── Customers.vue  # Gerenciar clientes
-│   │   ├── Products.vue   # Catálogo de produtos
-│   │   ├── Inventory.vue  # Controle de estoque
-│   │   └── Sales.vue      # Gestão de vendas
 │   ├── api/
-│   │   └── client.js      # Cliente HTTP com Axios
-│   ├── stores/            # Gerenciamento de estado (Pinia)
-│   │   ├── customerStore.js
-│   │   └── productStore.js
-│   ├── App.vue            # Componente raiz
-│   ├── main.js            # Entrada principal
-│   ├── router.js          # Configuração de rotas
-│   └── index.css          # Estilos globais
-├── index.html             # HTML principal
-├── package.json           # Dependências
-├── vite.config.js         # Config Vite
-├── tailwind.config.js     # Config Tailwind CSS
-└── postcss.config.js      # Config PostCSS
-
+│   │   └── client.ts          # Chamadas HTTP/Axios mapeadas às rotas do backend
+│   ├── components/            # Componentes visuais compartilhados
+│   │   ├── Navbar.tsx         # Menu lateral responsivo premium (Drawer + AppBar)
+│   │   └── StatCard.tsx       # Cards métricos estatísticos
+│   ├── context/               # Gerenciadores de estado globais
+│   │   ├── AuthContext.tsx    # Contexto de controle de acesso e sessão de usuário
+│   │   └── NotificationContext.tsx # Central de alertas instantâneos (Snackbar + Alert)
+│   ├── views/                 # Telas e fluxos principais da boutique
+│   │   ├── Login.tsx          # Login refinado com painel de marca
+│   │   ├── Dashboard.tsx      # Métricas, ranking de vendas e peças pendentes
+│   │   ├── Customers.tsx      # CRUD completo de clientes com busca e validações
+│   │   ├── Products.tsx       # Catálogo de peças com sugestão inteligente de markup e duplicação
+│   │   ├── Inventory.tsx      # Controle físico de estoque, custo médio e margens
+│   │   ├── Sales.tsx          # Lançamentos de venda, parcelamentos e fluxo de quitação
+│   │   └── Reports.tsx        # Relatórios de tendência comercial e exportação em PDF
+│   ├── App.tsx                # Roteamento e wrappers de contexto
+│   ├── main.tsx               # Entrada de renderização
+│   ├── theme.ts               # Customização e tokens de design do Material-UI
+│   ├── index.css              # Reset e gradientes de fundo ambientais
+│   └── vite-env.d.ts          # Tipagem global das variáveis de ambiente
+├── index.html                 # HTML principal carregando fontes e script entry
+├── package.json               # Dependências do projeto
+├── tsconfig.json              # Configurações gerais do TypeScript
+└── vite.config.ts             # Configuração do Vite adaptado para React + TS
 ```
 
 ---
 
-## 🎨 Tecnologias Utilizadas
+## 🎨 Design System e Cores da Boutique
 
-- **Vue 3** - Framework JavaScript moderno
-- **Vite** - Build tool rápido
-- **Tailwind CSS** - Framework CSS utilitário
-- **Pinia** - Gerenciamento de estado
-- **Vue Router** - Roteamento
-- **Axios** - Cliente HTTP
-
----
-
-## 🔌 Integração com API
-
-O frontend se conecta automaticamente com o backend FastAPI:
-
-- **Backend:** http://localhost:8000
-- **Frontend:** http://localhost:5173
-
-Proxy configurado em `vite.config.js`
+O layout utiliza os tokens oficiais da Morena Concept:
+- **Base (Fundo escuro principal)**: `#161314`
+- **Paper (Cor dos cards e painéis)**: `#211d1f`
+- **Primary Accent (Destaques e links)**: `#FF43A3` (brand-pink)
+- **Secondary Energy (Alertas e parcelamentos)**: `#F58634` (brand-orange)
+- **Texto Principal**: `#f4efef`
 
 ---
 
-## 📋 Funcionalidades Implementadas
-
-✅ **Dashboard** - Visão geral do sistema
-✅ **Gerenciar Clientes** - CRUD completo
-🟡 **Catálogo de Produtos** - Em desenvolvimento
-🟡 **Controle de Estoque** - Em desenvolvimento
-🟡 **Gestão de Vendas** - Em desenvolvimento
-
----
-
-## 🎯 Próximas Features
-
-- [ ] Completar CRUD de produtos
-- [ ] Implementar sistema de estoque
-- [ ] Sistema de vendas com carrinho
-- [ ] Relatórios e gráficos
-- [ ] Autenticação JWT
-- [ ] Temas dark/light
-- [ ] Busca avançada
-- [ ] Exportação de dados
-
----
-
-## 🚀 Deploy
-
-### Produção (Com Docker)
-
-```bash
-npm run build
-# Servir com nginx ou outro servidor web
-```
-
-### Sem Docker
-
-```bash
-npm run build
-# Usar um servidor web para servir pasta dist/
-```
-
----
-
-## 💡 Tips
-
-- Use `npm run dev` para desenvolvimento
-- Use `npm run build` para produção
-- Altere cores em `tailwind.config.js`
-- Adicione rotas em `src/router.js`
-- Use Pinia para estado global
-
----
-
-## 📞 Dados de Teste
-
-Popule o banco com dados de teste:
-
-```bash
-cd .. && python seed_database.py
-```
-
-Depois acesse o frontend e veja os dados carregados!
-
----
-
-## ⚙️ Configuração de Ambiente
-
-Edite `vite.config.js` para:
-- Mudar porta (padrão: 5173)
-- Ajustar proxy da API
-- Configurações de build
-
----
-
-**Versão:** 1.1.1
-**Status:** 🟢 Pronto para uso
-**Última atualização:** Março 2026
-
+## 📋 Funcionalidades Migradas e Prontas
+- [x] **Autenticação JWT** - Restrição automática de rotas com login sofisticado.
+- [x] **Maison Dashboard** - Visão de tickets, margens médias de lucro e peças pendentes.
+- [x] **Gestão de Clientes** - Filtros instantâneos por CPF e nome, cadastros e atualizações.
+- [x] **Curadoria de Produtos** - Assistente de markup de venda (2,2x sobre o custo de compra), upload de imagens e ferramenta de duplicação automática de peças.
+- [x] **Controle de Estoque** - Ajuste rápido de quantidade (entrada/saída) com log de motivos e exportação completa em CSV.
+- [x] **Painel de Vendas** - Gerenciamento de itens múltiplos no carrinho, parcelamento em carnê de até 24 vezes, e baixa de parcelas individuais.
+- [x] **Relatórios Avançados** - Gráficos de vendas acumuladas por produto e tendência de receita com download em formato PDF (via `html2canvas` + `jspdf`).
